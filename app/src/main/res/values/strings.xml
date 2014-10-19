@@ -5,4 +5,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- First time ID check -->
+    <string name="id_request">Your PAD ID\'s third digit:</string>
+    <string name="submit">Submit</string>
+    <string name="title_activity_main">MainActivity</string>
+
 </resources>
