@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.randomappsinc.padnotifier.GodfestFragment;
+import com.randomappsinc.padnotifier.MetalsFragment;
+
 /**
  * Created by Derek on 10/26/2014.
  */
@@ -19,10 +22,10 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         switch (index) {
             case 0:
                 // Top Rated fragment activity
-//                return new MetalsFragment();
+                return new MetalsFragment();
             case 1:
                 // Games fragment activity
-                //return new GodfestFragment();
+                return new GodfestFragment();
         }
 
         return null;

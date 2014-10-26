@@ -11,16 +11,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.randomappsinc.padnotifier.adapter.TabsPagerAdapter;
+
 
 public class MainActivity extends FragmentActivity implements
         ActionBar.TabListener {
 
-//    private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
+    //    private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private ViewPager mViewPager;
+    private TabsPagerAdapter mAdapter;
 
     public MainActivity() {
     }
-//    private Tab metalsTab, godfestTab, settingsTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,15 +33,18 @@ public class MainActivity extends FragmentActivity implements
         mViewPager = (ViewPager) findViewById(R.id.pager);
         ActionBar actionBar = getActionBar();
         actionBar.setIcon(R.drawable.icon_177);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-//        metalsTab = actionBar.newTab().setText("Metals");
-//        godfestTab = actionBar.newTab().setText("Godfest");
+        mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mAdapter);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         ActionBar.TabListener tabListener = new ActionBar.TabListener()
         {
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
                 // show the given tab
+                // on tab selected
+                // show respected fragment view
+                mViewPager.setCurrentItem(tab.getPosition());
             }
 
             public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -48,6 +53,7 @@ public class MainActivity extends FragmentActivity implements
 
             public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
                 // probably ignore this event
+                mViewPager.setCurrentItem(tab.getPosition());
             }
         };
 
@@ -64,6 +70,19 @@ public class MainActivity extends FragmentActivity implements
                         .setText("Godfest")
                         .setTabListener(tabListener));
 
+        // Select corresponding tab on swipe
+        mViewPager.setOnPageChangeListener(
+                new ViewPager.SimpleOnPageChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        // When swiping between pages, select the
+                        // corresponding tab.
+                        getActionBar().setSelectedNavigationItem(position);
+                    }
+                }
+        );
+
+        // Get the group number from the login activity
         Intent intent = getIntent();
         String group = intent.getStringExtra(LoginActivity.groupKey);
 
@@ -93,7 +112,9 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onTabSelected(Tab tab, FragmentTransaction fragmentTransaction) {
-
+        // on tab selected
+        // show respected fragment view
+        mViewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
@@ -103,6 +124,6 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onTabReselected(Tab tab, FragmentTransaction fragmentTransaction) {
-
+        mViewPager.setCurrentItem(tab.getPosition());
     }
 }

@@ -1,24 +1,25 @@
-//package com.randomappsinc.padnotifier;
-//
-//import android.app.Activity;
-//import android.app.Fragment;
-//import android.net.Uri;
-//import android.os.Bundle;
-//import android.view.LayoutInflater;
-//import android.view.View;
-//import android.view.ViewGroup;
-//
-//
-///**
-// * A simple {@link Fragment} subclass.
-// * Activities that contain this fragment must implement the
-// * {@link MetalsFragment.OnFragmentInteractionListener} interface
-// * to handle interaction events.
-// * Use the {@link MetalsFragment#newInstance} factory method to
-// * create an instance of this fragment.
-// *
-// */
-//public class MetalsFragment extends Fragment {
+package com.randomappsinc.padnotifier;
+
+import android.app.Activity;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.support.v4.app.Fragment;
+
+
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link GodfestFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link GodfestFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ *
+ */
+public class GodfestFragment extends Fragment {
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
@@ -36,18 +37,18 @@
 //     *
 //     * @param param1 Parameter 1.
 //     * @param param2 Parameter 2.
-//     * @return A new instance of fragment MetalsFragment.
+//     * @return A new instance of fragment GodfestFragment.
 //     */
 //    // TODO: Rename and change types and number of parameters
-//    public static MetalsFragment newInstance(String param1, String param2) {
-//        MetalsFragment fragment = new MetalsFragment();
+//    public static GodfestFragment newInstance(String param1, String param2) {
+//        GodfestFragment fragment = new GodfestFragment();
 //        Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
 //        fragment.setArguments(args);
 //        return fragment;
 //    }
-//    public MetalsFragment() {
+//    public GodfestFragment() {
 //        // Required empty public constructor
 //    }
 //
@@ -59,19 +60,14 @@
 //            mParam2 = getArguments().getString(ARG_PARAM2);
 //        }
 //    }
-//
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-////        TextView textView = new TextView(getActivity());
-////        textView.setText(R.string.hello_blank_fragment);
-////        return textView;
-//
-//        View rootView = inflater.inflate(R.layout.fragment_metals, container, false);
-//
-//        return rootView;
-//    }
-//
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_godfest, container, false);
+    }
+
 //    // TODO: Rename method, update argument and hook method into UI event
 //    public void onButtonPressed(Uri uri) {
 //        if (mListener != null) {
@@ -110,25 +106,5 @@
 //        // TODO: Update argument type and name
 //        public void onFragmentInteraction(Uri uri);
 //    }
-//
-//}
 
-package com.randomappsinc.padnotifier;
-
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-public class MetalsFragment extends Fragment {
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.fragment_metals, container, false);
-
-        return rootView;
-    }
 }
