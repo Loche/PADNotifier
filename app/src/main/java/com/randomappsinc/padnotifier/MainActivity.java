@@ -15,7 +15,7 @@ import android.view.MenuItem;
 public class MainActivity extends FragmentActivity implements
         ActionBar.TabListener {
 
-    private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
+//    private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private ViewPager mViewPager;
 
     public MainActivity() {
@@ -28,7 +28,7 @@ public class MainActivity extends FragmentActivity implements
         setContentView(R.layout.activity_main);
 
         // Initialization
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
         ActionBar actionBar = getActionBar();
         actionBar.setIcon(R.drawable.icon_177);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
