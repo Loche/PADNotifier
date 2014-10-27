@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.File;
+
 
 public class LoginActivity extends Activity {
 
@@ -21,7 +23,17 @@ public class LoginActivity extends Activity {
     public static final String groupKey = "com.randomappsinc.padnotifier.group";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+        {
+            File Dir = new File(android.os.Environment.getExternalStorageDirectory(), "PADNotifier");
+            if (!Dir.exists()) // if directory is not here
+            {
+                Dir.mkdirs(); // make directory
+            }
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_page);
 

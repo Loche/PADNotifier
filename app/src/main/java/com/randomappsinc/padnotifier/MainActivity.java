@@ -26,6 +26,8 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DataFetcher.curlPDXHome();
+        // TODO: BLOCK UNTIL THE ABOVE CALL FINISHES
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
