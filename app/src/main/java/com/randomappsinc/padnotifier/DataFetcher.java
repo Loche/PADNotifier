@@ -84,54 +84,50 @@ public class DataFetcher {
         // 2. SET UP GODFEST
         // Check to see if Godfest is even on PDX's radar
         String[] godfestPieces = content.split(GODFEST_SPLITTER);
-        if (godfestPieces.length < 2)
+        if (godfestPieces.length >= 2)
         {
-            return;
-        }
+            Document fullDoc = Jsoup.parse(content);
+            // Util.createFile("GodfestSplit.html", content.split(GODFEST_SPLITTER)[1]);
 
-        Document fullDoc = Jsoup.parse(content);
-        // Util.createFile("GodfestSplit.html", content.split(GODFEST_SPLITTER)[1]);
-
-        // 2.1 PARSE OUT CATEGORIES
-        boolean isOngoing = false;
-        Element godfest = fullDoc.getElementById("event");
-        Elements infoRows = godfest.select("tr");
-        for (i = 1; i < infoRows.size(); i++)
-        {
-            Elements list = infoRows.get(i).getElementsByClass(GODFEST_LIST_CLASS_NAME);
-            if (!list.isEmpty())
+            // 2.1 PARSE OUT CATEGORIES
+            boolean isOngoing = false;
+            Element godfest = fullDoc.getElementById("event");
+            Elements infoRows = godfest.select("tr");
+            for (i = 1; i < infoRows.size(); i++)
             {
-                Elements godCategories = list.get(0).getElementsByTag("a");
-                for (int j = 0; j < GODFEST_NUM_CATEGORIES; j++)
+                Elements list = infoRows.get(i).getElementsByClass(GODFEST_LIST_CLASS_NAME);
+                if (!list.isEmpty())
                 {
-                    GodfestOverview.addGodfestGroup(godCategories.get(j).text().replaceAll(" God", ""));
+                    Elements godCategories = list.get(0).getElementsByTag("a");
+                    for (int j = 0; j < GODFEST_NUM_CATEGORIES; j++)
+                    {
+                        GodfestOverview.addGodfestGroup(godCategories.get(j).text().replaceAll(" God", ""));
+                    }
+                }
+
+                // Check to see that godfest is even currently happening
+                Elements alive = infoRows.get(i).getElementsByClass(GODFEST_ONGOING);
+                if (!alive.isEmpty())
+                {
+                    isOngoing = true;
                 }
             }
 
-            // Check to see that godfest is even currently happening
-            Elements alive = infoRows.get(i).getElementsByClass(GODFEST_ONGOING);
-            if (!alive.isEmpty())
+            if (isOngoing)
             {
-                isOngoing = true;
-            }
-        }
-
-        if (!isOngoing)
-        {
-            return;
-        }
-
-        // 2.2 PARSE OUT IMAGE URLS
-        Document godIconsDocument = Jsoup.parse(content.split(GODFEST_LIST_CLASS_NAME)[1]);
-        Element godIcons = godIconsDocument.getElementById("event");
-        Elements icons = godIcons.getElementsByTag("img");
-        for (i = 0; i < icons.size(); i++)
-        {
-            String iconURL = icons.get(i).attr(IMAGE_URL_ATTR_NAME);
-            if (!iconURL.equals(GODFEST_SPACER))
-            {
-                GodfestOverview.addImageURL(PDX_HOME + iconURL);
-                GodfestOverview.addGodName(icons.get(i).attr(GODFEST_ICON_TITLE));
+                // 2.2 PARSE OUT IMAGE URLS
+                Document godIconsDocument = Jsoup.parse(content.split(GODFEST_LIST_CLASS_NAME)[1]);
+                Element godIcons = godIconsDocument.getElementById("event");
+                Elements icons = godIcons.getElementsByTag("img");
+                for (i = 0; i < icons.size(); i++)
+                {
+                    String iconURL = icons.get(i).attr(IMAGE_URL_ATTR_NAME);
+                    if (!iconURL.equals(GODFEST_SPACER))
+                    {
+                        GodfestOverview.addImageURL(PDX_HOME + iconURL);
+                        GodfestOverview.addGodName(icons.get(i).attr(GODFEST_ICON_TITLE));
+                    }
+                }
             }
         }
         GodfestFragment.renderGods();
