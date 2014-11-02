@@ -1,5 +1,7 @@
 package com.randomappsinc.padnotifier;
 
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -17,9 +19,10 @@ public class PDNHttpResponseHandler extends AsyncHttpResponseHandler
     @Override
     public void onSuccess(int statusCode, Header[] headers, byte[] response)
     {
-        System.out.println("SUCCESSFULLY CURLED THAT ISH.");
+        Log.d("FOR NARNIA", "SUCCESSFULLY CURLED THAT ISH.");
         String content = new String (response);
         DataFetcher.extractPDXHomeContent(content);
+        // DataFetcher.extractPDXHomeContent(Util.readFile("PDXHomeToday.html"));
     }
 
     @Override

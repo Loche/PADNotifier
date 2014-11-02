@@ -1,8 +1,13 @@
 package com.randomappsinc.padnotifier;
 
 import android.os.Environment;
+import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * Created by Alex on 10/26/2014.
@@ -29,9 +34,30 @@ public class Util
         }
     }
 
+    public static String readFile (String fileName)
+    {
+        String fileContents = "";
+        try
+        {
+            String sCurrentLine;
+            try
+            {
+                BufferedReader br = new BufferedReader(new FileReader(Environment.getExternalStorageDirectory().getPath()
+                        + "/PADNotifier/" + fileName));
+                while ((sCurrentLine = br.readLine()) != null)
+                {
+                    fileContents += sCurrentLine;
+                }
+            }
+            catch (FileNotFoundException e) {}
+        }
+        catch (IOException e) {}
+        return fileContents;
+    }
+
     public static void createFile (String fileName, String fileContents)
     {
-        System.out.println("WRITING ALL UP IN DIS ISH");
+        Log.d("FOR NARNIA", "WRITING ALL UP IN DIS ISH");
         try
         {
             FileWriter fWriter = new FileWriter(Environment.getExternalStorageDirectory()

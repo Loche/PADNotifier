@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,9 +16,15 @@ import com.randomappsinc.padnotifier.adapter.TabsPagerAdapter;
 
 
 public class MainActivity extends FragmentActivity implements
-        ActionBar.TabListener {
+        ActionBar.TabListener
+{
+    private static Character m_group;
+    public static Character getGroup()
+    {
+        return m_group;
+    }
 
-    //    private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
+    // private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private ViewPager mViewPager;
     private TabsPagerAdapter mAdapter;
 
@@ -27,7 +34,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         DataFetcher.curlPDXHome();
-        // TODO: BLOCK UNTIL THE ABOVE CALL FINISHES
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -86,9 +93,9 @@ public class MainActivity extends FragmentActivity implements
 
         // Get the group number from the login activity
         Intent intent = getIntent();
-        String group = intent.getStringExtra(LoginActivity.groupKey);
+        m_group = intent.getStringExtra(LoginActivity.groupKey).charAt(0);
 
-        System.out.println("We have received the information that you are in group " + group + ";");
+        Log.d("FOR NARNIA", "You are in group " + m_group + ".");
     }
 
 
