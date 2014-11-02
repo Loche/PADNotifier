@@ -3,6 +3,7 @@ package com.randomappsinc.padnotifier;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +24,7 @@ public class MainActivity extends FragmentActivity implements
     {
         return m_group;
     }
+    protected static Context mContext; // I'm not happy with this, but it works, I guess.
 
     // private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private ViewPager mViewPager;
@@ -34,6 +36,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         DataFetcher.curlPDXHome();
+        mContext = this;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
