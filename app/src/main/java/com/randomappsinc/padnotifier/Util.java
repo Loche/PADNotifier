@@ -8,6 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * Created by Alex on 10/26/2014.
@@ -32,6 +35,53 @@ public class Util
             default:
                 return 'F';
         }
+    }
+
+    // Times are either HH am/pm OR HH:MM am/pm in PDT
+    // This function converts the given time from PDT to the user's time zone
+    public static String convertTime(String time)
+    {
+        // Create a calendar object and set it time based on the PDT time zone
+        Calendar localTime = Calendar.getInstance();
+
+        if (time.split(":").length == 2)
+        {
+            localTime.set(Calendar.HOUR, Integer.valueOf(time.split(":")[0]));
+            localTime.set(Calendar.MINUTE, Integer.valueOf((time.split(":")[1]).split(" ")[0]));
+        }
+        else
+        {
+            localTime.set(Calendar.HOUR, Integer.valueOf(time.split(" ")[0]));
+            localTime.set(Calendar.MINUTE, 0);
+        }
+        localTime.set(Calendar.SECOND, 0);
+
+        // Create an instance using Japan's time zone and set it with the local UTC
+        Calendar userCal = new GregorianCalendar(TimeZone.getDefault());
+        userCal.setTimeInMillis(localTime.getTimeInMillis());
+
+        // Get the foreign time
+        int hour = userCal.get(Calendar.HOUR);
+        int minutes = userCal.get(Calendar.MINUTE);
+        boolean am = userCal.get(Calendar.AM_PM) == Calendar.AM;
+
+        String convertedTime = String.valueOf(hour);
+
+        if (minutes != 0)
+        {
+            convertedTime += ":" + String.valueOf(minutes);
+        }
+
+        if (am)
+        {
+            convertedTime += " am";
+        }
+        else
+        {
+            convertedTime += " pm";
+        }
+
+        return convertedTime;
     }
 
     public static String readFile (String fileName)

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.randomappsinc.padnotifier.R;
+import com.randomappsinc.padnotifier.Util;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -19,17 +20,17 @@ import java.util.ArrayList;
 public class PDNListAdapter extends BaseAdapter
 {
     private Context context;
-    private ArrayList<String> times;
+    private ArrayList<String> text;
     private ArrayList<String> imageURLs;
     private String mode;
 
     private static final float GODFEST_TEXT_SIZE = 24;
 
     // Creates the "Question 1, Question 2, etc..." list
-    public PDNListAdapter(Context context, ArrayList<String> times, ArrayList<String> imageURLS, String mode)
+    public PDNListAdapter(Context context, ArrayList<String> text, ArrayList<String> imageURLS, String mode)
     {
         this.context = context;
-        this.times = times;
+        this.text = text;
         this.imageURLs = imageURLS;
         this.mode = mode;
     }
@@ -73,7 +74,13 @@ public class PDNListAdapter extends BaseAdapter
         }
 
         Picasso.with(context).load(imageURLs.get(position)).into(holder.item1);
-        holder.item2.setText(times.get(position));
+
+        String textContent = text.get(position);
+        if (mode.equals("Metals"))
+        {
+            textContent = Util.convertTime(textContent);
+        }
+        holder.item2.setText(textContent);
 
         if (mode.equals("Godfest"))
         {
