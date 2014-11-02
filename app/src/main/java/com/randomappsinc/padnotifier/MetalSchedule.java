@@ -26,6 +26,16 @@ public class MetalSchedule
         return groupMappings;
     }
 
+    public static Boolean timesIsEmpty (Character group)
+    {
+        ArrayList<String> times = groupMappings.get(group);
+        if (times == null)
+        {
+            return true;
+        }
+        return false;
+    }
+
     // Return a "flattened" list of all the imageURLs (no levels)
     public static ArrayList<String> getImageURLs()
     {

@@ -19,8 +19,9 @@ public class PDNHttpResponseHandler extends AsyncHttpResponseHandler
     @Override
     public void onSuccess(int statusCode, Header[] headers, byte[] response)
     {
-        Log.d("FOR NARNIA", "SUCCESSFULLY CURLED THAT ISH.");
+        Log.d("FOR NARNIA", "SUCCESSFULLY CURLED THE PDX HOMEPAGE.");
         String content = new String (response);
+
         DataFetcher.extractPDXHomeContent(content);
         // DataFetcher.extractPDXHomeContent(Util.readFile("PDXHomeToday.html"));
     }
@@ -34,6 +35,6 @@ public class PDNHttpResponseHandler extends AsyncHttpResponseHandler
     @Override
     public void onRetry(int retryNo)
     {
-        // called when request is retried
+        // called request is tried for the retryNo time
     }
 }

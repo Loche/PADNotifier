@@ -32,7 +32,8 @@ public class MainActivity extends FragmentActivity implements
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         DataFetcher.curlPDXHome();
 
         super.onCreate(savedInstanceState);

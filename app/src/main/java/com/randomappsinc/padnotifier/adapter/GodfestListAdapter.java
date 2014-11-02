@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.randomappsinc.padnotifier.R;
-import com.randomappsinc.padnotifier.Util;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -17,22 +16,18 @@ import java.util.ArrayList;
 /**
  * Created by Alex on 11/1/2014.
  */
-public class PDNListAdapter extends BaseAdapter
+public class GodfestListAdapter extends BaseAdapter
 {
     private Context context;
-    private ArrayList<String> text;
+    private ArrayList<String> godNames;
     private ArrayList<String> imageURLs;
-    private String mode;
-
-    private static final float GODFEST_TEXT_SIZE = 24;
 
     // Creates the "Question 1, Question 2, etc..." list
-    public PDNListAdapter(Context context, ArrayList<String> text, ArrayList<String> imageURLS, String mode)
+    public GodfestListAdapter(Context context, ArrayList<String> godNames, ArrayList<String> imageURLS)
     {
         this.context = context;
-        this.text = text;
+        this.godNames = godNames;
         this.imageURLs = imageURLS;
-        this.mode = mode;
     }
 
     public int getCount()
@@ -62,10 +57,10 @@ public class PDNListAdapter extends BaseAdapter
         if (v == null)
         {
             LayoutInflater vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.list_item, null);
+            v = vi.inflate(R.layout.godfest_list_item, null);
             holder = new ViewHolder();
-            holder.item1 = (ImageView) v.findViewById(R.id.list_icon);
-            holder.item2 = (TextView) v.findViewById(R.id.list_text);
+            holder.item1 = (ImageView) v.findViewById(R.id.god_icon);
+            holder.item2 = (TextView) v.findViewById(R.id.god_title);
             v.setTag(holder);
         }
         else
@@ -75,17 +70,8 @@ public class PDNListAdapter extends BaseAdapter
 
         Picasso.with(context).load(imageURLs.get(position)).into(holder.item1);
 
-        String textContent = text.get(position);
-        if (mode.equals("Metals"))
-        {
-            textContent = Util.convertTime(textContent);
-        }
+        String textContent = godNames.get(position);
         holder.item2.setText(textContent);
-
-        if (mode.equals("Godfest"))
-        {
-            holder.item2.setTextSize(GODFEST_TEXT_SIZE);
-        }
 
         return v;
     }

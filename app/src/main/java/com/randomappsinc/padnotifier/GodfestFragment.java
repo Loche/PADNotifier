@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.randomappsinc.padnotifier.adapter.PDNListAdapter;
+import com.randomappsinc.padnotifier.adapter.GodfestListAdapter;
 
 public class GodfestFragment extends Fragment
 {
@@ -31,8 +31,8 @@ public class GodfestFragment extends Fragment
         TextView godfestMessage = (TextView) rootView.findViewById(R.id.godfestMessage);
         godfestMessage.setText(Html.fromHtml(GodfestOverview.getGodfestMessage()));
         ListView questionList = (ListView) rootView.findViewById(R.id.godsList);
-        PDNListAdapter PDNListAdapter = new PDNListAdapter(context, GodfestOverview.getGodNames(),
-                                            GodfestOverview.getImageURLs(), "Godfest");
-        questionList.setAdapter(PDNListAdapter);
+        GodfestListAdapter GodfestListAdapter = new GodfestListAdapter(context, GodfestOverview.getGodNames(),
+                                                    GodfestOverview.getImageURLs());
+        questionList.setAdapter(GodfestListAdapter);
     }
 }

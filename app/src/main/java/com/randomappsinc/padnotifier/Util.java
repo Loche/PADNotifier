@@ -41,8 +41,8 @@ public class Util
     // This function converts the given time from PDT to the user's time zone
     public static String convertTime(String time)
     {
-        // Create a calendar object and set it time based on the PDT time zone
-        Calendar localTime = Calendar.getInstance();
+        // Create a calendar object and set its time based on the PDT time zone
+        Calendar localTime = new GregorianCalendar(TimeZone.getTimeZone("America/Los Angeles"));
 
         if (time.split(":").length == 2)
         {
@@ -56,7 +56,7 @@ public class Util
         }
         localTime.set(Calendar.SECOND, 0);
 
-        // Create an instance using Japan's time zone and set it with the local UTC
+        // Create an instance user's time
         Calendar userCal = new GregorianCalendar(TimeZone.getDefault());
         userCal.setTimeInMillis(localTime.getTimeInMillis());
 
@@ -81,6 +81,7 @@ public class Util
             convertedTime += " pm";
         }
 
+        Log.d("FOR NARNIA", time + " -> " + convertedTime);
         return convertedTime;
     }
 
