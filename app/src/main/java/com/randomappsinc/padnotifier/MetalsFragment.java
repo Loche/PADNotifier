@@ -118,13 +118,12 @@ package com.randomappsinc.padnotifier;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.randomappsinc.padnotifier.adapter.MetalsListAdapter;
+import com.randomappsinc.padnotifier.adapter.PDNListAdapter;
 
 public class MetalsFragment extends Fragment
 {
@@ -142,10 +141,9 @@ public class MetalsFragment extends Fragment
 
     public static void renderMetals()
     {
-        final ListView questionList = (ListView) rootView.findViewById(R.id.metalsList);
-        MetalsListAdapter metalsAdapter = new MetalsListAdapter(context,
-                                            MetalSchedule.getTimes(MainActivity.getGroup()), MetalSchedule.getImageURLs());
-        Log.d("FOR NARNIA", "WE HAVE THIS MANY METAL EVENTS: " + MetalSchedule.getImageURLs().size());
-        questionList.setAdapter(metalsAdapter);
+        ListView metalsList = (ListView) rootView.findViewById(R.id.metalsList);
+        PDNListAdapter metalsAdapter = new PDNListAdapter(context, MetalSchedule.getTimes(MainActivity.getGroup()),
+                                            MetalSchedule.getImageURLs(), "Metals");
+        metalsList.setAdapter(metalsAdapter);
     }
 }

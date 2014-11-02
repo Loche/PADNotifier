@@ -21,8 +21,8 @@ public class PDNHttpResponseHandler extends AsyncHttpResponseHandler
     {
         Log.d("FOR NARNIA", "SUCCESSFULLY CURLED THAT ISH.");
         String content = new String (response);
-        DataFetcher.extractPDXHomeContent(content);
-        // DataFetcher.extractPDXHomeContent(Util.readFile("PDXHomeToday.html"));
+        // DataFetcher.extractPDXHomeContent(content);
+        DataFetcher.extractPDXHomeContent(Util.readFile("PDXHomeToday.html"));
     }
 
     @Override

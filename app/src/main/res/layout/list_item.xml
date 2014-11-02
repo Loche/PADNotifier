@@ -7,13 +7,13 @@
               android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/metalIcon"
+        android:id="@+id/list_icon"
         android:src="@drawable/ic_launcher"
         android:layout_width="100dp"
         android:layout_height="100dp"/>
 
     <TextView
-        android:id="@+id/metalTime"
+        android:id="@+id/list_text"
         android:layout_marginLeft="20dp"
         android:textSize="36sp"
         android:layout_width="wrap_content"

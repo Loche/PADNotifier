@@ -1,25 +1,22 @@
 package com.randomappsinc.padnotifier;
 
-import android.app.Activity;
-import android.net.Uri;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.Fragment;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.randomappsinc.padnotifier.adapter.PDNListAdapter;
 
+public class GodfestFragment extends Fragment
+{
+    private static View rootView;
+    public static Context context;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GodfestFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link GodfestFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
- */
-public class GodfestFragment extends Fragment {
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
@@ -63,9 +60,21 @@ public class GodfestFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_godfest, container, false);
+                             Bundle savedInstanceState)
+    {
+        rootView = inflater.inflate(R.layout.fragment_godfest, container, false);
+        context = getActivity().getApplicationContext();
+        return rootView;
+    }
+
+    public static void renderGods()
+    {
+        TextView godfestMessage = (TextView) rootView.findViewById(R.id.godfestMessage);
+        godfestMessage.setText(Html.fromHtml(GodfestOverview.getGodfestMessage()));
+        ListView questionList = (ListView) rootView.findViewById(R.id.godsList);
+        PDNListAdapter PDNListAdapter = new PDNListAdapter(context, GodfestOverview.getGodNames(),
+                                            GodfestOverview.getImageURLs(), "Godfest");
+        questionList.setAdapter(PDNListAdapter);
     }
 
 //    // TODO: Rename method, update argument and hook method into UI event

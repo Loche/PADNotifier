@@ -16,18 +16,22 @@ import java.util.ArrayList;
 /**
  * Created by Alex on 11/1/2014.
  */
-public class MetalsListAdapter extends BaseAdapter
+public class PDNListAdapter extends BaseAdapter
 {
     private Context context;
     private ArrayList<String> times;
     private ArrayList<String> imageURLs;
+    private String mode;
+
+    private static final float GODFEST_TEXT_SIZE = 24;
 
     // Creates the "Question 1, Question 2, etc..." list
-    public MetalsListAdapter(Context context, ArrayList<String> times, ArrayList<String> imageURLS)
+    public PDNListAdapter(Context context, ArrayList<String> times, ArrayList<String> imageURLS, String mode)
     {
         this.context = context;
         this.times = times;
         this.imageURLs = imageURLS;
+        this.mode = mode;
     }
 
     public int getCount()
@@ -57,10 +61,10 @@ public class MetalsListAdapter extends BaseAdapter
         if (v == null)
         {
             LayoutInflater vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.metals_list_item, null);
+            v = vi.inflate(R.layout.list_item, null);
             holder = new ViewHolder();
-            holder.item1 = (ImageView) v.findViewById(R.id.metalIcon);
-            holder.item2 = (TextView) v.findViewById(R.id.metalTime);
+            holder.item1 = (ImageView) v.findViewById(R.id.list_icon);
+            holder.item2 = (TextView) v.findViewById(R.id.list_text);
             v.setTag(holder);
         }
         else
@@ -70,6 +74,11 @@ public class MetalsListAdapter extends BaseAdapter
 
         Picasso.with(context).load(imageURLs.get(position)).into(holder.item1);
         holder.item2.setText(times.get(position));
+
+        if (mode.equals("Godfest"))
+        {
+            holder.item2.setTextSize(GODFEST_TEXT_SIZE);
+        }
 
         return v;
     }
