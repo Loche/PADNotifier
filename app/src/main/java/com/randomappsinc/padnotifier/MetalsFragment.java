@@ -21,10 +21,6 @@ public class MetalsFragment extends Fragment
     {
         rootView = inflater.inflate(R.layout.fragment_metals, container, false);
         context = getActivity().getApplicationContext();
-
-        MetalsAlarmReceiver alarm = new MetalsAlarmReceiver();
-        alarm.setAlarm(getActivity());
-
         return rootView;
     }
 
