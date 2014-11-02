@@ -1,12 +1,14 @@
 package com.randomappsinc.padnotifier;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.Calendar;
 
 
 public class LoginActivity extends Activity {
@@ -57,36 +60,6 @@ public class LoginActivity extends Activity {
         }
 
         ((Button) (findViewById(R.id.id_req_submit_button))).setOnClickListener(loginSubmitListener);
-
-        // Notification to say that the app has opened. Take this out before pushing to app store.
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.icon_177)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!");
-        long[] pattern = {0, 1500};
-        mBuilder.setVibrate(pattern);
-        mBuilder.setAutoCancel(true);
-
-        // Set the Notification's Click Behavior (i.e., open PAD)
-        Intent resultIntent = getPackageManager().getLaunchIntentForPackage("jp.gungho.padEN");
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        this,
-                        0,
-                        resultIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-
-
-        // Sets an ID for the notification
-        int mNotificationId = 001;
-        // Gets an instance of the NotificationManager service
-        NotificationManager mNotifyMgr =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        // Builds the notification and issues it.
-        mNotifyMgr.notify(mNotificationId, mBuilder.build());
     }
 
 

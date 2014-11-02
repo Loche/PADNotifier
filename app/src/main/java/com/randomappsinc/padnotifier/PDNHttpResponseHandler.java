@@ -24,6 +24,8 @@ public class PDNHttpResponseHandler extends AsyncHttpResponseHandler
 
         DataFetcher.extractPDXHomeContent(content);
         // DataFetcher.extractPDXHomeContent(Util.readFile("PDXHomeToday.html"));
+        MetalsAlarmReceiver alarm = new MetalsAlarmReceiver();
+        alarm.setAlarm(MainActivity.mContext);
     }
 
     @Override
