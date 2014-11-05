@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.randomappsinc.padnotifier.DungeonMapper;
 import com.randomappsinc.padnotifier.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -22,6 +23,7 @@ public class MetalsListAdapter extends BaseAdapter
     private Context context;
     private ArrayList<String> times;
     private ArrayList<String> imageURLs;
+    private static final String DUNGEON_NOT_FOUND = "Unknown dungeon.";
 
     // Creates the "Question 1, Question 2, etc..." list
     public MetalsListAdapter(Context context, ArrayList<String> times, ArrayList<String> imageURLS)
@@ -72,9 +74,26 @@ public class MetalsListAdapter extends BaseAdapter
         }
 
         Resources resources = context.getResources();
-        holder.item1.setImageDrawable(resources.getDrawable
-                (DungeonMapper.getDungeonMapper().getDrawableResourceID(imageURLs.get(position))));
-        holder.item2.setText(DungeonMapper.getDungeonMapper().getDungeonName(imageURLs.get(position)));
+        Integer metalDrawableID = DungeonMapper.getDungeonMapper().getDrawableResourceID(imageURLs.get(position));
+        if (metalDrawableID != null)
+        {
+            holder.item1.setImageDrawable(resources.getDrawable
+                    (DungeonMapper.getDungeonMapper().getDrawableResourceID(imageURLs.get(position))));
+        }
+        else
+        {
+            Picasso.with(context).load(imageURLs.get(position)).into(holder.item1);
+        }
+
+        String metalTitle = DungeonMapper.getDungeonMapper().getDungeonName(imageURLs.get(position));
+        if (metalTitle != null)
+        {
+            holder.item2.setText(DungeonMapper.getDungeonMapper().getDungeonName(imageURLs.get(position)));
+        }
+        else
+        {
+            holder.item2.setText(DUNGEON_NOT_FOUND);
+        }
         holder.item3.setText(times.get(position));
 
         return v;
