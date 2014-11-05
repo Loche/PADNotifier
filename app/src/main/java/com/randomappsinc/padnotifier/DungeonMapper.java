@@ -29,6 +29,10 @@ public class DungeonMapper
         imageURLtoDungeonName.put("http://www.puzzledragonx.com/en/img/thumbnail/603.png", "Pengdra Village");
         imageURLtoDungeonName.put("http://www.puzzledragonx.com/en/img/thumbnail/321.png", "Together at Last! Evo Rush!!");
         imageURLtoDungeonName.put("http://www.puzzledragonx.com/en/img/thumbnail/265.png", "Ruins of the Star Vault");
+        imageURLtoDungeonName.put("http://www.puzzledragonx.com/en/img/thumbnail/1189.png", "Hera-Beorc Descended!");
+        imageURLtoDungeonName.put("http://www.puzzledragonx.com/en/img/thumbnail/650.png", "Zeus-Dios Descended!");
+        imageURLtoDungeonName.put("http://www.puzzledragonx.com/en/img/thumbnail/599.png", "Hera-Ur Descended!");
+        imageURLtoDungeonName.put("http://www.puzzledragonx.com/en/img/thumbnail/1252.png", "Zeus Vulcan Descended!");
 
         imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/254.png", R.drawable.hunt_ruby_dragons);
         imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/257.png", R.drawable.hunt_sapphire_dragons);
@@ -39,13 +43,17 @@ public class DungeonMapper
         imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/618.png", R.drawable.revenge_of_sapphires);
         imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/619.png", R.drawable.revenge_of_emeralds);
         imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/309.png", R.drawable.revenge_of_golds);
-        imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/261.png", R.drawable.revenge_of_metals);
+        imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/261.png", R.drawable.super_metal);
         imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/1002.png", R.drawable.metal_gold_outbreak);
-        imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/261.png", R.drawable.king_carnival);
+        imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/261.png", R.drawable.super_metal);
         imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/153.png", R.drawable.dragon_plant_infestation);
         imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/603.png", R.drawable.pengdra_village);
         imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/321.png", R.drawable.evo_rush);
         imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/265.png", R.drawable.starry_view_lane);
+        imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/1189.png", R.drawable.hera_beorc_descended);
+        imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/650.png", R.drawable.zeus_dios_descended);
+        imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/599.png", R.drawable.hera_ur_descended);
+        imageURLtoDrawableID.put("http://www.puzzledragonx.com/en/img/thumbnail/1252.png", R.drawable.zeus_vulcan_descended);
     }
 
     public static DungeonMapper getDungeonMapper()
