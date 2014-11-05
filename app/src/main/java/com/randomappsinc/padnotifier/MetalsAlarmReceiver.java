@@ -6,11 +6,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.SystemClock;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -21,7 +19,6 @@ import java.util.TimeZone;
  */
 public class MetalsAlarmReceiver extends WakefulBroadcastReceiver {
     private AlarmManager alarmMgr;
-    private PendingIntent alarmIntent;
     private LinkedList<PendingIntent> alarmIntents;
 
     @Override
@@ -44,18 +41,17 @@ public class MetalsAlarmReceiver extends WakefulBroadcastReceiver {
         Log.d("MetalsAlarmReceiver", "setAlarm(Context) is called");
 
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, MetalsAlarmReceiver.class);
-
-        Intent intent2 = new Intent(context, MetalsAlarmReceiver.class);
-
-//        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-        PendingIntent alarmIntent2 = PendingIntent.getBroadcast(context, 1, intent2, 0);
 
         alarmIntents = new LinkedList<PendingIntent>();
-//        alarmIntents.add(alarmIntent);
-//        alarmIntents.add(alarmIntent2);
 
-        ArrayList<String> times = MetalSchedule.getTimes(MainActivity.getGroup());
+        ArrayList<String> times;
+        if (MetalSchedule.timesIsEmpty(MainActivity.getGroup())) {
+            times = new ArrayList<String>();
+        }
+        else {
+            times = MetalSchedule.getTimes(MainActivity.getGroup());
+        }
+
         int request_id = 0;
         for (int i = 0; i < times.size(); ++i) {
             alarmIntents.add(PendingIntent.getBroadcast(context, request_id,
@@ -63,19 +59,10 @@ public class MetalsAlarmReceiver extends WakefulBroadcastReceiver {
             ++request_id;
         }
 
-//        // Calendars are in Unix time, so changing time zone doesn't change internal representation
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTimeZone(TimeZone.getTimeZone("PDT"));
-//        calendar.setTimeInMillis(System.currentTimeMillis());
-//        // Set the alarm's trigger time to one minute from runtime. (Debug.)
-//        int alarmHour = calendar.get(Calendar.HOUR_OF_DAY);
-//        int alarmMinute = calendar.get(Calendar.MINUTE) + 1;
-//        calendar.set(Calendar.HOUR_OF_DAY, alarmHour);
-//        calendar.set(Calendar.MINUTE, alarmMinute);
-
+        // Calendars are in Unix time, so changing time zone doesn't change internal representation
         for (int i = 0; i < times.size(); ++i) {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeZone(TimeZone.getTimeZone("America/Los Angeles"));
+            calendar.setTimeZone(TimeZone.getTimeZone("America/Los Angeles")); // PDX is in PDT
             calendar.setTimeInMillis(System.currentTimeMillis());
 
             // Times are represented in this app as either "1?[0-9](:30)? [AM|PM]", which is to
@@ -110,7 +97,8 @@ public class MetalsAlarmReceiver extends WakefulBroadcastReceiver {
             // For each alarmIntent, set an alarm for it
             alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntents.get(i));
 
-            Log.d("MetalsAlarmReceiver", "Alarm set for " + alarmHour + ':' + ((alarmMinute < 10) ? "0" + alarmMinute : alarmMinute) + '.');
+            Log.d("MetalsAlarmReceiver", "Alarm set for " + alarmHour + ':' +
+                    ((alarmMinute < 10) ? "0" + alarmMinute : alarmMinute) + '.');
         }
 
         // Enable {@code SampleBootReceiver} to automatically restart the alarm when the
