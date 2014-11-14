@@ -1,5 +1,7 @@
 package com.randomappsinc.padnotifier;
 
+import android.util.Log;
+
 import java.util.Calendar;
 
 /**
@@ -9,43 +11,70 @@ import java.util.Calendar;
  * strings is difficult.
  */
 public class Timeslot implements Comparable<Timeslot>{
-    String name;    // Dungeon name
-    Calendar calendar;
+    private Calendar starts_at;     // Start time
+    private int country;            // Country code
+    private String title;           // Dungeon title
+    private Character group_name;   // Group dungeon is in
 
-    // hour input is in 24-hour format; 9 pm should be input as 21
-    public Timeslot(String name, int hour, int minute) {
-        this.name = name;
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
+    private static final String TAG = "Timeslot";
+
+    
+    public Timeslot(Calendar starts_at, int country, String title, Character group_name) {
+        this.starts_at = starts_at;
+        this.country = country;
+        this.title = title;
+        this.group_name = group_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStarts_at(Calendar starts_at) {
+        this.starts_at = starts_at;
     }
 
-    public String getName() {
-        return name;
+    public Calendar getStarts_at() {
+        return starts_at;
     }
 
-    public void setHour(int hour) {
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
+    public int getCountry() {
+        return country;
     }
 
-    public int getHour() {
-        return calendar.get(Calendar.HOUR_OF_DAY);
+    public void setCountry(int country) {
+        this.country = country;
     }
 
-    public void setMinute(int minute) {
-        calendar.set(Calendar.MINUTE, minute);
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public int getMinute() {
-        return calendar.get(Calendar.MINUTE);
+    public String getTitle() {
+        return title;
+    }
+
+    public Character getGroup_name() {
+        return group_name;
+    }
+
+    public void setGroup_name(Character group_name) {
+        this.group_name = group_name;
+    }
+
+    @Override
+    public String toString() {
+        String ret;
+        if (country == 1)
+            ret = "JP ";
+        else
+            ret = "USA ";
+
+        return ret + group_name + " " + title + ": " + starts_at.toString();
+    }
+
+    public void debugInfo() {
+        Log.d(TAG, toString());
     }
 
     @Override
     public int compareTo(Timeslot anotherTimeslot) {
-        // Assume both Timeslots are on the same day.
-        return calendar.compareTo(anotherTimeslot.calendar);
+        return starts_at.compareTo(anotherTimeslot.starts_at);
     }
 }

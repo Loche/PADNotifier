@@ -8,7 +8,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
@@ -119,5 +122,51 @@ public class Util
         catch (Exception e)
         {
         }
+    }
+
+    // Times are formatted in the form #?#(:##)? [ap]m. Calendar is in PDT timezone.
+    public static Calendar timeToCalendar (String time) {
+        int hour;
+        int minute;
+        Calendar calendar;
+
+        int colonIndex = time.indexOf(':');
+        if (colonIndex != -1) {
+            hour = Integer.parseInt(time.substring(0, colonIndex));
+            minute = Integer.parseInt(time.substring(colonIndex+1, colonIndex+3));
+        }
+        else {
+            hour = Integer.parseInt(time.substring(0,2).trim());
+            minute = 0;
+        }
+
+        // PM check
+        if (time.contains("pm")) {
+            hour += 12;
+            hour %= 24;
+        }
+
+        calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("America/Los Angeles"));
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+
+        return calendar;
+    }
+
+    // Goddammit. Takes in a ISO_8601 time formatted string.
+    public static Calendar utcToCalendar (String utcTime) throws ParseException {
+        System.out.println(utcTime);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        System.out.println(utcTime);
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        System.out.println(utcTime);
+        Date date = sdf.parse(utcTime.substring(0, utcTime.length() - 1));
+        System.out.println(utcTime);
+        Calendar calendar = Calendar.getInstance();
+        System.out.println(utcTime);
+        calendar.setTime(date);
+        System.out.println(utcTime);
+        return calendar;
     }
 }

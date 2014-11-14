@@ -1,15 +1,11 @@
 package com.randomappsinc.padnotifier;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
-import java.util.Calendar;
 
 
 public class LoginActivity extends Activity {
@@ -27,6 +22,7 @@ public class LoginActivity extends Activity {
     private Context context;
     SharedPreferences prefs;
     public static final String groupKey = "com.randomappsinc.padnotifier.group";
+    private static final String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,9 +45,9 @@ public class LoginActivity extends Activity {
 
         String group = prefs.getString(groupKey, "");
         if (group.isEmpty())
-            System.out.println("No ID detected.");
+            Log.d(TAG, "No ID detected.");
         else {
-            System.out.println("You are in group: " + group);
+            Log.d(TAG, "You are in group: " + group);
 
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(groupKey, group);

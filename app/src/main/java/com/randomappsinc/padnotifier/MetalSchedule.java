@@ -1,104 +1,96 @@
 package com.randomappsinc.padnotifier;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.lang.reflect.Array;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Created by Alex on 10/26/2014.
+ *
+ * Singleton master schedule for all metals dungeons across all countries. At the
+ * moment, the only country supported is the USA.
  */
 public class MetalSchedule
 {
-    private static HashMap<Character, ArrayList<String>> groupMappings =
-            new HashMap<Character, ArrayList<String>>();
-    private static ArrayList<ArrayList<String>> imageURLs = new ArrayList<ArrayList<String>>();
+    // Map of <Country, to Map of <Group IDs, to list of Timeslots>>
+    // Each country has its own IDs, which have their own lists of metal dungeons.
+    private static TreeMap<Integer, HashMap<Character, ArrayList<Timeslot>>> schedule;
+    private static final String TAG = "MetalSchedule";
 
-    public static void addURLs(ArrayList<String> URLs)
-    {
-        imageURLs.add(URLs);
+    private MetalSchedule() {
+        schedule = new TreeMap<Integer, HashMap<Character, ArrayList<Timeslot>>>();
     }
 
-    public static HashMap<Character, ArrayList<String>> getGroupMappings()
-    {
-        return groupMappings;
+    /**
+     * Initializes singleton. Code shamelessly copied from Wikipedia's entry on
+     * Singleton pattern.
+     *
+     * SingletonHolder is loaded on the first execution of Singleton.getInstance()
+     * or the first access to SingletonHolder.INSTANCE, not before.
+     */
+    private static class SingletonHolder {
+        private static final MetalSchedule INSTANCE = new MetalSchedule();
     }
 
-    public static Boolean timesIsEmpty (Character group)
-    {
-        ArrayList<String> times = groupMappings.get(group);
-        if (times == null)
-        {
-            return true;
+    public static MetalSchedule getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
+
+    // Adds a timeslot to the schedule.
+    public static void addTimeslot(Timeslot timeslot) {
+        // If our master schedule doesn't have a map for a country yet, add it.
+        if (!schedule.containsKey(timeslot.getCountry()))
+            schedule.put(timeslot.getCountry(), new HashMap<Character, ArrayList<Timeslot>>());
+
+        // Get the country's map of groups to dungeons.
+        HashMap<Character, ArrayList<Timeslot>> countryDungeons = schedule.get(timeslot.getCountry());
+
+        // If the country doesn't have a map for a group yet, add it. Note that sometimes, these
+        // groups are based on starter element instead of third digit.
+        // TODO: Make login page choose starter element.
+        if (!countryDungeons.containsKey(timeslot.getGroup_name())) {
+            countryDungeons.put(timeslot.getGroup_name(), new ArrayList<Timeslot>());
         }
-        return false;
+
+        // Add the timeslot to group's list of dungeons.
+        countryDungeons.get(timeslot.getGroup_name()).add(timeslot);
     }
 
-    // Return a "flattened" list of all the imageURLs (no levels)
-    public static ArrayList<String> getImageURLs()
-    {
-        ArrayList flattenedList = new ArrayList<String>();
-        for (int i = 0; i < imageURLs.size(); i++)
-        {
-            for (int j = 0; j < imageURLs.get(i).size(); j++)
-            {
-                flattenedList.add(imageURLs.get(i).get(j));
-            }
-        }
-        return flattenedList;
+    // Get a country's group's list of dungeons.
+    public static ArrayList<Timeslot> getTimeslots(int country, Character group) {
+        return schedule.get(country).get(group);
     }
 
-    // Return 1 to 1 time mapping to match the list returned in the getImageURLs function
-    public static ArrayList<String> getTimes(Character group)
-    {
-        ArrayList<String> times = groupMappings.get(group);
-        ArrayList<String> flattenedTimes = new ArrayList<String>();
-        for (int i = 0; i < imageURLs.size(); i++)
-        {
-            for (int j = 0; j < imageURLs.get(i).size(); j++)
-            {
-                flattenedTimes.add(times.get(i));
-            }
-        }
-        return flattenedTimes;
+    // Checks if the country times are updated.
+    public static boolean timesIsEmpty(int country, Character group) {
+        return !schedule.containsKey(country) ||                // no country
+                !schedule.get(country).containsKey(group) ||    // no group
+                schedule.get(country).get(group).isEmpty();     // group exists, but is empty
     }
 
-    public static void printImageURLs()
-    {
-        for (int i = 0; i < imageURLs.size(); i++)
-        {
-            String message = "Level " + (i+1) + " image(s): ";
-            for (int j = 0; j < imageURLs.get(i).size(); j++)
-            {
-                message += imageURLs.get(i).get(j);
-                if (j != imageURLs.get(i).size() - 1)
-                {
-                    message += ", ";
+    public static void reset() {
+        schedule = new TreeMap<Integer, HashMap<Character, ArrayList<Timeslot>>>();
+        // TODO: When alarms get implemented, remember to reset them here.
+    }
+
+    public static void printMap() {
+        Log.d(TAG, "Printing Metals Schedule:");
+        for (int country : schedule.keySet()) { // for each country in the schedule
+            for (Character group : schedule.get(country).keySet()) { // for each group in the country
+                for (Timeslot dungeon : schedule.get(country).get(group)) { // for each dungeon in the group
+                    Log.d(TAG, dungeon.toString());
                 }
             }
-            Log.d("FOR NARNIA", message);
-        }
-    }
-
-    public static void printMap()
-    {
-        Iterator it = groupMappings.entrySet().iterator();
-        while (it.hasNext())
-        {
-            Map.Entry pairs = (Map.Entry)it.next();
-            String message = pairs.getKey() + ": ";
-            ArrayList<String> times = (ArrayList<String>) pairs.getValue();
-            for (int i = 0; i < times.size(); i++)
-            {
-                message += times.get(i);
-                if (i != (times.size() - 1))
-                {
-                    message += ", ";
-                }
-            }
-            System.out.println(message);
         }
     }
 }

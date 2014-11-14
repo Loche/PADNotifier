@@ -25,21 +25,38 @@ public class MainActivity extends FragmentActivity implements
         return m_group;
     }
     protected static Context mContext; // I'm not happy with this, but it works, I guess.
+    private static final String TAG = "MainActivity";
 
     // private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private ViewPager mViewPager;
     private TabsPagerAdapter mAdapter;
+    private boolean curled;
+    private static final String STATE_CURLED = "isCurled";
 
     public MainActivity() {
+        Log.d(TAG, "ASd" +
+                "DF");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        DataFetcher.curlPDXHome();
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "ASDF");
+
+        if (savedInstanceState != null) {
+            curled = savedInstanceState.getBoolean(STATE_CURLED);
+        }
+
+        // TODO: Make this a nightly job.
+        if (curled == false) {
+            Log.d(TAG, "NOW RUNNING A CURL.");
+            DataFetcher.curlPDXHome();
+            DataFetcher.pullEventInfo();
+            curled = true;
+        }
         mContext = this;
 
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // Initialization
@@ -99,7 +116,7 @@ public class MainActivity extends FragmentActivity implements
         Intent intent = getIntent();
         m_group = intent.getStringExtra(LoginActivity.groupKey).charAt(0);
 
-        Log.d("FOR NARNIA", "You are in group " + m_group + ".");
+        Log.d(TAG, "You are in group " + m_group + ".");
     }
 
 
@@ -138,5 +155,14 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onTabReselected(Tab tab, FragmentTransaction fragmentTransaction) {
         mViewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state
+        savedInstanceState.putBoolean(STATE_CURLED, curled);
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
     }
 }

@@ -9,7 +9,7 @@ import org.apache.http.Header;
 /**
  * Created by Alex on 10/23/2014.
  */
-public class PDNHttpResponseHandler extends AsyncHttpResponseHandler
+public class PadherderHttpResponseHandler extends AsyncHttpResponseHandler
 {
     private static final String TAG = "PDNHttpResponseHandler";
 
@@ -21,11 +21,16 @@ public class PDNHttpResponseHandler extends AsyncHttpResponseHandler
     @Override
     public void onSuccess(int statusCode, Header[] headers, byte[] response)
     {
-        Log.d(TAG, "SUCCESSFULLY CURLED THE PDX HOMEPAGE.");
+        Log.d(TAG, "SUCCESSFULLY GRABBED PADHERDER EVENT INFO.");
         String content = new String (response);
 
-        DataFetcher.extractPDXHomeContent(content);
+        DataFetcher.extractPadherderAPIJSON(content);
         // DataFetcher.extractPDXHomeContent(Util.readFile("PDXHomeToday.html"));
+
+        // TODO: VVVVVVVVVVVVVVVVVVVVVVVVVV
+//        MetalsAlarmReceiver alarm = new MetalsAlarmReceiver();
+//        alarm.cancelAlarm(MainActivity.mContext);
+//        alarm.setAlarm(MainActivity.mContext);
     }
 
     @Override

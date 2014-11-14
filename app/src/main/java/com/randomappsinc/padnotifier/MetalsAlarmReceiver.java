@@ -20,6 +20,7 @@ import java.util.TimeZone;
 public class MetalsAlarmReceiver extends WakefulBroadcastReceiver {
     private AlarmManager alarmMgr;
     private LinkedList<PendingIntent> alarmIntents;
+    private static final String TAG = "MetalsAlarmReceiver";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -38,67 +39,75 @@ public class MetalsAlarmReceiver extends WakefulBroadcastReceiver {
      * @param context
      */
     public void setAlarm(Context context) {
-        Log.d("MetalsAlarmReceiver", "setAlarm(Context) is called");
+        Log.d(TAG, "setAlarm(Context) is called");
 
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
         alarmIntents = new LinkedList<PendingIntent>();
 
-        ArrayList<String> times;
-        if (MetalSchedule.timesIsEmpty(MainActivity.getGroup())) {
-            times = new ArrayList<String>();
+        ArrayList<Timeslot> timeslots;
+        if (MetalSchedule.timesIsEmpty(2 /* USA Country Code */, MainActivity.getGroup())) {
+            timeslots = new ArrayList<Timeslot>();
         }
         else {
-            times = MetalSchedule.getTimes(MainActivity.getGroup());
+            timeslots = MetalSchedule.getTimeslots(2 /* USA Country Code */, MainActivity.getGroup());
         }
 
         int request_id = 0;
-        for (int i = 0; i < times.size(); ++i) {
+        for (int i = 0; i < timeslots.size(); ++i) {
             alarmIntents.add(PendingIntent.getBroadcast(context, request_id,
                     new Intent(context, MetalsAlarmReceiver.class), 0));
             ++request_id;
         }
 
         // Calendars are in Unix time, so changing time zone doesn't change internal representation
-        for (int i = 0; i < times.size(); ++i) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeZone(TimeZone.getTimeZone("America/Los Angeles")); // PDX is in PDT
-            calendar.setTimeInMillis(System.currentTimeMillis());
+        for (int i = 0; i < timeslots.size(); ++i) {
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTimeZone(TimeZone.getTimeZone("America/Los Angeles")); // PDX is in PDT
+//            calendar.setTimeInMillis(System.currentTimeMillis());
+//
+//            // Times are represented in this app as either "1?[0-9](:30)? [AM|PM]", which is to
+//            // say either it's 9 or 9:30, but not 9:00.
+//            String time = times.get(i);
+//            int alarmHour, alarmMinute;
+//            if (time.equals("--")) {
+//                Log.d(TAG, "\"--\" detected. Printing all time values:");
+//                for (String thisTime : times)
+//                    Log.d(TAG, thisTime);
+//                break;
+//            }
+//            else
+//            if (time.contains(":")) {
+//                String[] hourmin = time.split(":");
+//                alarmHour = Integer.parseInt(hourmin[0]);
+//                alarmMinute = Integer.parseInt(hourmin[1].substring(0, 2));
+//            } else {
+//                alarmHour = Integer.parseInt(time.substring(0, 2).trim());
+//                alarmMinute = 0;
+//            }
+//
+//            // set non-noon pm times to reflect being pm
+//            if (time.contains("pm") && alarmHour != 12) {
+//                alarmHour += 12;
+//            }
+//            // set midnight to 00:00
+//            else if (time.contains("am") && alarmHour == 12) {
+//                alarmHour = 0;
+//            }
+//
+//            if (alarmHour > 23 || alarmHour < 0) {
+//                Log.wtf(TAG, "alarmHour is " + alarmHour);
+//            }
+//
+//            calendar.set(Calendar.HOUR_OF_DAY, alarmHour);
+//            calendar.set(Calendar.MINUTE, alarmMinute);
 
-            // Times are represented in this app as either "1?[0-9](:30)? [AM|PM]", which is to
-            // say either it's 9 or 9:30, but not 9:00.
-            String time = times.get(i);
-            int alarmHour, alarmMinute;
-            if (time.contains(":")) {
-                String[] hourmin = time.split(":");
-                alarmHour = Integer.parseInt(hourmin[0]);
-                alarmMinute = Integer.parseInt(hourmin[1].substring(0, 2));
-            } else {
-                alarmHour = Integer.parseInt(time.substring(0, 2).trim());
-                alarmMinute = 0;
-            }
-
-            // set non-noon pm times to reflect being pm
-            if (time.contains("pm") && alarmHour != 12) {
-                alarmHour += 12;
-            }
-            // set midnight to 00:00
-            else if (time.contains("am") && alarmHour == 12) {
-                alarmHour = 0;
-            }
-
-            if (alarmHour > 23 || alarmHour < 0) {
-                Log.wtf("MetalsAlarmReceiver", "alarmHour is " + alarmHour);
-            }
-
-            calendar.set(Calendar.HOUR_OF_DAY, alarmHour);
-            calendar.set(Calendar.MINUTE, alarmMinute);
 
             // For each alarmIntent, set an alarm for it
-            alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntents.get(i));
+            alarmMgr.set(AlarmManager.RTC_WAKEUP, timeslots.get(i).getStarts_at().getTimeInMillis(), alarmIntents.get(i));
 
-            Log.d("MetalsAlarmReceiver", "Alarm set for " + alarmHour + ':' +
-                    ((alarmMinute < 10) ? "0" + alarmMinute : alarmMinute) + '.');
+//            Log.d(TAG, "Alarm set for " + alarmHour + ':' +
+//                    ((alarmMinute < 10) ? "0" + alarmMinute : alarmMinute) + '.');
         }
 
         // Enable {@code SampleBootReceiver} to automatically restart the alarm when the
