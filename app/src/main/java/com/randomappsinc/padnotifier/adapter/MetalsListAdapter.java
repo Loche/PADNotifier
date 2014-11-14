@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.randomappsinc.padnotifier.DungeonMapper;
 import com.randomappsinc.padnotifier.R;
 import com.randomappsinc.padnotifier.Timeslot;
+import com.randomappsinc.padnotifier.Util;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -94,8 +95,7 @@ public class MetalsListAdapter extends BaseAdapter
         {
             holder.item2.setText(DUNGEON_NOT_FOUND);
         }
-        holder.item3.setText(timeslots.get(position).getStarts_at().get(Calendar.HOUR_OF_DAY)
-                + ":" + timeslots.get(position).getStarts_at().get(Calendar.MINUTE));
+        holder.item3.setText(Util.calendarToLocalTime(timeslots.get(position).getStarts_at()));
 
         return v;
     }

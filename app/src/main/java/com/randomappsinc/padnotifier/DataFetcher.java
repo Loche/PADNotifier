@@ -47,8 +47,9 @@ public class DataFetcher {
     private static final String TAG = "DataFetcher";
 
 
-    // Given a string that is the HTML for PDX home, parse it for the relevant info
-    // After that, populate the MetalSchedule and Godfest classes the app draws on to draw things
+    // Given a string that is the URL for the Padherder API, parse it for the relevant info
+    // After that, populate the MetalSchedule so the app can draw metals stuff
+    // TODO: Make this fail gracefully.
     public static void extractPadherderAPIJSON(String content) {
         Log.d(TAG, "extract home");
         // Parse out the JSON from the Padherder API.
@@ -63,13 +64,15 @@ public class DataFetcher {
             return;
         }
 
-        // Each object in the JSON array is a dungeon. Convert to them into Timeslots, and add them
-        // to the schedule.
+        // Each object in the JSON array is a dungeon.
+        // Convert to them into Timeslots, and add them to the schedule.
         JSONObject dungeon;
         String starts_at;
         int country;
         String title;
         Character group;
+
+        MetalSchedule masterSchedule = MetalSchedule.getInstance();
 
         for (int i = 0; i < events.length(); ++i) {
             try {
@@ -89,7 +92,6 @@ public class DataFetcher {
                 System.out.println("ONE");
                 Calendar startCalendar = Util.utcToCalendar(starts_at);
                 System.out.println("TWO");
-                MetalSchedule masterSchedule = MetalSchedule.getInstance();
                 masterSchedule.addTimeslot(new Timeslot(startCalendar, country, title, group));
                 System.out.println("THREE");
             } catch (ParseException e) {
@@ -105,6 +107,7 @@ public class DataFetcher {
 
         // Set up metal page now that it's done
         MetalsFragment.renderMetals();
+        // masterSchedule.printMap();
 
         Log.d(TAG, "Done rendering metals");
     }

@@ -155,18 +155,27 @@ public class Util
     }
 
     // Goddammit. Takes in a ISO_8601 time formatted string.
-    public static Calendar utcToCalendar (String utcTime) throws ParseException {
-        System.out.println(utcTime);
+    public static Calendar utcToCalendar(String utcTime) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        System.out.println(utcTime);
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        System.out.println(utcTime);
+        // Cut off the Z at the end of the input UTC time
         Date date = sdf.parse(utcTime.substring(0, utcTime.length() - 1));
-        System.out.println(utcTime);
+
         Calendar calendar = Calendar.getInstance();
-        System.out.println(utcTime);
         calendar.setTime(date);
-        System.out.println(utcTime);
         return calendar;
+    }
+
+    public static String calendarToLocalTime(Calendar calendar) {
+        String localTime = "";
+
+        // Change timezone to where the machine is running
+        calendar.setTimeZone(TimeZone.getDefault());
+
+        int localHourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        int localMinute = calendar.get(Calendar.MINUTE);
+        return calendar.get(Calendar.HOUR)
+                + (localMinute < 10 ? ":0" + localMinute : ":" + localMinute)
+                + (localHourOfDay < 12 ? " am" : " pm");
     }
 }
