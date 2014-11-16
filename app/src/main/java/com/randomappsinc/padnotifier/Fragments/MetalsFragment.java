@@ -1,4 +1,4 @@
-package com.randomappsinc.padnotifier;
+package com.randomappsinc.padnotifier.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.randomappsinc.padnotifier.adapter.MetalsListAdapter;
+import com.randomappsinc.padnotifier.Adapters.MetalsListAdapter;
+import com.randomappsinc.padnotifier.Activities.MainActivity;
+import com.randomappsinc.padnotifier.Metals.MetalSchedule;
+import com.randomappsinc.padnotifier.R;
 
 public class MetalsFragment extends Fragment
 {

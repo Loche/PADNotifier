@@ -1,4 +1,4 @@
-package com.randomappsinc.padnotifier;
+package com.randomappsinc.padnotifier.Activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.randomappsinc.padnotifier.R;
 
 import java.io.File;
 

@@ -1,4 +1,4 @@
-package com.randomappsinc.padnotifier;
+package com.randomappsinc.padnotifier.Godfest;
 
 import android.util.Log;
 

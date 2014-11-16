@@ -1,4 +1,4 @@
-package com.randomappsinc.padnotifier;
+package com.randomappsinc.padnotifier.Metals;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -9,10 +9,11 @@ import android.content.pm.PackageManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
+import com.randomappsinc.padnotifier.Activities.MainActivity;
+import com.randomappsinc.padnotifier.Models.Timeslot;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.LinkedList;
-import java.util.TimeZone;
 
 /**
  * Created by Derek on 10/26/2014.

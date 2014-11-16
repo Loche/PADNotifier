@@ -1,4 +1,4 @@
-package com.randomappsinc.padnotifier;
+package com.randomappsinc.padnotifier.Models;
 
 import android.util.Log;
 

@@ -1,4 +1,4 @@
-package com.randomappsinc.padnotifier.adapter;
+package com.randomappsinc.padnotifier.Adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -9,14 +9,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.randomappsinc.padnotifier.DungeonMapper;
+import com.randomappsinc.padnotifier.Metals.DungeonMapper;
 import com.randomappsinc.padnotifier.R;
-import com.randomappsinc.padnotifier.Timeslot;
-import com.randomappsinc.padnotifier.Util;
+import com.randomappsinc.padnotifier.Models.Timeslot;
+import com.randomappsinc.padnotifier.Misc.Util;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by Alex on 11/1/2014.

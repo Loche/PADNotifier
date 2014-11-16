@@ -1,4 +1,4 @@
-package com.randomappsinc.padnotifier;
+package com.randomappsinc.padnotifier.Activities;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -13,7 +13,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.randomappsinc.padnotifier.adapter.TabsPagerAdapter;
+import com.randomappsinc.padnotifier.Adapters.TabsPagerAdapter;
+import com.randomappsinc.padnotifier.Data.DataFetcher;
+import com.randomappsinc.padnotifier.R;
 
 
 public class MainActivity extends FragmentActivity implements

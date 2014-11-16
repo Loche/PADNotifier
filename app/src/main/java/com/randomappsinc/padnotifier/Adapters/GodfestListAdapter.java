@@ -1,4 +1,4 @@
-package com.randomappsinc.padnotifier.adapter;
+package com.randomappsinc.padnotifier.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

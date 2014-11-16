@@ -1,8 +1,14 @@
-package com.randomappsinc.padnotifier;
+package com.randomappsinc.padnotifier.Data;
 
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
+import com.randomappsinc.padnotifier.Fragments.GodfestFragment;
+import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
+import com.randomappsinc.padnotifier.Godfest.GodfestOverview;
+import com.randomappsinc.padnotifier.Metals.MetalSchedule;
+import com.randomappsinc.padnotifier.Models.Timeslot;
+import com.randomappsinc.padnotifier.Misc.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,12 +18,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 
 /**
  * Created by Alex on 10/19/2014.

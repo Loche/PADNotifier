@@ -1,4 +1,6 @@
-package com.randomappsinc.padnotifier;
+package com.randomappsinc.padnotifier.Metals;
+
+import com.randomappsinc.padnotifier.R;
 
 import java.util.HashMap;
 

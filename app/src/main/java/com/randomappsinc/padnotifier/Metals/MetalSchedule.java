@@ -1,17 +1,11 @@
-package com.randomappsinc.padnotifier;
+package com.randomappsinc.padnotifier.Metals;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.lang.reflect.Array;
-import java.sql.Time;
+import com.randomappsinc.padnotifier.Models.Timeslot;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 /**

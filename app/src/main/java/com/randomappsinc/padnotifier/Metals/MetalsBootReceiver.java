@@ -1,4 +1,4 @@
-package com.randomappsinc.padnotifier;
+package com.randomappsinc.padnotifier.Metals;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

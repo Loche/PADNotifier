@@ -1,4 +1,4 @@
-package com.randomappsinc.padnotifier;
+package com.randomappsinc.padnotifier.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.randomappsinc.padnotifier.adapter.GodfestListAdapter;
+import com.randomappsinc.padnotifier.Adapters.GodfestListAdapter;
+import com.randomappsinc.padnotifier.Godfest.GodfestOverview;
+import com.randomappsinc.padnotifier.R;
 
 public class GodfestFragment extends Fragment
 {

@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activities.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,17 +22,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".Activities.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
 
-        <receiver android:name=".MetalsAlarmReceiver"></receiver>
+        <receiver android:name=".Metals.MetalsAlarmReceiver"></receiver>
 
-        <receiver android:name=".MetalsBootReceiver"
+        <receiver android:name=".Metals.MetalsBootReceiver"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
@@ -40,7 +40,7 @@
         </receiver>
 
         <service
-            android:name=".MetalsSchedulingService">
+            android:name=".Metals.MetalsSchedulingService">
         </service>
     </application>
 

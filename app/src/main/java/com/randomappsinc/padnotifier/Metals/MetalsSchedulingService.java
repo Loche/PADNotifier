@@ -1,19 +1,13 @@
-package com.randomappsinc.padnotifier;
+package com.randomappsinc.padnotifier.Metals;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.randomappsinc.padnotifier.R;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
