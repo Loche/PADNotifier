@@ -5,10 +5,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <!-- First time ID check -->
+    <!-- Login -->
     <string name="id_request">Your PAD ID\'s third digit:</string>
     <string name="submit">Submit</string>
     <string name="title_activity_main">PAD Notifier</string>
+    <string name="color_request">Your starter color:</string>
 
     <!-- Settings -->
     <string name="action_search">Search</string>

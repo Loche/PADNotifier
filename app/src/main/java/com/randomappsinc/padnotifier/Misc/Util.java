@@ -40,6 +40,29 @@ public class Util
         }
     }
 
+    public static String digitToGroup(int digit)
+    {
+        digit %= 5;
+        return("" + (char) (digit + (int) 'A'));
+    }
+
+    public static String starterColorToChar(String starterColor)
+    {
+        if (starterColor.equals("Fire"))
+        {
+            return "1";
+        }
+        if (starterColor.equals("Water"))
+        {
+            return "2";
+        }
+        if (starterColor.equals("Grass"))
+        {
+            return "3";
+        }
+        return "1";
+    }
+
     // Times are either HH am/pm OR HH:MM am/pm in PDT
     // This function converts the given time from PDT to the user's time zone
     public static String convertTime(String time)

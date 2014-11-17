@@ -26,6 +26,11 @@ public class MainActivity extends FragmentActivity implements
     {
         return m_group;
     }
+    private static Character m_starter_color;
+    public static Character getStarterColor()
+    {
+        return m_starter_color;
+    }
     protected static Context mContext; // I'm not happy with this, but it works, I guess.
     private static final String TAG = "MainActivity";
 
@@ -36,8 +41,7 @@ public class MainActivity extends FragmentActivity implements
     private static final String STATE_CURLED = "isCurled";
 
     public MainActivity() {
-        Log.d(TAG, "ASd" +
-                "DF");
+        Log.d(TAG, "ASSDF");
     }
 
     @Override
@@ -114,11 +118,10 @@ public class MainActivity extends FragmentActivity implements
                 }
         );
 
-        // Get the group number from the login activity
+        // Get the group number/starter color from the login activity
         Intent intent = getIntent();
         m_group = intent.getStringExtra(LoginActivity.groupKey).charAt(0);
-
-        Log.d(TAG, "You are in group " + m_group + ".");
+        m_starter_color = intent.getStringExtra(LoginActivity.starterColorKey).charAt(0);
     }
 
 

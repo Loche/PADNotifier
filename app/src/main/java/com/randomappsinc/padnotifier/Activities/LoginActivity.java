@@ -5,15 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.randomappsinc.padnotifier.Adapters.StarterColorSpinnerAdapter;
+import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
 
 import java.io.File;
@@ -22,9 +24,18 @@ import java.io.File;
 public class LoginActivity extends Activity {
 
     private Context context;
-    SharedPreferences prefs;
+    private SharedPreferences prefs;
+
+    // Intent keys
     public static final String groupKey = "com.randomappsinc.padnotifier.group";
+    public static final String starterColorKey = "com.randomappsinc.padnotifier.starterColor";
+
     private static final String TAG = "LoginActivity";
+    private static final String[] colors = {"Fire","Water", "Grass"};
+
+    // Views
+    private Button submitButton;
+    private Spinner starterColorSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,22 +53,22 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login_page);
 
         context = this;
-        prefs = context.getSharedPreferences(
-                "com.randomappsinc.padnotifier", Context.MODE_PRIVATE);
+        prefs = context.getSharedPreferences("com.randomappsinc.padnotifier", Context.MODE_PRIVATE);
 
         String group = prefs.getString(groupKey, "");
-        if (group.isEmpty())
-            Log.d(TAG, "No ID detected.");
-        else {
-            Log.d(TAG, "You are in group: " + group);
-
+        if (!group.isEmpty())
+        {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra(groupKey, group);
             startActivity(intent);
             finish();
         }
 
-        ((Button) (findViewById(R.id.id_req_submit_button))).setOnClickListener(loginSubmitListener);
+        submitButton = (Button) (findViewById(R.id.id_req_submit_button));
+        submitButton.setOnClickListener(loginSubmitListener);
+        starterColorSpinner = ((Spinner) (findViewById(R.id.starter_color_spinner)));
+        starterColorSpinner.
+                setAdapter(new StarterColorSpinnerAdapter(LoginActivity.this, R.layout.starter_color_spinner_item, colors));
     }
 
 
@@ -78,17 +89,15 @@ public class LoginActivity extends Activity {
                 Toast.makeText(getApplicationContext(), "Please enter your PAD ID's third digit!", Toast.LENGTH_LONG).show();
             }
             else {
-                int group_determiner = Integer.parseInt(input);
-
-                // 9 to 4, 8 to 3, 7 to 2, 1 to 1, etc.
-                group_determiner %= 5;
-
-                String group = "" + (char) (group_determiner + (int) 'A');
-
+                String group = Util.digitToGroup(Integer.parseInt(input));
                 prefs.edit().putString(groupKey, group).apply();
+
+                String starterColor = Util.starterColorToChar(starterColorSpinner.getSelectedItem().toString());
+                prefs.edit().putString(groupKey, starterColor);
 
                 Intent intent = new Intent(context, MainActivity.class);
                 intent.putExtra(groupKey, group);
+                intent.putExtra(starterColorKey, starterColor);
                 startActivity(intent);
                 finish();
             }
