@@ -9,7 +9,7 @@ import android.content.pm.PackageManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
-import com.randomappsinc.padnotifier.Activities.MainActivity;
+import com.randomappsinc.padnotifier.Misc.PreferencesManager;
 import com.randomappsinc.padnotifier.Models.Timeslot;
 
 import java.util.ArrayList;
@@ -40,6 +40,8 @@ public class MetalsAlarmReceiver extends WakefulBroadcastReceiver {
      * @param context
      */
     public void setAlarm(Context context) {
+        PreferencesManager m_prefs_manager = new PreferencesManager(context);
+
         Log.d(TAG, "setAlarm(Context) is called");
 
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
@@ -47,11 +49,11 @@ public class MetalsAlarmReceiver extends WakefulBroadcastReceiver {
         alarmIntents = new LinkedList<PendingIntent>();
 
         ArrayList<Timeslot> timeslots;
-        if (MetalSchedule.timesIsEmpty(2 /* USA Country Code */, MainActivity.getGroup())) {
+        if (MetalSchedule.timesIsEmpty(2 /* USA Country Code */, m_prefs_manager.getGroup())) {
             timeslots = new ArrayList<Timeslot>();
         }
         else {
-            timeslots = MetalSchedule.getTimeslots(2 /* USA Country Code */, MainActivity.getGroup());
+            timeslots = MetalSchedule.getTimeslots(2 /* USA Country Code */, m_prefs_manager.getGroup());
         }
 
         int request_id = 0;

@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -21,16 +20,6 @@ import com.randomappsinc.padnotifier.R;
 public class MainActivity extends FragmentActivity implements
         ActionBar.TabListener
 {
-    private static Character m_group;
-    public static Character getGroup()
-    {
-        return m_group;
-    }
-    private static Character m_starter_color;
-    public static Character getStarterColor()
-    {
-        return m_starter_color;
-    }
     protected static Context mContext; // I'm not happy with this, but it works, I guess.
     private static final String TAG = "MainActivity";
 
@@ -117,11 +106,6 @@ public class MainActivity extends FragmentActivity implements
                     }
                 }
         );
-
-        // Get the group number/starter color from the login activity
-        Intent intent = getIntent();
-        m_group = intent.getStringExtra(LoginActivity.groupKey).charAt(0);
-        m_starter_color = intent.getStringExtra(LoginActivity.starterColorKey).charAt(0);
     }
 
 

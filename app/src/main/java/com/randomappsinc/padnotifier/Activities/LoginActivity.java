@@ -3,7 +3,6 @@ package com.randomappsinc.padnotifier.Activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.randomappsinc.padnotifier.Adapters.StarterColorSpinnerAdapter;
+import com.randomappsinc.padnotifier.Misc.PreferencesManager;
 import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
 
@@ -24,13 +24,8 @@ import java.io.File;
 public class LoginActivity extends Activity {
 
     private Context context;
-    private SharedPreferences prefs;
+    private PreferencesManager m_preferences_manager;
 
-    // Intent keys
-    public static final String groupKey = "com.randomappsinc.padnotifier.group";
-    public static final String starterColorKey = "com.randomappsinc.padnotifier.starterColor";
-
-    private static final String TAG = "LoginActivity";
     private static final String[] colors = {"Fire","Water", "Grass"};
 
     // Views
@@ -53,13 +48,11 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login_page);
 
         context = this;
-        prefs = context.getSharedPreferences("com.randomappsinc.padnotifier", Context.MODE_PRIVATE);
+        m_preferences_manager = new PreferencesManager(context);
 
-        String group = prefs.getString(groupKey, "");
-        if (!group.isEmpty())
+        if (m_preferences_manager.getGroup() != null)
         {
             Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra(groupKey, group);
             startActivity(intent);
             finish();
         }
@@ -90,14 +83,12 @@ public class LoginActivity extends Activity {
             }
             else {
                 String group = Util.digitToGroup(Integer.parseInt(input));
-                prefs.edit().putString(groupKey, group).apply();
+                m_preferences_manager.setGroup(group);
 
                 String starterColor = Util.starterColorToChar(starterColorSpinner.getSelectedItem().toString());
-                prefs.edit().putString(groupKey, starterColor);
+                m_preferences_manager.setStarterColor(starterColor);
 
                 Intent intent = new Intent(context, MainActivity.class);
-                intent.putExtra(groupKey, group);
-                intent.putExtra(starterColorKey, starterColor);
                 startActivity(intent);
                 finish();
             }
