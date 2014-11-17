@@ -72,6 +72,12 @@ public class MetalSchedule
                 schedule.get(country).get(group).isEmpty();     // group exists, but is empty
     }
 
+    // Checks if a country has dungeon times.
+    public static boolean isEmpty(int country) {
+        return !schedule.containsKey(country) ||
+                schedule.get(country).isEmpty();
+    }
+
     public static void reset() {
         schedule = new TreeMap<Integer, HashMap<Character, ArrayList<Timeslot>>>();
         // TODO: When alarms get implemented, remember to reset them here.

@@ -5,6 +5,12 @@
               android:layout_width="wrap_content"
               android:orientation="vertical">
 
+    <ProgressBar
+        android:id="@+id/progressBarMetals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
     <TextView
         android:id="@+id/metalsMessage"
         android:layout_width="wrap_content"

@@ -18,15 +18,15 @@ import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.R;
 
 
-public class MainActivity extends FragmentActivity implements
-        ActionBar.TabListener
-{
+public class MainActivity extends FragmentActivity {
     private static Character m_group;
     public static Character getGroup()
     {
         return m_group;
     }
-    protected static Context mContext; // I'm not happy with this, but it works, I guess.
+    public static Context mContext; // I'm not happy with this, but it works, I guess.
+
+    public static final String METALS_CACHE_FILENAME = "metals_info";
     private static final String TAG = "MainActivity";
 
     // private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
@@ -36,21 +36,19 @@ public class MainActivity extends FragmentActivity implements
     private static final String STATE_CURLED = "isCurled";
 
     public MainActivity() {
-        Log.d(TAG, "ASd" +
-                "DF");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "ASDF");
 
         if (savedInstanceState != null) {
             curled = savedInstanceState.getBoolean(STATE_CURLED);
         }
 
         // TODO: Make this a nightly job.
+        // if (cache is empty or outdated)
         if (curled == false) {
             Log.d(TAG, "NOW RUNNING A CURL.");
             DataFetcher.curlPDXHome();
@@ -140,23 +138,6 @@ public class MainActivity extends FragmentActivity implements
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onTabSelected(Tab tab, FragmentTransaction fragmentTransaction) {
-        // on tab selected
-        // show respected fragment view
-        mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(Tab tab, FragmentTransaction fragmentTransaction) {
-
-    }
-
-    @Override
-    public void onTabReselected(Tab tab, FragmentTransaction fragmentTransaction) {
-        mViewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override

@@ -54,6 +54,7 @@ public class DataFetcher {
     // TODO: Make this fail gracefully.
     public static void extractPadherderAPIJSON(String content) {
         Log.d(TAG, "extract home");
+
         // Parse out the JSON from the Padherder API.
         JSONArray events;
         try {
@@ -75,6 +76,7 @@ public class DataFetcher {
         Character group;
 
         MetalSchedule masterSchedule = MetalSchedule.getInstance();
+        masterSchedule.reset();
 
         for (int i = 0; i < events.length(); ++i) {
             try {
@@ -86,16 +88,13 @@ public class DataFetcher {
             } catch (JSONException e) {
                 // The API JSON was improperly formatted. Bail.
                 e.printStackTrace();
-                MetalSchedule.reset();
+                masterSchedule.reset();
                 return;
             }
 
             try {
-                System.out.println("ONE");
                 Calendar startCalendar = Util.utcToCalendar(starts_at);
-                System.out.println("TWO");
                 masterSchedule.addTimeslot(new Timeslot(startCalendar, country, title, group));
-                System.out.println("THREE");
             } catch (ParseException e) {
                 // The API's dungeon timestamp was improperly formatted. Bail.
                 e.printStackTrace();
@@ -103,13 +102,14 @@ public class DataFetcher {
                 Log.wtf(TAG, failStr);
                 failStr = "WTF: " + content;
                 Log.wtf(TAG, failStr);
+
+                masterSchedule.reset();
                 return;
             }
         }
 
         // Set up metal page now that it's done
         MetalsFragment.renderMetals();
-        // masterSchedule.printMap();
 
         Log.d(TAG, "Done rendering metals");
     }
