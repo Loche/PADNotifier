@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -111,12 +110,6 @@ public class MainActivity extends FragmentActivity {
                     }
                 }
         );
-
-        // Get the group number from the login activity
-        Intent intent = getIntent();
-        m_group = intent.getStringExtra(LoginActivity.groupKey).charAt(0);
-
-        Log.d(TAG, "You are in group " + m_group + ".");
     }
 
 

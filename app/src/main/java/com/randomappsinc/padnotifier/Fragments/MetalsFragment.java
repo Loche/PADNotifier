@@ -19,6 +19,7 @@ import com.randomappsinc.padnotifier.Adapters.MetalsListAdapter;
 import com.randomappsinc.padnotifier.Activities.MainActivity;
 import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.Metals.MetalSchedule;
+import com.randomappsinc.padnotifier.Misc.PreferencesManager;
 import com.randomappsinc.padnotifier.R;
 
 import org.apache.http.HttpEntity;
@@ -47,6 +48,7 @@ public class MetalsFragment extends Fragment
     private ListView mMetalsList;
 //    private int mProgressStatus = 0;
 
+    private static PreferencesManager m_prefs_manager;
     // Display font size.
     private static final float METALS_MESSAGE_SIZE = 18;
 
@@ -57,11 +59,17 @@ public class MetalsFragment extends Fragment
     private static final String TAG = "MetalsFragment";
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = getActivity().getApplicationContext();
+        m_prefs_manager = new PreferencesManager(context);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_metals, container, false);
-        context = getActivity().getApplicationContext();
         return rootView;
     }
 
@@ -76,13 +84,10 @@ public class MetalsFragment extends Fragment
             System.out.println(filename);
         }
 
-        // XXX: Doesn't check if the cache is outdated. A cache will be considered outdated
-        //      if it's older than 1 AM (PDT) of the current day.
-
-        // If we have a cache
-            File metals_info = new File(context.getFilesDir(), MainActivity.METALS_CACHE_FILENAME);
-            Calendar refreshTime = Calendar.getInstance(TimeZone.getTimeZone("America/Los Angeles"));
-            refreshTime.set(Calendar.HOUR_OF_DAY, 2); /* 2 AM PDT of the current day. TODO: Change this for Japan time.*/
+        // If we have a cache that isn't outdated, render as normal. Else, re-pull the data.
+        File metals_info = new File(context.getFilesDir(), MainActivity.METALS_CACHE_FILENAME);
+        Calendar refreshTime = Calendar.getInstance(TimeZone.getTimeZone("America/Los Angeles"));
+        refreshTime.set(Calendar.HOUR_OF_DAY, 2); /* 2 AM PDT of the current day. TODO: Change this for Japan time later.*/
 
         if (Arrays.asList(context.fileList()).contains(MainActivity.METALS_CACHE_FILENAME) &&
                 metals_info.lastModified() > refreshTime.getTimeInMillis()) {
@@ -98,7 +103,7 @@ public class MetalsFragment extends Fragment
     public static void renderMetals()
     {
         MetalSchedule.getInstance();
-        if (MetalSchedule.timesIsEmpty(2 /* US Country Code*/, MainActivity.getGroup()))
+        if (MetalSchedule.timesIsEmpty(2 /* US Country Code*/, m_prefs_manager.getGroup()))
         {
             TextView metalsMessage = (TextView) rootView.findViewById(R.id.metalsMessage);
             metalsMessage.setText(NO_METALS);
@@ -110,7 +115,7 @@ public class MetalsFragment extends Fragment
             ListView metalsList = (ListView) rootView.findViewById(R.id.metalsList);
             MetalSchedule masterSchedule = MetalSchedule.getInstance();
             MetalsListAdapter metalsAdapter = new MetalsListAdapter(context,
-                    masterSchedule.getTimeslots(2 /* US Country Code */, MainActivity.getGroup()));
+                    masterSchedule.getTimeslots(2 /* US Country Code */, m_prefs_manager.getGroup()));
             metalsList.setAdapter(metalsAdapter);
         }
     }
