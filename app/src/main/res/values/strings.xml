@@ -12,7 +12,7 @@
     <string name="color_request">Your starter color:</string>
 
     <!-- Settings -->
-    <string name="action_search">Search</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mute">Mute all notifications:</string>
+    <string name="save_settings">Save settings</string>
 
 </resources>

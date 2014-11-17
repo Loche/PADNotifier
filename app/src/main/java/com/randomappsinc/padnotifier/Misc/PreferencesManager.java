@@ -11,14 +11,37 @@ public class PreferencesManager
     Context context;
     SharedPreferences prefs;
 
+    private static final String PREFS_KEY = "com.randomappsinc.padnotifier";
+
+    private static final String THIRD_DIGIT_KEY = "com.randomappsinc.padnotifier.ThirdDigit";
     private static final String GROUP_KEY = "com.randomappsinc.padnotifier.group";
     private static final String STARTER_COLOR_KEY = "com.randomappsinc.padnotifier.starterColor";
-    private static final String PREFS_KEY = "com.randomappsinc.padnotifier";
+    private static final String MUTE_SETTING_KEY = "com.randomappsinc.padnotifier.muteSetting";
 
     public PreferencesManager(Context context)
     {
         this.context = context;
         prefs = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+    }
+
+    public boolean getMuteSetting()
+    {
+        return prefs.getBoolean(MUTE_SETTING_KEY, false);
+    }
+
+    public void setMuteSetting(boolean muteSetting)
+    {
+        prefs.edit().putBoolean(MUTE_SETTING_KEY, muteSetting).apply();
+    }
+
+    public String getThirdDigit()
+    {
+        return prefs.getString(THIRD_DIGIT_KEY, "0");
+    }
+
+    public void setThirdDigit(String thirdDigit)
+    {
+        prefs.edit().putString(THIRD_DIGIT_KEY, thirdDigit).apply();
     }
 
     public Character getGroup()

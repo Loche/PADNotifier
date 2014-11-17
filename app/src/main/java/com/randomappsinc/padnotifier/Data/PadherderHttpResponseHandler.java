@@ -20,7 +20,6 @@ import java.util.Arrays;
 public class PadherderHttpResponseHandler extends AsyncHttpResponseHandler
 {
     private static final String METALS_CACHE_FILENAME = "metals_info";
-
     private static final String TAG = "PDNHttpResponseHandler";
 
     @Override
@@ -45,17 +44,17 @@ public class PadherderHttpResponseHandler extends AsyncHttpResponseHandler
         // Else, save the data for today. This is our cache, and we can extract it without
         // needing to pull data again for the day.
         else {
-            String[] files = MainActivity.mContext.fileList();
+            String[] files = MainActivity.context.fileList();
             if (Arrays.asList(files).contains(METALS_CACHE_FILENAME)) {
                 // Clear the cached info
-                MainActivity.mContext.deleteFile(METALS_CACHE_FILENAME);
+                MainActivity.context.deleteFile(METALS_CACHE_FILENAME);
             }
 
             // TODO: Make this a function or something.
             FileOutputStream fos;
             try {
                 // Open a writer to the cache file.
-                fos = MainActivity.mContext.openFileOutput(METALS_CACHE_FILENAME, Context.MODE_PRIVATE);
+                fos = MainActivity.context.openFileOutput(METALS_CACHE_FILENAME, Context.MODE_PRIVATE);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Log.wtf(TAG, "Couldn't cache the JSON because file not found."

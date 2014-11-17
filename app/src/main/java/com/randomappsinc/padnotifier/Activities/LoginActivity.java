@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,9 +21,9 @@ import java.io.File;
 public class LoginActivity extends Activity {
 
     private Context context;
-    private PreferencesManager m_preferences_manager;
+    private PreferencesManager m_prefs_manager;
 
-    private static final String[] colors = {"Fire","Water", "Grass"};
+    private static final String[] colors = {"Fire", "Water", "Grass"};
 
     // Views
     private Button submitButton;
@@ -48,9 +45,9 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login_page);
 
         context = this;
-        m_preferences_manager = new PreferencesManager(context);
+        m_prefs_manager = new PreferencesManager(context);
 
-        if (m_preferences_manager.getGroup() != null)
+        if (m_prefs_manager.getGroup() != null)
         {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -64,15 +61,6 @@ public class LoginActivity extends Activity {
                 setAdapter(new StarterColorSpinnerAdapter(LoginActivity.this, R.layout.starter_color_spinner_item, colors));
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_activity_actions, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
     View.OnClickListener loginSubmitListener = new View.OnClickListener() {
         public void onClick(View v) {
             EditText id_edittext = (EditText) findViewById(R.id.user_id_group_determiner);
@@ -82,11 +70,13 @@ public class LoginActivity extends Activity {
                 Toast.makeText(getApplicationContext(), "Please enter your PAD ID's third digit!", Toast.LENGTH_LONG).show();
             }
             else {
+                m_prefs_manager.setThirdDigit(input);
+
                 String group = Util.digitToGroup(Integer.parseInt(input));
-                m_preferences_manager.setGroup(group);
+                m_prefs_manager.setGroup(group);
 
                 String starterColor = Util.starterColorToChar(starterColorSpinner.getSelectedItem().toString());
-                m_preferences_manager.setStarterColor(starterColor);
+                m_prefs_manager.setStarterColor(starterColor);
 
                 Intent intent = new Intent(context, MainActivity.class);
                 startActivity(intent);
@@ -94,16 +84,4 @@ public class LoginActivity extends Activity {
             }
         }
     };
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

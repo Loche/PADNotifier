@@ -3,20 +3,18 @@ package com.randomappsinc.padnotifier.Fragments;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.randomappsinc.padnotifier.Adapters.MetalsListAdapter;
 import com.randomappsinc.padnotifier.Activities.MainActivity;
+import com.randomappsinc.padnotifier.Adapters.MetalsListAdapter;
 import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.Metals.MetalSchedule;
 import com.randomappsinc.padnotifier.Misc.PreferencesManager;
@@ -36,8 +34,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 public class MetalsFragment extends Fragment
 {
@@ -141,7 +137,7 @@ public class MetalsFragment extends Fragment
                     FileOutputStream fos;
                     try {
                         // Open a writer to the cache file.
-                        fos = MainActivity.mContext.openFileOutput(MainActivity.METALS_CACHE_FILENAME, Context.MODE_PRIVATE);
+                        fos = MainActivity.context.openFileOutput(MainActivity.METALS_CACHE_FILENAME, Context.MODE_PRIVATE);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                         Log.wtf(TAG, "Couldn't cache the JSON because file not found."
