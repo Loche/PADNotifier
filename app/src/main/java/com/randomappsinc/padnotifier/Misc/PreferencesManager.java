@@ -10,6 +10,7 @@ public class PreferencesManager
 {
     Context context;
     SharedPreferences prefs;
+    SharedPreferences.Editor editor;
 
     private static final String PREFS_KEY = "com.randomappsinc.padnotifier";
 
@@ -22,6 +23,17 @@ public class PreferencesManager
     {
         this.context = context;
         prefs = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+        editor = prefs.edit();
+    }
+
+    public boolean dungeonAllowed(String dungeonName)
+    {
+        return prefs.getBoolean(dungeonName, true);
+    }
+
+    public void setAllowedDungeon(String dungeonName, boolean setting)
+    {
+        prefs.edit().putBoolean(dungeonName, setting).apply();
     }
 
     public boolean getMuteSetting()

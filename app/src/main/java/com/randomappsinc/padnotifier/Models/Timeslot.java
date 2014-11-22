@@ -10,7 +10,8 @@ import java.util.Calendar;
  * Represents a dungeon, because trying to parse everything through
  * strings is difficult.
  */
-public class Timeslot implements Comparable<Timeslot>{
+public class Timeslot implements Comparable<Timeslot> {
+    private String imageUrl;       // URL to the PDX image for this dungeon
     private Calendar starts_at;     // Start time
     private int country;            // Country code
     private String title;           // Dungeon title
@@ -18,11 +19,22 @@ public class Timeslot implements Comparable<Timeslot>{
 
     private static final String TAG = "Timeslot";
 
-    
-    public Timeslot(Calendar starts_at, int country, String title, Character group_name) {
+    public String getImageUrl()
+    {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl)
+    {
+        this.imageUrl = imageUrl;
+    }
+
+    public Timeslot(String imageUrl, Calendar starts_at, int country, String title, Character group_name) {
+        this.imageUrl = imageUrl;
         this.starts_at = starts_at;
         this.country = country;
         this.title = title;
+
         this.group_name = group_name;
     }
 

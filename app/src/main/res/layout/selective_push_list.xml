@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+    <TextView
+        android:id="@+id/selective_push_instructions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/selective_push_instructions"
+        android:textSize="14sp"/>
+
+    <ListView
+        android:id="@+id/dungeon_list"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/selective_push_instructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

@@ -13,6 +13,11 @@
 
     <!-- Settings -->
     <string name="mute">Mute all notifications:</string>
+    <string name="selective_push">Customize metals notifications</string>
     <string name="save_settings">Save settings</string>
+
+    <!-- Selective Push -->
+    <string name="selective_push_instructions">Here you can customize which metal dungeons you want to receive
+        notifications for. Simply click the alarm clocks to turn notifications on/off for a certain dungeon.</string>
 
 </resources>

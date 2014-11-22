@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.randomappsinc.padnotifier.Adapters.StarterColorSpinnerAdapter;
+import com.randomappsinc.padnotifier.Metals.DungeonMapper;
 import com.randomappsinc.padnotifier.Misc.PreferencesManager;
 import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
@@ -22,6 +23,7 @@ public class LoginActivity extends Activity {
 
     private Context context;
     private PreferencesManager m_prefs_manager;
+    private DungeonMapper dungeonMapper;
 
     private static final String[] colors = {"Fire", "Water", "Grass"};
 
@@ -46,6 +48,7 @@ public class LoginActivity extends Activity {
 
         context = this;
         m_prefs_manager = new PreferencesManager(context);
+        dungeonMapper = DungeonMapper.getDungeonMapper();
 
         if (m_prefs_manager.getGroup() != null)
         {
@@ -69,7 +72,8 @@ public class LoginActivity extends Activity {
             if (input.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Please enter your PAD ID's third digit!", Toast.LENGTH_LONG).show();
             }
-            else {
+            else
+            {
                 m_prefs_manager.setThirdDigit(input);
 
                 String group = Util.digitToGroup(Integer.parseInt(input));

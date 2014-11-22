@@ -7,8 +7,8 @@ import com.randomappsinc.padnotifier.Fragments.GodfestFragment;
 import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
 import com.randomappsinc.padnotifier.Godfest.GodfestOverview;
 import com.randomappsinc.padnotifier.Metals.MetalSchedule;
-import com.randomappsinc.padnotifier.Models.Timeslot;
 import com.randomappsinc.padnotifier.Misc.Util;
+import com.randomappsinc.padnotifier.Models.Timeslot;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +35,7 @@ public class DataFetcher {
     private static final String END_METALS_SPLITTER = "Schedule is subject to change";
     private static final String METAL_TIME_CLASS_NAME = "metaltime";
     private static final int MAX_CONCURRENT_DUNGEONS = 2;
+    private static final int NUM_SEPARATORS = 4;
 
     // Strings for godfest
     private static final String GODFEST_SPLITTER = "a id=\"godfes\"";
@@ -94,7 +95,7 @@ public class DataFetcher {
 
             try {
                 Calendar startCalendar = Util.utcToCalendar(starts_at);
-                masterSchedule.addTimeslot(new Timeslot(startCalendar, country, title, group));
+                masterSchedule.addTimeslot(new Timeslot("http://www.puzzledragonx.com/en/img/thumbnail/265", startCalendar, country, title, group));
             } catch (ParseException e) {
                 // The API's dungeon timestamp was improperly formatted. Bail.
                 e.printStackTrace();
@@ -120,6 +121,44 @@ public class DataFetcher {
     // After that, populate the MetalSchedule and Godfest classes the app draws on to draw things
     public static void extractPDXHomeContent(String content)
     {
+        /*
+        // 1. SET UP METALS
+        Document MetalsDoc = Jsoup.parse(content.split(METALS_SPLITTER)[1]);
+        // Util.createFile("MetalsSplit.html", content.split(metalsSplitter)[1]);
+
+        // PARSE OUT TIMES
+        Elements metalTimes = MetalsDoc.getElementsByClass(METAL_TIME_CLASS_NAME);
+        int i = 0;
+        for (Element metalTime : metalTimes)
+        {
+            if (mappings.get(Util.intToGroup(i)) == null)
+            {
+                mappings.put(Util.intToGroup(i), new ArrayList<String>());
+            }
+            mappings.get(Util.intToGroup(i)).add(metalTime.text());
+            i++;
+        }
+        MetalSchedule.printMap();
+
+        // PARSE OUT IMAGE URLS
+        Element table = MetalsDoc.select("table").get(0); //select the first table.
+        Elements rows = table.select("tr");
+
+        for (int j = 1; j < rows.size(); j+=2) { //first row is the col names so skip it.
+            Element row = rows.get(j);
+            Elements cols = row.select("td");
+            int numImages = (cols.size() - NUM_SEPARATORS)/5;
+            String[] images = new String[numImages];
+            for (int k = 0; k < numImages; k++)
+            {
+                Elements img = cols.get(k).select("img");
+                String imageURL = img.attr(IMAGE_URL_ATTR_NAME);
+                images[k] = PDX_HOME + imageURL;
+            }
+            MetalSchedule.addURLs(images);
+        }
+        MetalSchedule.printImageURLs(); */
+
         // 2. SET UP GODFEST
         // Check to see if Godfest is even on PDX's radar
         String[] godfestPieces = content.split(GODFEST_SPLITTER);

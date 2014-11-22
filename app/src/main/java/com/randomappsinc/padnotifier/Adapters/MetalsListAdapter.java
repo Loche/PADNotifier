@@ -24,6 +24,7 @@ public class MetalsListAdapter extends BaseAdapter
 {
     private Context context;
     private ArrayList<Timeslot> timeslots;
+    private DungeonMapper dungeonMapper;
     private static final String DUNGEON_NOT_FOUND = "Unknown dungeon.";
 
     // Creates the "Question 1, Question 2, etc..." list
@@ -31,6 +32,7 @@ public class MetalsListAdapter extends BaseAdapter
     {
         this.context = context;
         this.timeslots = timeslots;
+        this.dungeonMapper = DungeonMapper.getDungeonMapper();
     }
 
     public int getCount()
@@ -74,15 +76,14 @@ public class MetalsListAdapter extends BaseAdapter
         }
 
         Resources resources = context.getResources();
-        Integer metalDrawableID = DungeonMapper.getDungeonMapper().getDrawableResourceID(timeslots.get(position).getTitle());
+        Integer metalDrawableID = dungeonMapper.getDungeonInfo(timeslots.get(position).getImageUrl()).getDrawableId();
         if (metalDrawableID != null)
         {
-            holder.item1.setImageDrawable(resources.getDrawable
-                    (DungeonMapper.getDungeonMapper().getDrawableResourceID(timeslots.get(position).getTitle())));
+            holder.item1.setImageDrawable(resources.getDrawable(metalDrawableID));
         }
         else
         {
-            Picasso.with(context).load(DungeonMapper.getImageURL(timeslots.get(position).getTitle())).into(holder.item1);
+            Picasso.with(context).load(timeslots.get(position).getImageUrl());
         }
 
         String metalTitle = timeslots.get(position).getTitle();

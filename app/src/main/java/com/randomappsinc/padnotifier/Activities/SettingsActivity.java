@@ -31,6 +31,7 @@ public class SettingsActivity extends Activity
     private EditText inputtedId;
     private Switch muteSetting;
     private Button saveSettingsButton;
+    private Button selectivePushButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,6 +49,7 @@ public class SettingsActivity extends Activity
         inputtedId = (EditText) (findViewById(R.id.user_id_group_determiner));
         muteSetting = (Switch) (findViewById(R.id.muteSwitch));
         saveSettingsButton = (Button) (findViewById(R.id.save_settings_button));
+        selectivePushButton = (Button) (findViewById(R.id.selective_push_button));
 
         inputtedId.setText(m_prefs_manager.getThirdDigit());
         inputtedId.setSelection(1);
@@ -57,6 +59,7 @@ public class SettingsActivity extends Activity
                 R.layout.starter_color_spinner_item, colors));
         starterColorSpinner.setSelection(Integer.parseInt(Character.toString(m_prefs_manager.getStarterColor())) - 1);
         saveSettingsButton.setOnClickListener(settingsSubmitListener);
+        selectivePushButton.setOnClickListener(selectivePushListener);
     }
 
     View.OnClickListener settingsSubmitListener = new View.OnClickListener() {
@@ -82,6 +85,15 @@ public class SettingsActivity extends Activity
 
                 Toast.makeText(getApplicationContext(), "Your settings changes have been saved.", Toast.LENGTH_LONG).show();
             }
+        }
+    };
+
+    View.OnClickListener selectivePushListener = new View.OnClickListener()
+    {
+        public void onClick(View v) {
+                Intent intent = new Intent(context, SelectivePushActivity.class);
+                startActivity(intent);
+                finish();
         }
     };
 
