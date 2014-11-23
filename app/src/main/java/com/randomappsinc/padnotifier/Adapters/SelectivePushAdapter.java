@@ -10,23 +10,31 @@ import android.widget.TextView;
 
 import com.randomappsinc.padnotifier.Metals.DungeonMapper;
 import com.randomappsinc.padnotifier.Misc.PreferencesManager;
+import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
 
-import java.util.List;
+import java.util.ArrayList;
 
 
 public class SelectivePushAdapter extends BaseAdapter
 {
     private Context context;
-    private List<String> dungeonList;
+    private ArrayList<String> dungeonList;
     private PreferencesManager prefsManager;
     private DungeonMapper dungeonMapper;
 
-    public SelectivePushAdapter(Context context)
+    public SelectivePushAdapter(Context context, String criteria)
     {
         this.context = context;
         dungeonMapper = DungeonMapper.getDungeonMapper();
-        dungeonList = dungeonMapper.getDungeonNamesList();
+        if (criteria.isEmpty())
+        {
+            dungeonList = dungeonMapper.getDungeonNamesList();
+        }
+        else
+        {
+            dungeonList = Util.getSearchResults(dungeonMapper.getDungeonNamesList(), criteria);
+        }
         prefsManager = new PreferencesManager(context);
     }
 
@@ -71,10 +79,14 @@ public class SelectivePushAdapter extends BaseAdapter
             holder = (ViewHolder)v.getTag();
         }
 
+        if (position >= dungeonList.size())
+        {
+            return v;
+        }
         final String dungeonName = dungeonList.get(position);
         if (dungeonName != null)
         {
-            boolean isAllowed = prefsManager.dungeonAllowed(dungeonName);
+            boolean isAllowed = prefsManager.isDungeonAllowed(dungeonName);
             if (isAllowed)
             {
                 holder.alarmClock.setImageResource(R.drawable.green_alarm_clock);
@@ -88,7 +100,7 @@ public class SelectivePushAdapter extends BaseAdapter
                 @Override
                 public void onClick(View v)
                 {
-                boolean isAllowed = prefsManager.dungeonAllowed(dungeonName);
+                boolean isAllowed = prefsManager.isDungeonAllowed(dungeonName);
                 if (isAllowed)
                 {
                     holder.alarmClock.setImageResource(R.drawable.red_alarm_clock);

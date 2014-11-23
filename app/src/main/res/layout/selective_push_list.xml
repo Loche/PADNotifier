@@ -12,10 +12,36 @@
         android:text="@string/selective_push_instructions"
         android:textSize="14sp"/>
 
+    <RelativeLayout
+        android:id="@+id/metals_search"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/selective_push_instructions"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/narrow_metals"
+            android:layout_alignBottom="@+id/selective_search_box"
+            android:layout_alignParentRight="true"
+            android:text="@string/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="narrowResults"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/selective_search_box"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/narrow_metals"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true" />
+    </RelativeLayout>
+
     <ListView
         android:id="@+id/dungeon_list"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/selective_push_instructions"
+        android:layout_below="@+id/metals_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

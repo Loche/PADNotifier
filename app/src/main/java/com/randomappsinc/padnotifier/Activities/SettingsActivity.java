@@ -30,7 +30,6 @@ public class SettingsActivity extends Activity
     private Spinner starterColorSpinner;
     private EditText inputtedId;
     private Switch muteSetting;
-    private Button saveSettingsButton;
     private Button selectivePushButton;
 
     @Override
@@ -48,7 +47,6 @@ public class SettingsActivity extends Activity
         starterColorSpinner = ((Spinner) (findViewById(R.id.starter_color_spinner)));
         inputtedId = (EditText) (findViewById(R.id.user_id_group_determiner));
         muteSetting = (Switch) (findViewById(R.id.muteSwitch));
-        saveSettingsButton = (Button) (findViewById(R.id.save_settings_button));
         selectivePushButton = (Button) (findViewById(R.id.selective_push_button));
 
         inputtedId.setText(m_prefs_manager.getThirdDigit());
@@ -58,51 +56,49 @@ public class SettingsActivity extends Activity
         starterColorSpinner.setAdapter(new StarterColorSpinnerAdapter(SettingsActivity.this,
                 R.layout.starter_color_spinner_item, colors));
         starterColorSpinner.setSelection(Integer.parseInt(Character.toString(m_prefs_manager.getStarterColor())) - 1);
-        saveSettingsButton.setOnClickListener(settingsSubmitListener);
         selectivePushButton.setOnClickListener(selectivePushListener);
     }
 
-    View.OnClickListener settingsSubmitListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            EditText id_edittext = (EditText) findViewById(R.id.user_id_group_determiner);
-            String input = id_edittext.getText().toString();
-
-            if (input.isEmpty())
-            {
-                Toast.makeText(getApplicationContext(), "Please enter your PAD ID's third digit!", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                m_prefs_manager.setThirdDigit(input);
-
-                String group = Util.digitToGroup(Integer.parseInt(input));
-                m_prefs_manager.setGroup(group);
-
-                String starterColor = Util.starterColorToChar(starterColorSpinner.getSelectedItem().toString());
-                m_prefs_manager.setStarterColor(starterColor);
-
-                m_prefs_manager.setMuteSetting(muteSetting.isChecked());
-
-                Toast.makeText(getApplicationContext(), "Your settings changes have been saved.", Toast.LENGTH_LONG).show();
-            }
-        }
-    };
-
     View.OnClickListener selectivePushListener = new View.OnClickListener()
     {
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
+            if (persistSettings())
+            {
                 Intent intent = new Intent(context, SelectivePushActivity.class);
                 startActivity(intent);
                 finish();
+            }
         }
     };
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public boolean persistSettings()
+    {
+        String input = inputtedId.getText().toString();
+        if (input.isEmpty())
+        {
+            Toast.makeText(getApplicationContext(), "Please enter your PAD ID's third digit!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else
+        {
+            m_prefs_manager.setThirdDigit(input);
+            String group = Util.digitToGroup(Integer.parseInt(input));
+            m_prefs_manager.setGroup(group);
+            String starterColor = Util.starterColorToChar(starterColorSpinner.getSelectedItem().toString());
+            m_prefs_manager.setStarterColor(starterColor);
+            m_prefs_manager.setMuteSetting(muteSetting.isChecked());
+            return true;
+        }
     }
 
     @Override
@@ -113,9 +109,14 @@ public class SettingsActivity extends Activity
         int id = item.getItemId();
         if (id == android.R.id.home)
         {
-            Intent intent = new Intent(context, MainActivity.class);
-            startActivity(intent);
-            finish();
+            if (persistSettings())
+            {
+                Toast.makeText(getApplicationContext(), "Your settings changes have been saved.", Toast.LENGTH_LONG).show();
+                persistSettings();
+                Intent intent = new Intent(context, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
         return super.onOptionsItemSelected(item);
     }

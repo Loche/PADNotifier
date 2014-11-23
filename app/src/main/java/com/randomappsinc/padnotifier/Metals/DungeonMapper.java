@@ -6,7 +6,6 @@ import com.randomappsinc.padnotifier.R;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Alex on 11/1/2014.
@@ -16,7 +15,7 @@ public class DungeonMapper
     private static DungeonMapper instance = null;
     private static HashMap<String, DungeonInfo> imageURLtoDungeonInfo = new HashMap<String, DungeonInfo>();
     private static HashMap<String, Integer> nameToDrawableId = new HashMap<String, Integer>();
-    private static List<String> dungeonNamesList = new ArrayList<String>();
+    private static ArrayList<String> dungeonNamesList = new ArrayList<String>();
 
     private DungeonMapper()
     {
@@ -106,25 +105,33 @@ public class DungeonMapper
 
     private static void setUpDungeonNamesList()
     {
-        for (String key : imageURLtoDungeonInfo.keySet())
+        for (String key : nameToDrawableId.keySet())
         {
-            dungeonNamesList.add(imageURLtoDungeonInfo.get(key).getDungeonTitle());
+            dungeonNamesList.add(key);
         }
         Collections.sort(dungeonNamesList);
     }
 
     public DungeonInfo getDungeonInfo(String imageURL)
     {
+        if (imageURLtoDungeonInfo.get(imageURL) == null)
+        {
+            return new DungeonInfo("Unknown dungeon!", R.drawable.hunt_metal_dragons);
+        }
         return imageURLtoDungeonInfo.get(imageURL);
     }
 
-    public List<String> getDungeonNamesList()
+    public ArrayList<String> getDungeonNamesList()
     {
-        return dungeonNamesList;
+        return (ArrayList<String>) dungeonNamesList.clone();
     }
 
     public int getDrawableIdFromName (String dungeonName)
     {
+        if (nameToDrawableId.get(dungeonName) == null)
+        {
+            return R.drawable.hunt_metal_dragons;
+        }
         return nameToDrawableId.get(dungeonName);
     }
 }

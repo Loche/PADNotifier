@@ -17,7 +17,9 @@
     <string name="save_settings">Save settings</string>
 
     <!-- Selective Push -->
-    <string name="selective_push_instructions">Here you can customize which metal dungeons you want to receive
-        notifications for. Simply click the alarm clocks to turn notifications on/off for a certain dungeon.</string>
+    <string name="selective_push_instructions">
+        Click the alarm clocks to turn notifications on/off for a certain dungeon.
+        If you are using the search option, search for nothing to bring back all the dungeons.</string>
+    <string name="search">Search</string>
 
 </resources>

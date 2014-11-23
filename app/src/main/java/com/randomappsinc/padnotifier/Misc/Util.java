@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -20,6 +21,26 @@ import java.util.TimeZone;
  */
 public class Util
 {
+    public static ArrayList<String> getSearchResults (ArrayList<String> candidates, String criteria)
+    {
+        ArrayList<String> searchResults = new ArrayList<String>();
+        criteria = criteria.toLowerCase();
+        ArrayList<String> candidatesLowerCase = (ArrayList<String>) candidates.clone();
+        for (int i = 0; i < candidatesLowerCase.size(); i++)
+        {
+            candidatesLowerCase.set(i, candidatesLowerCase.get(i).toLowerCase());
+        }
+
+        for (int i = 0; i < candidatesLowerCase.size(); i++)
+        {
+            if (candidatesLowerCase.get(i).contains(criteria))
+            {
+                searchResults.add(candidates.get(i));
+            }
+        }
+        return searchResults;
+    }
+
     public static Character intToGroup(int index)
     {
         int mapping = index % 5;

@@ -10,7 +10,6 @@ public class PreferencesManager
 {
     Context context;
     SharedPreferences prefs;
-    SharedPreferences.Editor editor;
 
     private static final String PREFS_KEY = "com.randomappsinc.padnotifier";
 
@@ -23,10 +22,9 @@ public class PreferencesManager
     {
         this.context = context;
         prefs = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
-        editor = prefs.edit();
     }
 
-    public boolean dungeonAllowed(String dungeonName)
+    public boolean isDungeonAllowed(String dungeonName)
     {
         return prefs.getBoolean(dungeonName, true);
     }
@@ -63,7 +61,7 @@ public class PreferencesManager
         {
             return group.charAt(0);
         }
-        return null;
+        return 'A';
     }
 
     public void setGroup(String group)
@@ -78,7 +76,7 @@ public class PreferencesManager
         {
             return starterColor.charAt(0);
         }
-        return null;
+        return '1';
     }
 
     public void setStarterColor(String starterColor)
