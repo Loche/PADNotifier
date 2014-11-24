@@ -1,15 +1,11 @@
 package com.randomappsinc.padnotifier.Misc;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,7 +40,7 @@ public class Util
         }
         catch (IOException e2)
         {
-            Log.d("UTIL", "Some BS IO stuff happpened reading from internal storage.");
+            Log.d("UTIL", "Some BS IO stuff happened reading from internal storage.");
         }
         return "";
     }
@@ -160,42 +156,6 @@ public class Util
         return convertedTime;
     }
 
-    public static String readFile (String fileName)
-    {
-        String fileContents = "";
-        try
-        {
-            String sCurrentLine;
-            try
-            {
-                BufferedReader br = new BufferedReader(new FileReader(Environment.getExternalStorageDirectory().getPath()
-                        + "/PADNotifier/" + fileName));
-                while ((sCurrentLine = br.readLine()) != null)
-                {
-                    fileContents += sCurrentLine;
-                }
-            }
-            catch (FileNotFoundException e) {}
-        }
-        catch (IOException e) {}
-        return fileContents;
-    }
-
-    public static void createFile (String fileName, String fileContents)
-    {
-        Log.d("FOR NARNIA", "WRITING ALL UP IN DIS ISH");
-        try
-        {
-            FileWriter fWriter = new FileWriter(Environment.getExternalStorageDirectory()
-                    .getPath() + "/PADNotifier/" + fileName);
-            fWriter.write(fileContents);
-            fWriter.close();
-        }
-        catch (Exception e)
-        {
-        }
-    }
-
     // Times are formatted in the form #?#(:##)? [ap]m. Calendar is in PDT timezone.
     public static Calendar timeToCalendar (String time) {
         int hour;
@@ -251,7 +211,6 @@ public class Util
                 + (localHourOfDay < 12 ? " am" : " pm");
     }
     public static void writeToInternalStorage(String filePath,Context context, String fileContent){
-        // TODO: Make this a function or something.
         FileOutputStream fos = null;
         try {
             // Open a writer to the cache file.
@@ -268,16 +227,11 @@ public class Util
             e.printStackTrace();
         } finally {
             try {
-                // Try to close the file. Also, oh my god are you serious this
-                // is the standard for closing files in Java apparently
                 if (fos != null) {
                     fos.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                // ignore ... any significant errors should already have been
-                // reported via an IOException from the final flush.
-                // Shamelessly copied from StackOverflow.
             }
         }
     }

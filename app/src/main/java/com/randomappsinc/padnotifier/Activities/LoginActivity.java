@@ -11,19 +11,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.randomappsinc.padnotifier.Adapters.StarterColorSpinnerAdapter;
-import com.randomappsinc.padnotifier.Metals.DungeonMapper;
 import com.randomappsinc.padnotifier.Misc.PreferencesManager;
 import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
-
-import java.io.File;
 
 
 public class LoginActivity extends Activity {
 
     private Context context;
     private PreferencesManager m_prefs_manager;
-    private DungeonMapper dungeonMapper;
 
     private static final String[] colors = {"Fire", "Water", "Grass"};
 
@@ -34,21 +30,11 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
-        {
-            File Dir = new File(android.os.Environment.getExternalStorageDirectory(), "PADNotifier");
-            if (!Dir.exists()) // if directory is not here
-            {
-                Dir.mkdirs(); // make directory
-            }
-        }
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_page);
 
         context = this;
         m_prefs_manager = new PreferencesManager(context);
-        dungeonMapper = DungeonMapper.getDungeonMapper();
 
         if (m_prefs_manager.getGroup() != null)
         {

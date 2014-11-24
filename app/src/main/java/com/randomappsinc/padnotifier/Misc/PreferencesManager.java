@@ -61,7 +61,7 @@ public class PreferencesManager
         {
             return group.charAt(0);
         }
-        return 'A';
+        return null;
     }
 
     public void setGroup(String group)

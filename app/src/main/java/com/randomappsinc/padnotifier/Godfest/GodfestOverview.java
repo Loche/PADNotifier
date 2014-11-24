@@ -1,6 +1,6 @@
 package com.randomappsinc.padnotifier.Godfest;
 
-import android.util.Log;
+import com.randomappsinc.padnotifier.Models.God;
 
 import java.util.ArrayList;
 
@@ -9,19 +9,14 @@ import java.util.ArrayList;
  */
 public class GodfestOverview
 {
-    private static ArrayList<String> imageURLs = new ArrayList<String>();
+    private static ArrayList<God> featuredGods = new ArrayList<God>();
     private static ArrayList<String> godfestGroups = new ArrayList<String>();
-    private static ArrayList<String> godNames = new ArrayList<String>();
 
     private static final String NO_GODFEST_MESSAGE = "Currently, there is no godfest. Check back next time!";
 
-    public static ArrayList<String> getImageURLs ()
+    public static ArrayList<God> getFeaturedGods ()
     {
-        return imageURLs;
-    }
-    public static ArrayList<String> getGodNames ()
-    {
-        return godNames;
+        return featuredGods;
     }
 
     public static void addGodfestGroup (String godfestGroup)
@@ -29,19 +24,14 @@ public class GodfestOverview
         godfestGroups.add(godfestGroup);
     }
 
-    public static void addImageURL (String imageURL)
+    public static void addGod (God featuredGod)
     {
-        imageURLs.add(imageURL);
-    }
-
-    public static void addGodName (String godName)
-    {
-        godNames.add(godName);
+        featuredGods.add(featuredGod);
     }
 
     public static String getGodfestMessage ()
     {
-        if (imageURLs.isEmpty())
+        if (featuredGods.isEmpty())
         {
             return NO_GODFEST_MESSAGE;
         }
@@ -59,17 +49,5 @@ public class GodfestOverview
         }
         message += " series!";
         return message;
-    }
-
-    public static void printInfo()
-    {
-        for (int i = 0; i < imageURLs.size(); i++)
-        {
-            Log.d("FOR NARNIA", imageURLs.get(i));
-        }
-        for (int i = 0; i < godfestGroups.size(); i++)
-        {
-            Log.d("FOR NARNIA", godfestGroups.get(i));
-        }
     }
 }

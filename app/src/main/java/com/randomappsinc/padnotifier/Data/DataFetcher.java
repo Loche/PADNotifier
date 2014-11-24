@@ -2,23 +2,25 @@ package com.randomappsinc.padnotifier.Data;
 
 import android.content.Context;
 
+import com.randomappsinc.padnotifier.Fragments.GodfestFragment;
 import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
 import com.randomappsinc.padnotifier.Godfest.GodfestOverview;
 import com.randomappsinc.padnotifier.Metals.DungeonMapper;
 import com.randomappsinc.padnotifier.Metals.MetalSchedule;
 import com.randomappsinc.padnotifier.Misc.Util;
+import com.randomappsinc.padnotifier.Models.God;
 import com.randomappsinc.padnotifier.Models.Timeslot;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import java.util.Iterator;
 
 
@@ -27,7 +29,8 @@ import java.util.Iterator;
  */
 
 // This class does the HTML fetching and parsing for the app
-public class DataFetcher {
+public class DataFetcher
+{
     private static final String PDX_HOME = "http://www.puzzledragonx.com/";
     private Context context;
 
@@ -44,24 +47,27 @@ public class DataFetcher {
     private static final String GODFEST_ICON_TITLE = "title";
     private static final String GODFEST_SPACER = "en/img/spacer.gif";
     private static final int GODFEST_NUM_CATEGORIES = 3;
+    private static final String GODFEST_CATEGORIES_KEY = "CATEGORIES";
+    private static final String FEATURED_GODS_KEY = "GODS";
+    private static final String IMAGE_URL_KEY = "IMG_URL";
+    private static final String GOD_NAME_KEY = "NAME";
 
     // Tag for Log/debugging
     private static final String TAG = "DataFetcher";
 
     private MetalSchedule metalSchedule;
 
-    public DataFetcher(Context context){
+    public DataFetcher(Context context)
+    {
         this.context = context;
         metalSchedule = MetalSchedule.getInstance();
     }
-    // Given a string that is the HTML for PDX home, parse it for the relevant info
-    // After that, populate the MetalSchedule and Godfest classes the app draws on to draw things
 
-    public void extractPDXHomeContent(String content)
+    // Given a string that is the HTML for PDX home, parse it for metals info
+    public void extractPDXMetalsContent(String content)
     {
         // 1. SET UP METALS
         Document MetalsDoc = Jsoup.parse(content.split(METALS_SPLITTER)[1]);
-        // Util.createFile("MetalsSplit.html", content.split(metalsSplitter)[1]);
 
         DungeonMapper dungeonMapper = DungeonMapper.getDungeonMapper();
 
@@ -84,14 +90,13 @@ public class DataFetcher {
                     Element row = rows.get(j);
                     String[] dungeonTimes = new String[5];
                     Elements times = row.getElementsByClass(METAL_TIME_CLASS_NAME);
-                    for (int i=0; i < times.size(); i++)
+                    for (int i = 0; i < times.size(); i++)
                     {
                         dungeonTimes[i] = times.get(i).text();
                     }
                     allDungeonTimes.add(dungeonTimes);
-
-                    // MetalSchedule.addURLs(images);
                 }
+
                 // PARSING OUT IMAGE URLS
                 for (int j = 1; j < rows.size(); j += 2)
                 {
@@ -104,7 +109,8 @@ public class DataFetcher {
                     {
 
                         Elements img = cols.get(k).select("img");
-                        if (img.size()>0) {
+                        if (img.size() > 0)
+                        {
                             String imageURL = img.get(0).attr(IMAGE_URL_ATTR_NAME);
                             images[numImagesFound] = PDX_HOME + imageURL;
                             numImagesFound++;
@@ -117,42 +123,47 @@ public class DataFetcher {
                 for (int level = 0; level < allDungeonTimes.size(); level++)
                 {
                     // Number of dungeons per timeslot. Could be 2 due to simultaneous hunt/supers
-                    int numImagesInLevel = (allImages.get(level).length)/5;
+                    int numImagesInLevel = (allImages.get(level).length) / 5;
                     // For each of the 5 times
                     for (int group = 0; group < 5; group++)
                     {
                         // For each of the images in a slot (could be hunt/supers as aforementioned)
                         for (int image = 0; image < numImagesInLevel; image++)
                         {
-                            Timeslot dungeon = new Timeslot(allImages.get(level)[group+ image],
-                                Util.timeToCalendar(allDungeonTimes.get(level)[group]),
-                                2 /*USA*/,
-                                dungeonMapper.getDungeonInfo(allImages.get(level)[group+ image]).getDungeonTitle(),
-                                Util.intToGroup(group));
+                            Timeslot dungeon = new Timeslot(allImages.get(level)[group + image],
+                                    Util.timeToCalendar(allDungeonTimes.get(level)[group]),
+                                    2 /*USA*/,
+                                    dungeonMapper.getDungeonInfo(allImages.get(level)[group + image]).getDungeonTitle(),
+                                    Util.intToGroup(group));
                             metalSchedule.addTimeslot(dungeon);
                             JSONObject timeSlotJSON = new JSONObject();
-                            timeSlotJSON.put("IMG_URL", allImages.get(level)[group+ image]);
+                            timeSlotJSON.put("IMG_URL", allImages.get(level)[group + image]);
                             timeSlotJSON.put("TIME", allDungeonTimes.get(level)[group]);
                             timeSlotJSON.put("COUNTRY", String.valueOf(2));
-                            timeSlotJSON.put("DUNGEON_TITLE", dungeonMapper.getDungeonInfo(allImages.get(level)[group+ image]).getDungeonTitle());
+                            timeSlotJSON.put("DUNGEON_TITLE", dungeonMapper.getDungeonInfo(allImages.get(level)[group + image]).getDungeonTitle());
                             timeSlotJSON.put("GROUP", String.valueOf(Util.intToGroup(group)));
                             timeSlotList.add(timeSlotJSON);
                         }
                     }
                 }
-                externalFile.put("TIME_SLOT_LIST",timeSlotList);
+                externalFile.put("TIME_SLOT_LIST", timeSlotList);
                 Util.writeToInternalStorage(MetalsFragment.METALS_CACHE_FILENAME, context, externalFile.toJSONString());
                 break;
             }
         }
+    }
 
+    public void extractPDXGodfestContent(String content)
+    {
         // 2. SET UP GODFEST
         // Check to see if Godfest is even on PDX's radar
         String[] godfestPieces = content.split(GODFEST_SPLITTER);
         if (godfestPieces.length >= 2)
         {
             Document fullDoc = Jsoup.parse(content);
-            // Util.createFile("GodfestSplit.html", content.split(GODFEST_SPLITTER)[1]);
+
+            JSONObject externalFile = new JSONObject();
+            JSONArray categoryList = new JSONArray();
 
             // 2.1 PARSE OUT CATEGORIES
             boolean isOngoing = false;
@@ -169,6 +180,7 @@ public class DataFetcher {
                     for (int j = 0; j < GODFEST_NUM_CATEGORIES; j++)
                     {
                         GodfestOverview.addGodfestGroup(godCategories.get(j).text().replaceAll(" God", ""));
+                        categoryList.add(godCategories.get(j).text().replaceAll(" God", ""));
                     }
                 }
 
@@ -182,7 +194,9 @@ public class DataFetcher {
 
             if (isOngoing)
             {
-                // 2.2 PARSE OUT IMAGE URLS
+                JSONArray godsList = new JSONArray();
+
+                // 2.2 PARSE OUT GODS INFO
                 Document godIconsDocument = Jsoup.parse(content.split(GODFEST_LIST_CLASS_NAME)[1]);
                 Element godIcons = godIconsDocument.getElementById("event");
                 Elements icons = godIcons.getElementsByTag("img");
@@ -191,15 +205,21 @@ public class DataFetcher {
                     String iconURL = icons.get(i).attr(IMAGE_URL_ATTR_NAME);
                     if (!iconURL.equals(GODFEST_SPACER))
                     {
-                        GodfestOverview.addImageURL(PDX_HOME + iconURL);
-                        GodfestOverview.addGodName(icons.get(i).attr(GODFEST_ICON_TITLE));
+                        GodfestOverview.addGod(new God(PDX_HOME + iconURL, icons.get(i).attr(GODFEST_ICON_TITLE)));
+                        JSONObject god = new JSONObject();
+                        god.put(IMAGE_URL_KEY, PDX_HOME + iconURL);
+                        god.put(GOD_NAME_KEY, icons.get(i).attr(GODFEST_ICON_TITLE));
+                        godsList.add(god);
                     }
                 }
+                externalFile.put(GODFEST_CATEGORIES_KEY, categoryList);
+                externalFile.put(FEATURED_GODS_KEY, godsList);
             }
+            Util.writeToInternalStorage(GodfestFragment.GODFEST_CACHE_FILENAME, context, externalFile.toJSONString());
         }
     }
 
-    public void extractFromStorage()
+    public void extractMetalsFromStorage()
     {
         String JSONdata = Util.readFileFromInternalStorage(MetalsFragment.METALS_CACHE_FILENAME, context);
         JSONParser parser = new JSONParser();
@@ -218,6 +238,34 @@ public class DataFetcher {
                 String COUNTRY = (String) innerObject.get("COUNTRY");
                 Timeslot dungeon = new Timeslot(IMG_URL, Util.timeToCalendar(TIME), Integer.parseInt(COUNTRY), DUNGEON_TITLE, GROUP.toCharArray()[0]);
                 metalSchedule.addTimeslot(dungeon);
+            }
+        }
+        catch (ParseException E){}
+    }
+
+    public void extractGodfestInfoFromStorage()
+    {
+        String JSONdata = Util.readFileFromInternalStorage(GodfestFragment.GODFEST_CACHE_FILENAME, context);
+        JSONParser parser = new JSONParser();
+
+        try {
+            JSONObject jsonObject = (JSONObject) parser.parse(JSONdata);
+            JSONArray categoriesList = (JSONArray) jsonObject.get(GODFEST_CATEGORIES_KEY);
+            Iterator categoriesIterator = categoriesList.iterator();
+            while (categoriesIterator.hasNext())
+            {
+                GodfestOverview.addGodfestGroup(categoriesIterator.next().toString());
+            }
+
+            JSONArray godsList = (JSONArray) jsonObject.get(FEATURED_GODS_KEY);
+            Iterator godsIterator = godsList.iterator();
+            while (godsIterator.hasNext())
+            {
+                JSONObject innerObject = (JSONObject) godsIterator.next();
+                String imageUrl = (String) innerObject.get(IMAGE_URL_KEY);
+                String godName = (String) innerObject.get(GOD_NAME_KEY);
+                God featuredGod = new God(imageUrl, godName);
+                GodfestOverview.addGod(featuredGod);
             }
         }
         catch (ParseException E){}

@@ -3,7 +3,6 @@ package com.randomappsinc.padnotifier.Fragments;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,7 +17,6 @@ import com.randomappsinc.padnotifier.Adapters.MetalsListAdapter;
 import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.Metals.MetalSchedule;
 import com.randomappsinc.padnotifier.Misc.PreferencesManager;
-import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
 
 import org.apache.http.HttpEntity;
@@ -29,8 +27,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -40,15 +36,13 @@ public class MetalsFragment extends Fragment
 {
     private static View rootView;
     public static Context context;
-    private ProgressBar mProgress;
-    private TextView mMetalMessage;
-    private ListView mMetalsList;
+    private ProgressBar progress;
+    private TextView metalMessage;
+    private ListView metalsList;
     private MetalSchedule metalSchedule;
     private DataFetcher dataFetcher;
-//  private int mProgressStatus = 0;
 
     private static PreferencesManager m_prefs_manager;
-    // Display font size.
     private static final float METALS_MESSAGE_SIZE = 18;
     public static final String METALS_CACHE_FILENAME = "metals_info";
 
@@ -72,14 +66,16 @@ public class MetalsFragment extends Fragment
                              Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_metals, container, false);
+        progress = (ProgressBar) rootView.findViewById(R.id.progressBarMetals);
+        metalMessage = (TextView) rootView.findViewById(R.id.metalsMessage);
+        metalsList = (ListView) rootView.findViewById(R.id.metalsList);
         return rootView;
     }
 
-    // TODO: Put up a progress spinny thing while the app is pulling data.
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mProgress = (ProgressBar) getView().findViewById(R.id.progressBarMetals);
-        mProgress.setVisibility(View.GONE);
+        progress = (ProgressBar) getView().findViewById(R.id.progressBarMetals);
+        progress.setVisibility(View.GONE);
 
         // If we have a cache that isn't outdated, render as normal. Else, re-pull the data.
         File metals_info = new File(context.getFilesDir(), METALS_CACHE_FILENAME);
@@ -93,7 +89,7 @@ public class MetalsFragment extends Fragment
         {
             if (metalSchedule.getNumKeys() == 0)
             {
-                dataFetcher.extractFromStorage();
+                dataFetcher.extractMetalsFromStorage();
             }
             renderMetals();
         }
@@ -139,7 +135,7 @@ public class MetalsFragment extends Fragment
                     HttpEntity entity = response.getEntity();
                     String data = EntityUtils.toString(entity);
 
-                    dataFetcher.extractPDXHomeContent(data);
+                    dataFetcher.extractPDXMetalsContent(data);
                 }
 
 
@@ -157,13 +153,10 @@ public class MetalsFragment extends Fragment
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgress = (ProgressBar) getView().findViewById(R.id.progressBarMetals);
-            mMetalsList = (ListView) rootView.findViewById(R.id.metalsList);
-            mMetalMessage = (TextView) rootView.findViewById(R.id.metalsMessage);
 
-            mProgress.setVisibility(View.VISIBLE);
-            mMetalsList.setVisibility(View.GONE);
-            mMetalMessage.setVisibility(View.GONE);
+            progress.setVisibility(View.VISIBLE);
+            metalsList.setVisibility(View.GONE);
+            metalMessage.setVisibility(View.GONE);
         }
 
         /**
@@ -177,9 +170,9 @@ public class MetalsFragment extends Fragment
         protected void onPostExecute(Long aLong) {
             super.onPostExecute(aLong);
 
-            mProgress.setVisibility(View.GONE);
-            mMetalsList.setVisibility(View.VISIBLE);
-            mMetalMessage.setVisibility(View.VISIBLE);
+            progress.setVisibility(View.GONE);
+            metalsList.setVisibility(View.VISIBLE);
+            metalMessage.setVisibility(View.VISIBLE);
 
             renderMetals();
         }
