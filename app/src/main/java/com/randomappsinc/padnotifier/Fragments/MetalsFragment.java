@@ -13,11 +13,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.randomappsinc.padnotifier.Activities.MainActivity;
 import com.randomappsinc.padnotifier.Adapters.MetalsListAdapter;
 import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.Metals.MetalSchedule;
 import com.randomappsinc.padnotifier.Misc.PreferencesManager;
+import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
 
 import org.apache.http.HttpEntity;
@@ -42,11 +42,13 @@ public class MetalsFragment extends Fragment
     private ProgressBar mProgress;
     private TextView mMetalMessage;
     private ListView mMetalsList;
+    private MetalSchedule metalSchedule;
 //  private int mProgressStatus = 0;
 
     private static PreferencesManager m_prefs_manager;
     // Display font size.
     private static final float METALS_MESSAGE_SIZE = 18;
+    public static final String METALS_CACHE_FILENAME = "metals_info";
 
     // Display message for no metals information.
     private static final String NO_METALS = "It looks like we are unable to " +
@@ -59,6 +61,7 @@ public class MetalsFragment extends Fragment
         super.onCreate(savedInstanceState);
         context = getActivity().getApplicationContext();
         m_prefs_manager = new PreferencesManager(context);
+        metalSchedule = MetalSchedule.getInstance();
     }
 
     @Override
@@ -75,18 +78,20 @@ public class MetalsFragment extends Fragment
         mProgress = (ProgressBar) getView().findViewById(R.id.progressBarMetals);
         mProgress.setVisibility(View.GONE);
 
-        System.out.println("Files:");
-        for (String filename : context.fileList()) {
-            System.out.println(filename);
-        }
-
         // If we have a cache that isn't outdated, render as normal. Else, re-pull the data.
-        File metals_info = new File(context.getFilesDir(), MainActivity.METALS_CACHE_FILENAME);
-        Calendar refreshTime = Calendar.getInstance(TimeZone.getTimeZone("America/Los Angeles"));
+        File metals_info = new File(context.getFilesDir(), METALS_CACHE_FILENAME);
+        Calendar refreshTime = Calendar.getInstance(TimeZone.getTimeZone("America/Los_Angeles"));
         refreshTime.set(Calendar.HOUR_OF_DAY, 2); /* 2 AM PDT of the current day. TODO: Change this for Japan time later.*/
+        refreshTime.set(Calendar.MINUTE, 0);
 
-        if (Arrays.asList(context.fileList()).contains(MainActivity.METALS_CACHE_FILENAME) &&
-                metals_info.lastModified() > refreshTime.getTimeInMillis()) {
+        if (Arrays.asList(context.fileList()).contains(METALS_CACHE_FILENAME) &&
+                metals_info.lastModified() > refreshTime.getTimeInMillis())
+        {
+            if (metalSchedule.getNumKeys() == 0)
+            {
+                String data = Util.readFileFromInternalStorage(METALS_CACHE_FILENAME, context);
+                DataFetcher.extractPDXHomeContent(data);
+            }
             renderMetals();
         }
         else {
@@ -137,7 +142,7 @@ public class MetalsFragment extends Fragment
                     FileOutputStream fos;
                     try {
                         // Open a writer to the cache file.
-                        fos = MainActivity.context.openFileOutput(MainActivity.METALS_CACHE_FILENAME, Context.MODE_PRIVATE);
+                        fos = context.openFileOutput(METALS_CACHE_FILENAME, Context.MODE_PRIVATE);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                         Log.wtf(TAG, "Couldn't cache the JSON because file not found."

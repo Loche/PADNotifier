@@ -20,8 +20,7 @@ import com.randomappsinc.padnotifier.R;
 public class MainActivity extends FragmentActivity implements
         ActionBar.TabListener
 {
-    public static Context context; // I'm not happy with this, but it works, I guess.
-    public static final String METALS_CACHE_FILENAME = "metals_info";
+    private Context context;
     private static final String TAG = "MainActivity";
 
     // private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;

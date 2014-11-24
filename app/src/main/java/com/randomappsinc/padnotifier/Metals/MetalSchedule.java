@@ -19,6 +19,10 @@ public class MetalSchedule
     // Map of <Country, to Map of <Group IDs, to list of Timeslots>>
     // Each country has its own IDs, which have their own lists of metal dungeons.
     private static TreeMap<Integer, HashMap<Character, ArrayList<Timeslot>>> schedule;
+    public int getNumKeys ()
+    {
+        return schedule.keySet().size();
+    }
     private static final String TAG = "MetalSchedule";
 
     private MetalSchedule() {

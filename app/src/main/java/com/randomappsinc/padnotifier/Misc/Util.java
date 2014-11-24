@@ -1,9 +1,11 @@
 package com.randomappsinc.padnotifier.Misc;
 
+import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -21,6 +23,31 @@ import java.util.TimeZone;
  */
 public class Util
 {
+    public static String readFileFromInternalStorage(String filePath, Context context)
+    {
+        try
+        {
+            FileInputStream fin = context.openFileInput(filePath);
+            int c;
+            StringBuilder temp = new StringBuilder();
+            while( (c = fin.read()) != -1)
+            {
+                temp.append(Character.toString((char)c));
+            }
+            fin.close();
+            return temp.toString();
+        }
+        catch (FileNotFoundException e)
+        {
+            Log.d("UTIL", "File not found for: " + filePath);
+        }
+        catch (IOException e2)
+        {
+            Log.d("UTIL", "Some BS IO stuff happpened reading from internal storage.");
+        }
+        return "";
+    }
+
     public static ArrayList<String> getSearchResults (ArrayList<String> candidates, String criteria)
     {
         ArrayList<String> searchResults = new ArrayList<String>();
