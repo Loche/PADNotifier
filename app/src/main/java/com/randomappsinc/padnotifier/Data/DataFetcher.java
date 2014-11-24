@@ -6,6 +6,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.randomappsinc.padnotifier.Fragments.GodfestFragment;
 import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
 import com.randomappsinc.padnotifier.Godfest.GodfestOverview;
+import com.randomappsinc.padnotifier.Metals.DungeonMapper;
 import com.randomappsinc.padnotifier.Metals.MetalSchedule;
 import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.Models.Timeslot;
@@ -19,6 +20,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -115,49 +117,91 @@ public class DataFetcher {
         Log.d(TAG, "Done rendering metals");
     }
 
-
-
     // Given a string that is the HTML for PDX home, parse it for the relevant info
     // After that, populate the MetalSchedule and Godfest classes the app draws on to draw things
     public static void extractPDXHomeContent(String content)
     {
-        /*
         // 1. SET UP METALS
         Document MetalsDoc = Jsoup.parse(content.split(METALS_SPLITTER)[1]);
         // Util.createFile("MetalsSplit.html", content.split(metalsSplitter)[1]);
 
-        // PARSE OUT TIMES
-        Elements metalTimes = MetalsDoc.getElementsByClass(METAL_TIME_CLASS_NAME);
-        int i = 0;
-        for (Element metalTime : metalTimes)
-        {
-            if (mappings.get(Util.intToGroup(i)) == null)
-            {
-                mappings.put(Util.intToGroup(i), new ArrayList<String>());
-            }
-            mappings.get(Util.intToGroup(i)).add(metalTime.text());
-            i++;
-        }
-        MetalSchedule.printMap();
+        DungeonMapper dungeonMapper = DungeonMapper.getDungeonMapper();
 
         // PARSE OUT IMAGE URLS
-        Element table = MetalsDoc.select("table").get(0); //select the first table.
-        Elements rows = table.select("tr");
-
-        for (int j = 1; j < rows.size(); j+=2) { //first row is the col names so skip it.
-            Element row = rows.get(j);
-            Elements cols = row.select("td");
-            int numImages = (cols.size() - NUM_SEPARATORS)/5;
-            String[] images = new String[numImages];
-            for (int k = 0; k < numImages; k++)
+        Elements tables = MetalsDoc.select("table");
+        ArrayList<String[]> allDungeonTimes = new ArrayList<String[]>();
+        ArrayList<String[]> allImages = new ArrayList<String[]>();
+        // Go through all tables. Parse out data from first legit one
+        for (Element table : tables)
+        {
+            String style = table.attr("style");
+            if (!style.contains("none"))
             {
-                Elements img = cols.get(k).select("img");
-                String imageURL = img.attr(IMAGE_URL_ATTR_NAME);
-                images[k] = PDX_HOME + imageURL;
+                Elements rows = table.select("tr");
+                // PARSING OUT TIMES
+                for (int j = 2; j < rows.size(); j += 2)
+                {
+                    Element row = rows.get(j);
+                    String[] dungeonTimes = new String[5];
+                    Elements times = row.getElementsByClass("metaltime");
+                    for (int i=0; i < times.size(); i++)
+                    {
+                        dungeonTimes[i] = times.get(i).text();
+                    }
+                    allDungeonTimes.add(dungeonTimes);
+
+                    // MetalSchedule.addURLs(images);
+                }
+                // PARSING OUT IMAGE URLS
+                for (int j = 1; j < rows.size(); j += 2)
+                {
+                    Element row = rows.get(j);
+                    Elements cols = row.select("td");
+                    int numImages = (cols.size() - NUM_SEPARATORS);
+                    String[] images = new String[numImages];
+                    int numImagesFound = 0;
+                    for (int k = 0; k < cols.size(); k++)
+                    {
+
+                        Elements img = cols.get(k).select("img");
+                        if (img.size()>0) {
+                            String imageURL = img.get(0).attr(IMAGE_URL_ATTR_NAME);
+                            images[numImagesFound] = PDX_HOME + imageURL;
+                            numImagesFound++;
+                        }
+                    }
+                    allImages.add(images);
+                }
+
+                // How many "waves" of dungeons there are today. Up to 6, as of now
+                for (int level = 0; level < allDungeonTimes.size(); level++)
+                {
+                    // Number of dungeons per timeslot. Could be 2 due to simultaneous hunt/supers
+                    int numImagesInLevel = (allImages.get(level).length)/5;
+                    // For each of the 5 times
+                    for (int group = 0; group < 5; group++)
+                    {
+                        // For each of the images in a slot (could be hunt/supers as aforementioned)
+                        for (int image = 0; image < numImagesInLevel; image++)
+                        {
+                            Timeslot dungeon = new Timeslot(allImages.get(level)[group+ image],
+                                Util.timeToCalendar(allDungeonTimes.get(level)[group]),
+                                2 /*USA*/,
+                                dungeonMapper.getDungeonInfo(allImages.get(level)[group+ image]).getDungeonTitle(),
+                                Util.intToGroup(group));
+                            MetalSchedule.addTimeslot(dungeon);
+                        }
+                    }
+                }
+                break;
             }
-            MetalSchedule.addURLs(images);
+
         }
-        MetalSchedule.printImageURLs(); */
+
+
+
+       // MetalSchedule.printImageURLs();
+
 
         // 2. SET UP GODFEST
         // Check to see if Godfest is even on PDX's radar
