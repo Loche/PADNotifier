@@ -3,6 +3,7 @@ package com.randomappsinc.padnotifier.Fragments;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -43,6 +44,7 @@ public class MetalsFragment extends Fragment
     private TextView mMetalMessage;
     private ListView mMetalsList;
     private MetalSchedule metalSchedule;
+    private DataFetcher dataFetcher;
 //  private int mProgressStatus = 0;
 
     private static PreferencesManager m_prefs_manager;
@@ -62,6 +64,7 @@ public class MetalsFragment extends Fragment
         context = getActivity().getApplicationContext();
         m_prefs_manager = new PreferencesManager(context);
         metalSchedule = MetalSchedule.getInstance();
+        dataFetcher = new DataFetcher(context);
     }
 
     @Override
@@ -80,7 +83,8 @@ public class MetalsFragment extends Fragment
 
         // If we have a cache that isn't outdated, render as normal. Else, re-pull the data.
         File metals_info = new File(context.getFilesDir(), METALS_CACHE_FILENAME);
-        Calendar refreshTime = Calendar.getInstance(TimeZone.getTimeZone("America/Los_Angeles"));
+        Calendar refreshTime = Calendar.getInstance();
+        refreshTime.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
         refreshTime.set(Calendar.HOUR_OF_DAY, 2); /* 2 AM PDT of the current day. TODO: Change this for Japan time later.*/
         refreshTime.set(Calendar.MINUTE, 0);
 
@@ -89,8 +93,7 @@ public class MetalsFragment extends Fragment
         {
             if (metalSchedule.getNumKeys() == 0)
             {
-                String data = Util.readFileFromInternalStorage(METALS_CACHE_FILENAME, context);
-                DataFetcher.extractPDXHomeContent(data);
+                dataFetcher.extractFromStorage();
             }
             renderMetals();
         }
@@ -136,43 +139,9 @@ public class MetalsFragment extends Fragment
                     HttpEntity entity = response.getEntity();
                     String data = EntityUtils.toString(entity);
 
-                    DataFetcher.extractPDXHomeContent(data);
-
-                    // TODO: Make this a function or something.
-                    FileOutputStream fos;
-                    try {
-                        // Open a writer to the cache file.
-                        fos = context.openFileOutput(METALS_CACHE_FILENAME, Context.MODE_PRIVATE);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                        Log.wtf(TAG, "Couldn't cache the JSON because file not found."
-                                + " Isn't Context.MODE_PRIVATE supposed to take care of that?");
-
-                        return new Long(-1);
-                    }
-
-                    try {
-                        // Write the contents of the data pull to this file.
-                        fos.write(data.getBytes());
-                        fos.flush();
-                    } catch (IOException e) {
-                        Log.e(TAG, "Failed to write to metals cache file.");
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            // Try to close the file. Also, oh my god are you serious this
-                            // is the standard for closing files in Java apparently
-                            if (fos != null) {
-                                fos.close();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            // ignore ... any significant errors should already have been
-                            // reported via an IOException from the final flush.
-                            // Shamelessly copied from StackOverflow.
-                        }
-                    }
+                    dataFetcher.extractPDXHomeContent(data);
                 }
+
 
             } catch (IOException e) {
                 e.printStackTrace();

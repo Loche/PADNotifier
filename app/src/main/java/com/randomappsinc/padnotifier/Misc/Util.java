@@ -7,6 +7,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -249,4 +250,36 @@ public class Util
                 + (localMinute < 10 ? ":0" + localMinute : ":" + localMinute)
                 + (localHourOfDay < 12 ? " am" : " pm");
     }
+    public static void writeToInternalStorage(String filePath,Context context, String fileContent){
+        // TODO: Make this a function or something.
+        FileOutputStream fos = null;
+        try {
+            // Open a writer to the cache file.
+            fos = context.openFileOutput(filePath, Context.MODE_PRIVATE);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            // Write the contents of the data pull to this file.
+            fos.write(fileContent.getBytes());
+            fos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Try to close the file. Also, oh my god are you serious this
+                // is the standard for closing files in Java apparently
+                if (fos != null) {
+                    fos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                // ignore ... any significant errors should already have been
+                // reported via an IOException from the final flush.
+                // Shamelessly copied from StackOverflow.
+            }
+        }
+    }
 }
+

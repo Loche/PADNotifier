@@ -1,5 +1,8 @@
 package com.randomappsinc.padnotifier.Data;
 
+import android.content.Context;
+
+import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
 import com.randomappsinc.padnotifier.Godfest.GodfestOverview;
 import com.randomappsinc.padnotifier.Metals.DungeonMapper;
 import com.randomappsinc.padnotifier.Metals.MetalSchedule;
@@ -12,6 +15,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import java.util.Iterator;
+
 
 /**
  * Created by Alex on 10/19/2014.
@@ -20,6 +29,7 @@ import java.util.ArrayList;
 // This class does the HTML fetching and parsing for the app
 public class DataFetcher {
     private static final String PDX_HOME = "http://www.puzzledragonx.com/";
+    private Context context;
 
     // Strings for metals
     private static final String METALS_SPLITTER = "Metal Schedule";
@@ -38,9 +48,16 @@ public class DataFetcher {
     // Tag for Log/debugging
     private static final String TAG = "DataFetcher";
 
+    private MetalSchedule metalSchedule;
+
+    public DataFetcher(Context context){
+        this.context = context;
+        metalSchedule = MetalSchedule.getInstance();
+    }
     // Given a string that is the HTML for PDX home, parse it for the relevant info
     // After that, populate the MetalSchedule and Godfest classes the app draws on to draw things
-    public static void extractPDXHomeContent(String content)
+
+    public void extractPDXHomeContent(String content)
     {
         // 1. SET UP METALS
         Document MetalsDoc = Jsoup.parse(content.split(METALS_SPLITTER)[1]);
@@ -52,6 +69,8 @@ public class DataFetcher {
         Elements tables = MetalsDoc.select("table");
         ArrayList<String[]> allDungeonTimes = new ArrayList<String[]>();
         ArrayList<String[]> allImages = new ArrayList<String[]>();
+        JSONObject externalFile = new JSONObject();
+        JSONArray timeSlotList = new JSONArray();
         // Go through all tables. Parse out data from first legit one
         for (Element table : tables)
         {
@@ -110,11 +129,19 @@ public class DataFetcher {
                                 2 /*USA*/,
                                 dungeonMapper.getDungeonInfo(allImages.get(level)[group+ image]).getDungeonTitle(),
                                 Util.intToGroup(group));
-                            MetalSchedule metalSchedule = MetalSchedule.getInstance();
                             metalSchedule.addTimeslot(dungeon);
+                            JSONObject timeSlotJSON = new JSONObject();
+                            timeSlotJSON.put("IMG_URL", allImages.get(level)[group+ image]);
+                            timeSlotJSON.put("TIME", allDungeonTimes.get(level)[group]);
+                            timeSlotJSON.put("COUNTRY", String.valueOf(2));
+                            timeSlotJSON.put("DUNGEON_TITLE", dungeonMapper.getDungeonInfo(allImages.get(level)[group+ image]).getDungeonTitle());
+                            timeSlotJSON.put("GROUP", String.valueOf(Util.intToGroup(group)));
+                            timeSlotList.add(timeSlotJSON);
                         }
                     }
                 }
+                externalFile.put("TIME_SLOT_LIST",timeSlotList);
+                Util.writeToInternalStorage(MetalsFragment.METALS_CACHE_FILENAME, context, externalFile.toJSONString());
                 break;
             }
         }
@@ -170,5 +197,29 @@ public class DataFetcher {
                 }
             }
         }
+    }
+
+    public void extractFromStorage()
+    {
+        String JSONdata = Util.readFileFromInternalStorage(MetalsFragment.METALS_CACHE_FILENAME, context);
+        JSONParser parser = new JSONParser();
+
+        try {
+            JSONObject jsonObject = (JSONObject) parser.parse(JSONdata);
+            JSONArray TIME_SLOT_LIST = (JSONArray) jsonObject.get("TIME_SLOT_LIST");
+            Iterator i = TIME_SLOT_LIST.iterator();
+            while (i.hasNext())
+            {
+                JSONObject innerObject = (JSONObject) i.next();
+                String TIME = (String) innerObject.get("TIME");
+                String GROUP = (String) innerObject.get("GROUP");
+                String IMG_URL = (String) innerObject.get("IMG_URL");
+                String DUNGEON_TITLE = (String) innerObject.get("DUNGEON_TITLE");
+                String COUNTRY = (String) innerObject.get("COUNTRY");
+                Timeslot dungeon = new Timeslot(IMG_URL, Util.timeToCalendar(TIME), Integer.parseInt(COUNTRY), DUNGEON_TITLE, GROUP.toCharArray()[0]);
+                metalSchedule.addTimeslot(dungeon);
+            }
+        }
+        catch (ParseException E){}
     }
 }
