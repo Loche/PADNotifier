@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.randomappsinc.padnotifier.Adapters.TabsPagerAdapter;
-import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.R;
 
 
@@ -48,8 +47,8 @@ public class MainActivity extends FragmentActivity implements
         // TODO: Make this a nightly job.
         if (curled == false) {
             Log.d(TAG, "NOW RUNNING A CURL.");
-            DataFetcher.curlPDXHome();
-            DataFetcher.pullEventInfo();
+            // DataFetcher.curlPDXHome();
+            // DataFetcher.pullEventInfo();
             curled = true;
         }
         context = this;

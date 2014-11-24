@@ -42,7 +42,7 @@ public class MetalsFragment extends Fragment
     private ProgressBar mProgress;
     private TextView mMetalMessage;
     private ListView mMetalsList;
-//    private int mProgressStatus = 0;
+//  private int mProgressStatus = 0;
 
     private static PreferencesManager m_prefs_manager;
     // Display font size.
@@ -121,17 +121,17 @@ public class MetalsFragment extends Fragment
         protected Long doInBackground(String... strings) {
             // Parameter not used. Return value not used, either.
 
-            HttpGet httppost = new HttpGet("http://www.padherder.com/api/events/");
+            HttpGet httpget = new HttpGet("http://www.puzzledragonx.com/");
             HttpClient client = new DefaultHttpClient();
             try {
-                HttpResponse response = client.execute(httppost);
+                HttpResponse response = client.execute(httpget);
 
                 int status = response.getStatusLine().getStatusCode();
                 if (status == 200) {
                     HttpEntity entity = response.getEntity();
                     String data = EntityUtils.toString(entity);
 
-                    DataFetcher.extractPadherderAPIJSON(data);
+                    DataFetcher.extractPDXHomeContent(data);
 
                     // TODO: Make this a function or something.
                     FileOutputStream fos;
