@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,6 +26,8 @@ public class SettingsActivity extends Activity
     private PreferencesManager m_prefs_manager;
 
     private static final String[] colors = {"Fire", "Water", "Grass"};
+    private static final String SETTINGS_SAVED = "Your settings changes have been saved.";
+    private static final String MISSING_THIRD_DIGIT = "Please enter your PAD ID's third digit!";
 
     // Views
     private Spinner starterColorSpinner;
@@ -86,7 +89,7 @@ public class SettingsActivity extends Activity
         String input = inputtedId.getText().toString();
         if (input.isEmpty())
         {
-            Toast.makeText(getApplicationContext(), "Please enter your PAD ID's third digit!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), MISSING_THIRD_DIGIT, Toast.LENGTH_SHORT).show();
             return false;
         }
         else
@@ -102,17 +105,34 @@ public class SettingsActivity extends Activity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            if (persistSettings())
+            {
+                Toast.makeText(getApplicationContext(), SETTINGS_SAVED, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(context, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            return true;
+        }
+        else
+        {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         int id = item.getItemId();
         if (id == android.R.id.home)
         {
             if (persistSettings())
             {
-                Toast.makeText(getApplicationContext(), "Your settings changes have been saved.", Toast.LENGTH_LONG).show();
-                persistSettings();
+                Toast.makeText(getApplicationContext(), SETTINGS_SAVED, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(context, MainActivity.class);
                 startActivity(intent);
                 finish();
