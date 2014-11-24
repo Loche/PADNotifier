@@ -1,4 +1,4 @@
-package com.randomappsinc.padnotifier.Metals;
+package com.randomappsinc.padnotifier.Alarms;
 
 import android.app.IntentService;
 import android.app.NotificationManager;

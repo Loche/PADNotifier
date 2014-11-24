@@ -14,8 +14,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.randomappsinc.padnotifier.Adapters.TabsPagerAdapter;
+import com.randomappsinc.padnotifier.Alarms.DataAlarmReceiver;
 import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.R;
+
+import java.util.Calendar;
 
 
 public class MainActivity extends FragmentActivity implements
@@ -24,6 +27,7 @@ public class MainActivity extends FragmentActivity implements
     public static Context context; // I'm not happy with this, but it works, I guess.
     public static final String METALS_CACHE_FILENAME = "metals_info";
     private static final String TAG = "MainActivity";
+    DataAlarmReceiver alarm = new DataAlarmReceiver();
 
     // private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private ViewPager mViewPager;
@@ -32,14 +36,14 @@ public class MainActivity extends FragmentActivity implements
     private static final String STATE_CURLED = "isCurled";
 
     public MainActivity() {
-        Log.d(TAG, "ASSDF");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        alarm.setAlarm(this);
+
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "ASDF");
 
         if (savedInstanceState != null) {
             curled = savedInstanceState.getBoolean(STATE_CURLED);
