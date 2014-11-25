@@ -1,5 +1,7 @@
 package com.randomappsinc.padnotifier.Metals;
 
+import android.util.Log;
+
 import com.randomappsinc.padnotifier.Models.DungeonInfo;
 import com.randomappsinc.padnotifier.R;
 
@@ -46,7 +48,7 @@ public class DungeonMapper
                 new DungeonInfo("Alert! Metal Dragons!", R.drawable.hunt_metal_dragons));
         imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/617.png",
                 new DungeonInfo("Super Ruby Dragons Descended", R.drawable.revenge_of_rubies));
-        imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/6 R.drawable.revenge_of_sapphires18.png",
+        imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/618.png",
                 new DungeonInfo("Super Sapphire Dragons Descended", R.drawable.revenge_of_sapphires));
         imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/619.png",
                 new DungeonInfo("Super Emerald Dragons Descended", R.drawable.revenge_of_emeralds));
@@ -114,10 +116,13 @@ public class DungeonMapper
 
     public DungeonInfo getDungeonInfo(String imageURL)
     {
+        // Log.d("DungeonMapper", imageURL);
         if (imageURLtoDungeonInfo.get(imageURL) == null)
         {
+            // Log.d("DungeonMapper", imageURL + " not found.");
             return new DungeonInfo("Unknown dungeon!", R.drawable.hunt_metal_dragons);
         }
+        // Log.d("DungeonMapper", imageURLtoDungeonInfo.get(imageURL).getDungeonTitle());
         return imageURLtoDungeonInfo.get(imageURL);
     }
 

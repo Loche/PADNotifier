@@ -30,14 +30,14 @@ public class MainActivity extends FragmentActivity implements
     private static final String STATE_CURLED = "isCurled";
 
     public MainActivity() {
-        Log.d(TAG, "ASSDF");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "ASDF");
+
+        Log.d(TAG, "MainActivity is created.");
 
         if (savedInstanceState != null) {
             curled = savedInstanceState.getBoolean(STATE_CURLED);

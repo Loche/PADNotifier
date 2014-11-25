@@ -173,7 +173,7 @@ public class Util
         }
 
         // PM check
-        if (time.contains("pm")) {
+        if (time.contains("pm") && hour != 12) {
             hour += 12;
             hour %= 24;
         }
@@ -186,7 +186,9 @@ public class Util
         return calendar;
     }
 
-    // Goddammit. Takes in a ISO_8601 time formatted string.
+    // Takes in a ISO_8601 time formatted string and turns it into a Calendar object.
+    // Note that ISO_8601 times end with the character 'Z', like "2014-11-20T13:05:55Z".
+    // This Z is ignored by the parser, but it is required for parsing.
     public static Calendar utcToCalendar(String utcTime) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -198,18 +200,26 @@ public class Util
         return calendar;
     }
 
+    // Given a calendar, convert to a string in the form of "HH:mm [am|pm]"
     public static String calendarToLocalTime(Calendar calendar) {
-        String localTime = "";
+        String localTimeString;
 
         // Change timezone to where the machine is running
+        TimeZone laTime = calendar.getTimeZone(); // Save away calendar's old time zone. This
+                                                  // SHOULD be Los Angeles time.
         calendar.setTimeZone(TimeZone.getDefault());
 
         int localHourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
         int localMinute = calendar.get(Calendar.MINUTE);
-        return calendar.get(Calendar.HOUR)
+        localTimeString = (calendar.get(Calendar.HOUR) == 0 ? 12 : calendar.get(Calendar.HOUR))
                 + (localMinute < 10 ? ":0" + localMinute : ":" + localMinute)
                 + (localHourOfDay < 12 ? " am" : " pm");
+
+        // Set the timezone back to Pacific time
+        calendar.setTimeZone(laTime);
+        return localTimeString;
     }
+
     public static void writeToInternalStorage(String filePath,Context context, String fileContent){
         FileOutputStream fos = null;
         try {
