@@ -6,9 +6,9 @@ package com.randomappsinc.padnotifier.Models;
 public class DungeonInfo
 {
     private String dungeonTitle;
-    private int drawableId;
+    private Integer drawableId;
 
-    public DungeonInfo(String dungeonTitle, int drawableId)
+    public DungeonInfo(String dungeonTitle, Integer drawableId)
     {
         this.dungeonTitle = dungeonTitle;
         this.drawableId = drawableId;

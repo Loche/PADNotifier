@@ -1,7 +1,5 @@
 package com.randomappsinc.padnotifier.Metals;
 
-import android.util.Log;
-
 import com.randomappsinc.padnotifier.Models.DungeonInfo;
 import com.randomappsinc.padnotifier.R;
 
@@ -120,7 +118,7 @@ public class DungeonMapper
         if (imageURLtoDungeonInfo.get(imageURL) == null)
         {
             // Log.d("DungeonMapper", imageURL + " not found.");
-            return new DungeonInfo("Unknown dungeon!", R.drawable.hunt_metal_dragons);
+            return new DungeonInfo(null, null);
         }
         // Log.d("DungeonMapper", imageURLtoDungeonInfo.get(imageURL).getDungeonTitle());
         return imageURLtoDungeonInfo.get(imageURL);
@@ -133,10 +131,6 @@ public class DungeonMapper
 
     public int getDrawableIdFromName (String dungeonName)
     {
-        if (nameToDrawableId.get(dungeonName) == null)
-        {
-            return R.drawable.hunt_metal_dragons;
-        }
         return nameToDrawableId.get(dungeonName);
     }
 }

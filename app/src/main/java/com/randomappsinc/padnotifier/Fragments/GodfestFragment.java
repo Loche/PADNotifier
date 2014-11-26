@@ -125,7 +125,6 @@ public class GodfestFragment extends Fragment
         protected void onPreExecute()
         {
             super.onPreExecute();
-
             progress.setVisibility(View.VISIBLE);
             godfestList.setVisibility(View.GONE);
             godfestMessage.setVisibility(View.GONE);
@@ -142,11 +141,9 @@ public class GodfestFragment extends Fragment
         protected void onPostExecute(Long aLong)
         {
             super.onPostExecute(aLong);
-
             progress.setVisibility(View.GONE);
             godfestList.setVisibility(View.VISIBLE);
             godfestMessage.setVisibility(View.VISIBLE);
-
             renderGods();
         }
     }
