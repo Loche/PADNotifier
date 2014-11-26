@@ -17,6 +17,7 @@ import com.randomappsinc.padnotifier.Adapters.MetalsListAdapter;
 import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.Metals.MetalSchedule;
 import com.randomappsinc.padnotifier.Misc.PreferencesManager;
+import com.randomappsinc.padnotifier.Models.Timeslot;
 import com.randomappsinc.padnotifier.R;
 
 import org.apache.http.HttpEntity;
@@ -28,6 +29,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -49,6 +51,8 @@ public class MetalsFragment extends Fragment
     // Display message for no metals information.
     private static final String NO_METALS = "It looks like we are unable to " +
             "fetch the metals information for today. Please try again later.";
+    private static final String SOME_METALS = "It looks like we are unable to " +
+            "fetch all of the metals information for today. Please try again later.";
 
     private static final String TAG = "MetalsFragment";
 
@@ -114,8 +118,21 @@ public class MetalsFragment extends Fragment
             Log.d(TAG, "Rendering metals...");
             ListView metalsList = (ListView) rootView.findViewById(R.id.metalsList);
             MetalSchedule masterSchedule = MetalSchedule.getInstance();
-            MetalsListAdapter metalsAdapter = new MetalsListAdapter(context,
-                    masterSchedule.getTimeslots(2 /* US Country Code */, m_prefs_manager.getGroup()));
+
+            ArrayList<Timeslot> timeslots = masterSchedule.getTimeslots(2 /* US Country Code */,
+                    m_prefs_manager.getGroup());
+
+            // If any of the times are "--", display schedule-is-incomplete message
+            for (Timeslot ts : timeslots) {
+                if (ts.getStarts_at() == null) {
+                    TextView metalsMessage = (TextView) rootView.findViewById(R.id.metalsMessage);
+                    metalsMessage.setText(SOME_METALS);
+                    metalsMessage.setTextSize(METALS_MESSAGE_SIZE);
+                    break;
+                }
+            }
+
+            MetalsListAdapter metalsAdapter = new MetalsListAdapter(context, timeslots);
             metalsList.setAdapter(metalsAdapter);
         }
     }

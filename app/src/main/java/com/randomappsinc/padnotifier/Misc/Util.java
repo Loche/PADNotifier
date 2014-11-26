@@ -158,6 +158,10 @@ public class Util
 
     // Times are formatted in the form #?#(:##)? [ap]m. Calendar is in PDT timezone.
     public static Calendar timeToCalendar (String time) {
+        // Sometimes PDX likes making time be "--".
+        if (time.equals("--"))
+            return null;
+
         int hour;
         int minute;
         Calendar calendar;
@@ -202,6 +206,9 @@ public class Util
 
     // Given a calendar, convert to a string in the form of "HH:mm [am|pm]"
     public static String calendarToLocalTime(Calendar calendar) {
+        if (calendar == null)
+            return "--";
+
         String localTimeString;
 
         // Change timezone to where the machine is running
