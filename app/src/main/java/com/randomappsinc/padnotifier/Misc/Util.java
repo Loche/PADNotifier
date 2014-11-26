@@ -252,5 +252,16 @@ public class Util
             }
         }
     }
+
+    public static String calendarToExactTime(Calendar calendar) {
+        return "" + (calendar.get(calendar.MONTH) + 1 /* WHY IS MONTH ZERO-INDEXED */) + "-" +
+                calendar.get(calendar.DAY_OF_MONTH) + " " +
+                calendar.get(Calendar.HOUR_OF_DAY) +
+                (calendar.get(Calendar.MINUTE) > 9 ? ":" : ":0") +
+                calendar.get(Calendar.MINUTE) +
+                (calendar.get(Calendar.SECOND) > 9 ? ":" : ":0") +
+                calendar.get(Calendar.SECOND) + "." +
+                calendar.get(Calendar.MILLISECOND);
+    }
 }
 

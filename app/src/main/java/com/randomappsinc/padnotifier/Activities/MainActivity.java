@@ -14,7 +14,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.randomappsinc.padnotifier.Adapters.TabsPagerAdapter;
+import com.randomappsinc.padnotifier.Alarms.DataAlarmReceiver;
+import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.R;
+
+import java.util.Calendar;
 
 
 public class MainActivity extends FragmentActivity implements
@@ -22,6 +26,7 @@ public class MainActivity extends FragmentActivity implements
 {
     private Context context;
     private static final String TAG = "MainActivity";
+    DataAlarmReceiver alarm = new DataAlarmReceiver();
 
     // private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private ViewPager mViewPager;
@@ -35,6 +40,8 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        alarm.setAlarm(this);
+
         super.onCreate(savedInstanceState);
 
         Log.d(TAG, "MainActivity is created.");

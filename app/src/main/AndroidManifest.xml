@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -35,17 +35,27 @@
             android:label="@string/title_activity_main" >
         </activity>
 
-        <receiver android:name=".Metals.MetalsAlarmReceiver"></receiver>
-
-        <receiver android:name=".Metals.MetalsBootReceiver"
-            android:enabled="false">
+        <receiver android:name=".Alarms.MetalsAlarmReceiver" />
+        <receiver
+            android:name=".Alarms.MetalsBootReceiver"
+            android:enabled="true" > <!-- change this to false once settings are done -->
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
+        <service android:name=".Alarms.MetalsSchedulingService" >
+        </service>
+
+        <receiver
+            android:name=".Alarms.DataAlarmReceiver"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
+
         <service
-            android:name=".Metals.MetalsSchedulingService">
+            android:name=".Alarms.DataSchedulingService"
+            android:exported="false" >
         </service>
     </application>
 
