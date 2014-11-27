@@ -135,6 +135,9 @@ public class MetalsFragment extends Fragment
             MetalsListAdapter metalsAdapter = new MetalsListAdapter(context, timeslots);
             metalsList.setAdapter(metalsAdapter);
         }
+
+        Log.d(TAG, "Finished rendering metals.");
+        MetalSchedule.printMap();
     }
 
     private class getMetalsList extends AsyncTask<String, Integer, Long> {

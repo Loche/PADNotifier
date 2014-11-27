@@ -212,9 +212,9 @@ public class Util
         String localTimeString;
 
         // Change timezone to where the machine is running
-        TimeZone laTime = calendar.getTimeZone(); // Save away calendar's old time zone. This
+        // TimeZone laTime = calendar.getTimeZone(); // Save away calendar's old time zone. This
                                                   // SHOULD be Los Angeles time.
-        calendar.setTimeZone(TimeZone.getDefault());
+        // calendar.setTimeZone(TimeZone.getDefault());
 
         int localHourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
         int localMinute = calendar.get(Calendar.MINUTE);
@@ -223,7 +223,7 @@ public class Util
                 + (localHourOfDay < 12 ? " am" : " pm");
 
         // Set the timezone back to Pacific time
-        calendar.setTimeZone(laTime);
+        // calendar.setTimeZone(laTime);
         return localTimeString;
     }
 

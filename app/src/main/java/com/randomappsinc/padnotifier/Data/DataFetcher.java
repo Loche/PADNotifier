@@ -1,6 +1,7 @@
 package com.randomappsinc.padnotifier.Data;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.randomappsinc.padnotifier.Fragments.GodfestFragment;
 import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
@@ -74,7 +75,7 @@ public class DataFetcher
         // PARSE OUT IMAGE URLS
         Elements tables = MetalsDoc.select("table");
         ArrayList<String[]> allDungeonTimes = new ArrayList<String[]>();
-        ArrayList<String[]> allImages = new ArrayList<String[]>();
+        ArrayList<ArrayList<String>> allImages = new ArrayList<ArrayList<String>>();
         JSONObject externalFile = new JSONObject();
         JSONArray timeSlotList = new JSONArray();
         // Go through all tables. Parse out data from first legit one
@@ -103,44 +104,44 @@ public class DataFetcher
                     Element row = rows.get(j);
                     Elements cols = row.select("td");
                     int numImages = (cols.size() - NUM_SEPARATORS);
-                    String[] images = new String[numImages];
+                    ArrayList<String> images = new ArrayList<String>();
                     int numImagesFound = 0;
+
                     for (int k = 0; k < cols.size(); k++)
                     {
-
                         Elements img = cols.get(k).select("img");
                         if (img.size() > 0)
                         {
                             String imageURL = img.get(0).attr(IMAGE_URL_ATTR_NAME);
-                            images[numImagesFound] = PDX_HOME + imageURL;
+                            images.add(PDX_HOME + imageURL);
                             numImagesFound++;
                         }
                     }
                     allImages.add(images);
                 }
 
-                // How many "waves" of dungeons there are today. Up to 6, as of now
+                // How many "waves" (rows) of dungeons there are today. Up to 6, as of now
                 for (int level = 0; level < allDungeonTimes.size(); level++)
                 {
                     // Number of dungeons per timeslot. Could be 2 due to simultaneous hunt/supers
-                    int numImagesInLevel = (allImages.get(level).length) / 5;
+                    int numImagesInLevel = (allImages.get(level).size()) / 5;
                     // For each of the 5 times
                     for (int group = 0; group < 5; group++)
                     {
                         // For each of the images in a slot (could be hunt/supers as aforementioned)
                         for (int image = 0; image < numImagesInLevel; image++)
                         {
-                            Timeslot dungeon = new Timeslot(allImages.get(level)[group + image],
+                            Timeslot dungeon = new Timeslot(allImages.get(level).get(group + image),
                                     Util.timeToCalendar(allDungeonTimes.get(level)[group]),
                                     2 /*USA*/,
-                                    dungeonMapper.getDungeonInfo(allImages.get(level)[group + image]).getDungeonTitle(),
+                                    dungeonMapper.getDungeonInfo(allImages.get(level).get(group + image)).getDungeonTitle(),
                                     Util.intToGroup(group));
                             metalSchedule.addTimeslot(dungeon);
                             JSONObject timeSlotJSON = new JSONObject();
-                            timeSlotJSON.put("IMG_URL", allImages.get(level)[group + image]);
+                            timeSlotJSON.put("IMG_URL", allImages.get(level).get(group + image));
                             timeSlotJSON.put("TIME", allDungeonTimes.get(level)[group]);
                             timeSlotJSON.put("COUNTRY", String.valueOf(2));
-                            timeSlotJSON.put("DUNGEON_TITLE", dungeonMapper.getDungeonInfo(allImages.get(level)[group + image]).getDungeonTitle());
+                            timeSlotJSON.put("DUNGEON_TITLE", dungeonMapper.getDungeonInfo(allImages.get(level).get(group + image)).getDungeonTitle());
                             timeSlotJSON.put("GROUP", String.valueOf(Util.intToGroup(group)));
                             timeSlotList.add(timeSlotJSON);
                         }

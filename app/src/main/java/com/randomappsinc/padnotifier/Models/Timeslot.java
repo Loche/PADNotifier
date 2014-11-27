@@ -2,6 +2,8 @@ package com.randomappsinc.padnotifier.Models;
 
 import android.util.Log;
 
+import com.randomappsinc.padnotifier.Misc.Util;
+
 import java.util.Calendar;
 
 /**
@@ -78,7 +80,8 @@ public class Timeslot implements Comparable<Timeslot> {
         else
             ret = "USA ";
 
-        return ret + group_name + " " + title + ": " + starts_at.toString();
+        return ret + group_name + ", " + title + ": " + Util.calendarToExactTime(starts_at) +
+                "\n" + imageUrl;
     }
 
     public void debugInfo() {

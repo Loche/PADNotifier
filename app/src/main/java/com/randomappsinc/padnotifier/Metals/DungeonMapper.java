@@ -56,7 +56,7 @@ public class DungeonMapper
                 new DungeonInfo("Super Metal Dragons Descended", R.drawable.super_metal));
         imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/1002.png",
                 new DungeonInfo("Metal/Gold Dungeon", R.drawable.metal_gold_outbreak));
-        imageURLtoDungeonInfo.put("http://puzzledragonx.com/en/img/thumbnail/kc.png",
+        imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/kc.png",
                 new DungeonInfo("King Carnival", R.drawable.king_carnival));
         imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/153.png",
                 new DungeonInfo("Alert! Dragon Plant Infestation!", R.drawable.dragon_plant_infestation));
