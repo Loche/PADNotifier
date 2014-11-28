@@ -24,7 +24,7 @@ public class DungeonInfo
         this.dungeonTitle = dungeonTitle;
     }
 
-    public int getDrawableId()
+    public Integer getDrawableId()
     {
         return drawableId;
     }

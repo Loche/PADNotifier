@@ -183,9 +183,13 @@ public class Util
         }
 
         calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("America/Los Angeles"));
+        TimeZone laTimeZone = TimeZone.getTimeZone("America/Los_Angeles");
+        calendar.setTimeZone(laTimeZone);
+
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
         return calendar;
     }
@@ -261,7 +265,8 @@ public class Util
                 calendar.get(Calendar.MINUTE) +
                 (calendar.get(Calendar.SECOND) > 9 ? ":" : ":0") +
                 calendar.get(Calendar.SECOND) + "." +
-                calendar.get(Calendar.MILLISECOND);
+                calendar.get(Calendar.MILLISECOND) + " " +
+                calendar.getTimeZone().getDisplayName();
     }
 }
 

@@ -2,6 +2,7 @@ package com.randomappsinc.padnotifier.Adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.randomappsinc.padnotifier.Metals.DungeonMapper;
+import com.randomappsinc.padnotifier.Models.DungeonInfo;
 import com.randomappsinc.padnotifier.R;
 import com.randomappsinc.padnotifier.Models.Timeslot;
 import com.randomappsinc.padnotifier.Misc.Util;
@@ -25,7 +27,7 @@ public class MetalsListAdapter extends BaseAdapter
     private Context context;
     private ArrayList<Timeslot> timeslots;
     private DungeonMapper dungeonMapper;
-    private static final String DUNGEON_NOT_FOUND = "Unknown dungeon.";
+    private static final String DUNGEON_NOT_FOUND = "Unknown dungeon!";
 
     // Creates the "Question 1, Question 2, etc..." list
     public MetalsListAdapter(Context context, ArrayList<Timeslot> timeslots)
