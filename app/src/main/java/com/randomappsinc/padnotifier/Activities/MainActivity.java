@@ -15,10 +15,8 @@ import android.view.MenuItem;
 
 import com.randomappsinc.padnotifier.Adapters.TabsPagerAdapter;
 import com.randomappsinc.padnotifier.Alarms.DataAlarmReceiver;
-import com.randomappsinc.padnotifier.Data.DataFetcher;
+import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
 import com.randomappsinc.padnotifier.R;
-
-import java.util.Calendar;
 
 
 public class MainActivity extends FragmentActivity implements
@@ -126,14 +124,18 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(context, SettingsActivity.class);
-            startActivity(intent);
-            finish();
+        switch (id)
+        {
+            case R.id.action_settings:
+                Intent intent = new Intent(context, SettingsActivity.class);
+                startActivity(intent);
+                finish();
+            case R.id.action_refresh:
+                MetalsFragment.refreshView();
+                break;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

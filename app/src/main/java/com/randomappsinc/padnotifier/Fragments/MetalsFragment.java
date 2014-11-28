@@ -38,11 +38,11 @@ public class MetalsFragment extends Fragment
 {
     private static View rootView;
     public static Context context;
-    private ProgressBar progress;
-    private TextView metalMessage;
-    private ListView metalsList;
-    private MetalSchedule metalSchedule;
-    private DataFetcher dataFetcher;
+    private static ProgressBar progress;
+    private static TextView metalMessage;
+    private static ListView metalsList;
+    private static MetalSchedule metalSchedule;
+    private static DataFetcher dataFetcher;
 
     private static PreferencesManager m_prefs_manager;
     private static final float METALS_MESSAGE_SIZE = 18;
@@ -57,7 +57,8 @@ public class MetalsFragment extends Fragment
     private static final String TAG = "MetalsFragment";
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         context = getActivity().getApplicationContext();
         m_prefs_manager = new PreferencesManager(context);
@@ -77,7 +78,8 @@ public class MetalsFragment extends Fragment
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    {
         progress = (ProgressBar) getView().findViewById(R.id.progressBarMetals);
         progress.setVisibility(View.GONE);
 
@@ -96,12 +98,19 @@ public class MetalsFragment extends Fragment
                 dataFetcher.extractMetalsFromStorage();
             }
             renderMetals();
-        }
-        else {
+        } else
+        {
             new getMetalsList().execute("This string isn't used.");
         }
 
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    public static void refreshView()
+    {
+        context.deleteFile(METALS_CACHE_FILENAME);
+        metalSchedule.clearTimeslots();
+        new getMetalsList().execute("This string isn't used.");
     }
 
     public static void renderMetals()
@@ -137,7 +146,7 @@ public class MetalsFragment extends Fragment
         }
     }
 
-    private class getMetalsList extends AsyncTask<String, Integer, Long> {
+    private static class getMetalsList extends AsyncTask<String, Integer, Long> {
         @Override
         protected Long doInBackground(String... strings) {
             // Parameter not used. Return value not used, either.
