@@ -36,18 +36,19 @@ public class GodfestOverview
             return NO_GODFEST_MESSAGE;
         }
         String message = "The Godfest is LIVE, and it features the ";
-        for (int i = 0; i < godfestGroups.size(); i++)
-        {
-            if (i == godfestGroups.size() - 1)
-            {
-                message += "and <b>" +  godfestGroups.get(i) + "</b>";
-            }
-            else
-            {
-                message += "<b>" + godfestGroups.get(i) + "</b>, ";
-            }
+        if (godfestGroups.isEmpty()) {
+            message += "<b>Player's Choice</b> voted gods!";
         }
-        message += " series!";
+        else {
+            for (int i = 0; i < godfestGroups.size(); i++) {
+                if (i == godfestGroups.size() - 1) {
+                    message += "and <b>" + godfestGroups.get(i) + "</b>";
+                } else {
+                    message += "<b>" + godfestGroups.get(i) + "</b>, ";
+                }
+            }
+            message += " series!";
+        }
         return message;
     }
 }

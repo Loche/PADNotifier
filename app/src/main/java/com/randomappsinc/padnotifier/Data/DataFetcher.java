@@ -178,9 +178,17 @@ public class DataFetcher
                 if (!list.isEmpty())
                 {
                     Elements godCategories = list.get(0).getElementsByTag("a");
-                    for (int j = 0; j < GODFEST_NUM_CATEGORIES; j++)
-                    {
-                        GodfestOverview.addGodfestGroup(godCategories.get(j).text().replaceAll(" God", ""));
+
+                    Log.d(TAG, "Godfest category: Starting the list.");
+                    for (int j = 0; j < GODFEST_NUM_CATEGORIES && j < godCategories.size(); j++) {
+                        // GodfestOverview.addGodfestGroup(godCategories.get(j).text().replaceAll(" God", ""));Element currElement = godCategories.get(j);
+                        Element currElement = godCategories.get(j);
+                        String currElementText = currElement.text();
+                        String godfestGroup = currElementText.replaceAll(" God", "");
+                        GodfestOverview.addGodfestGroup(godfestGroup);
+
+                        Log.d(TAG, "Godfest category: " + currElementText);
+
                         categoryList.add(godCategories.get(j).text().replaceAll(" God", ""));
                     }
                 }

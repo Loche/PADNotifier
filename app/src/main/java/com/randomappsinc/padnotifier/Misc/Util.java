@@ -231,7 +231,7 @@ public class Util
         return localTimeString;
     }
 
-    public static void writeToInternalStorage(String filePath,Context context, String fileContent){
+    public static void writeToInternalStorage(String filePath, Context context, String fileContent) {
         FileOutputStream fos = null;
         try {
             // Open a writer to the cache file.
@@ -257,6 +257,7 @@ public class Util
         }
     }
 
+    // Print out the time of a Calendar in human-readable format. Includes date, time, and timezone.
     public static String calendarToExactTime(Calendar calendar) {
         return "" + (calendar.get(calendar.MONTH) + 1 /* WHY IS MONTH ZERO-INDEXED */) + "-" +
                 calendar.get(calendar.DAY_OF_MONTH) + " " +
