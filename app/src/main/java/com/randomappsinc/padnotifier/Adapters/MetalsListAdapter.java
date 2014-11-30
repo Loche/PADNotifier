@@ -2,7 +2,6 @@ package com.randomappsinc.padnotifier.Adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.randomappsinc.padnotifier.Metals.DungeonMapper;
-import com.randomappsinc.padnotifier.Models.DungeonInfo;
-import com.randomappsinc.padnotifier.R;
-import com.randomappsinc.padnotifier.Models.Timeslot;
 import com.randomappsinc.padnotifier.Misc.Util;
+import com.randomappsinc.padnotifier.Models.Timeslot;
+import com.randomappsinc.padnotifier.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -98,7 +96,6 @@ public class MetalsListAdapter extends BaseAdapter
             holder.item2.setText(DUNGEON_NOT_FOUND);
         }
         holder.item3.setText(Util.calendarToLocalTime(timeslots.get(position).getStarts_at()));
-
         return v;
     }
 }

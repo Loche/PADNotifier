@@ -12,18 +12,25 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.randomappsinc.padnotifier.Adapters.TabsPagerAdapter;
 import com.randomappsinc.padnotifier.Alarms.DataAlarmReceiver;
 import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
+import com.randomappsinc.padnotifier.Metals.DungeonMapper;
 import com.randomappsinc.padnotifier.R;
 
 
 public class MainActivity extends FragmentActivity implements
         ActionBar.TabListener
 {
-    private Context context;
+    private static Context context;
+    private static DungeonMapper dungeonMapper;
     private static final String TAG = "MainActivity";
+    private static final String PAD_WIKIA_BASE = "http://pad.wikia.com/wiki/";
     DataAlarmReceiver alarm = new DataAlarmReceiver();
 
     // private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
@@ -31,9 +38,6 @@ public class MainActivity extends FragmentActivity implements
     private TabsPagerAdapter mAdapter;
     private boolean curled;
     private static final String STATE_CURLED = "isCurled";
-
-    public MainActivity() {
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,13 +47,16 @@ public class MainActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
 
         Log.d(TAG, "MainActivity is created.");
+        dungeonMapper = DungeonMapper.getDungeonMapper();
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null)
+        {
             curled = savedInstanceState.getBoolean(STATE_CURLED);
         }
 
         // TODO: Make this a nightly job.
-        if (curled == false) {
+        if (curled == false)
+        {
             Log.d(TAG, "NOW RUNNING A CURL.");
             // DataFetcher.curlPDXHome();
             // DataFetcher.pullEventInfo();
@@ -70,18 +77,21 @@ public class MainActivity extends FragmentActivity implements
 
         ActionBar.TabListener tabListener = new ActionBar.TabListener()
         {
-            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+            public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft)
+            {
                 // show the given tab
                 // on tab selected
                 // show respected fragment view
                 mViewPager.setCurrentItem(tab.getPosition());
             }
 
-            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+            public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft)
+            {
                 // hide the given tab
             }
 
-            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+            public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft)
+            {
                 // probably ignore this event
                 mViewPager.setCurrentItem(tab.getPosition());
             }
@@ -102,9 +112,11 @@ public class MainActivity extends FragmentActivity implements
 
         // Select corresponding tab on swipe
         mViewPager.setOnPageChangeListener(
-                new ViewPager.SimpleOnPageChangeListener() {
+                new ViewPager.SimpleOnPageChangeListener()
+                {
                     @Override
-                    public void onPageSelected(int position) {
+                    public void onPageSelected(int position)
+                    {
                         // When swiping between pages, select the
                         // corresponding tab.
                         getActionBar().setSelectedNavigationItem(position);
@@ -113,6 +125,22 @@ public class MainActivity extends FragmentActivity implements
         );
     }
 
+    public static void setUpListener()
+    {
+        ListView metalsList = MetalsFragment.getMetalsList();
+        metalsList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) throws IllegalArgumentException, IllegalStateException
+            {
+                String dungeonName = ((TextView) view.findViewById(R.id.metal_title)).getText().toString();
+                Intent intent = new Intent(context, DungeonOverviewActivity.class);
+                intent.putExtra(DungeonOverviewActivity.DUNGEON_URL_KEY,
+                        PAD_WIKIA_BASE + dungeonName.replaceAll(" ", "_"));
+                context.startActivity(intent);
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,7 +158,6 @@ public class MainActivity extends FragmentActivity implements
             case R.id.action_settings:
                 Intent intent = new Intent(context, SettingsActivity.class);
                 startActivity(intent);
-                finish();
             case R.id.action_refresh:
                 MetalsFragment.refreshView();
                 break;

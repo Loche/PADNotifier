@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.randomappsinc.padnotifier.Activities.MainActivity;
 import com.randomappsinc.padnotifier.Adapters.MetalsListAdapter;
 import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.Metals.MetalSchedule;
@@ -40,7 +41,7 @@ public class MetalsFragment extends Fragment
     public static Context context;
     private static ProgressBar progress;
     private static TextView metalMessage;
-    private static ListView metalsList;
+    public static ListView metalsList;
     private static MetalSchedule metalSchedule;
     private static DataFetcher dataFetcher;
 
@@ -55,6 +56,11 @@ public class MetalsFragment extends Fragment
             "fetch all of the metals information for today. Please try again later.";
 
     private static final String TAG = "MetalsFragment";
+
+    public static ListView getMetalsList()
+    {
+        return metalsList;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -74,6 +80,7 @@ public class MetalsFragment extends Fragment
         progress = (ProgressBar) rootView.findViewById(R.id.progressBarMetals);
         metalMessage = (TextView) rootView.findViewById(R.id.metalsMessage);
         metalsList = (ListView) rootView.findViewById(R.id.metalsList);
+        MainActivity.setUpListener();
         return rootView;
     }
 

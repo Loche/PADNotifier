@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">PAD Notifier</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="dungeon_overview">Dungeon Overview</string>
     <string name="action_settings">Settings</string>
 
     <!-- Login -->

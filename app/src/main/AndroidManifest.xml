@@ -23,6 +23,7 @@
         </activity>
         <activity
             android:name=".Activities.MainActivity"
+            android:noHistory="true"
             android:label="@string/title_activity_main" >
         </activity>
         <activity
@@ -33,6 +34,11 @@
             android:name=".Activities.SelectivePushActivity"
             android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_main" >
+        </activity>
+        <activity
+            android:screenOrientation="landscape"
+            android:name=".Activities.DungeonOverviewActivity"
+            android:label="@string/dungeon_overview" >
         </activity>
 
         <receiver android:name=".Alarms.MetalsAlarmReceiver" />

@@ -129,7 +129,7 @@ public class DungeonMapper
         return (ArrayList<String>) dungeonNamesList.clone();
     }
 
-    public int getDrawableIdFromName (String dungeonName)
+    public int getDrawableIdFromName(String dungeonName)
     {
         return nameToDrawableId.get(dungeonName);
     }

@@ -29,7 +29,7 @@ public class DungeonInfo
         return drawableId;
     }
 
-    public void setDrawableId(int drawableId)
+    public void setDrawableId(Integer drawableId)
     {
         this.drawableId = drawableId;
     }
