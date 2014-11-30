@@ -19,8 +19,10 @@ import android.widget.TextView;
 
 import com.randomappsinc.padnotifier.Adapters.TabsPagerAdapter;
 import com.randomappsinc.padnotifier.Alarms.DataAlarmReceiver;
+import com.randomappsinc.padnotifier.Fragments.GodfestFragment;
 import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
 import com.randomappsinc.padnotifier.Metals.DungeonMapper;
+import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
 
 
@@ -125,7 +127,7 @@ public class MainActivity extends FragmentActivity implements
         );
     }
 
-    public static void setUpListener()
+    public static void setUpMetalsListener()
     {
         ListView metalsList = MetalsFragment.getMetalsList();
         metalsList.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -134,9 +136,25 @@ public class MainActivity extends FragmentActivity implements
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) throws IllegalArgumentException, IllegalStateException
             {
                 String dungeonName = ((TextView) view.findViewById(R.id.metal_title)).getText().toString();
-                Intent intent = new Intent(context, DungeonOverviewActivity.class);
-                intent.putExtra(DungeonOverviewActivity.DUNGEON_URL_KEY,
+                Intent intent = new Intent(context, WebActivity.class);
+                intent.putExtra(WebActivity.URL_KEY,
                         PAD_WIKIA_BASE + dungeonName.replaceAll(" ", "_"));
+                context.startActivity(intent);
+            }
+        });
+    }
+
+    public static void setUpGodsListener()
+    {
+        ListView godsList = GodfestFragment.getGodsList();
+        godsList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) throws IllegalArgumentException, IllegalStateException
+            {
+                String godName = ((TextView) view.findViewById(R.id.god_title)).getText().toString();
+                Intent intent = new Intent(context, WebActivity.class);
+                intent.putExtra(WebActivity.URL_KEY, PAD_WIKIA_BASE + Util.cleanGodName(godName));
                 context.startActivity(intent);
             }
         });
@@ -160,6 +178,7 @@ public class MainActivity extends FragmentActivity implements
                 startActivity(intent);
             case R.id.action_refresh:
                 MetalsFragment.refreshView();
+                GodfestFragment.refreshView();
                 break;
             default:
                 break;

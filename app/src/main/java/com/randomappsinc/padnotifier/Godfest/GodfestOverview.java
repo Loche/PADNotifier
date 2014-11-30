@@ -14,19 +14,25 @@ public class GodfestOverview
 
     private static final String NO_GODFEST_MESSAGE = "Currently, there is no godfest. Check back next time!";
 
-    public static ArrayList<God> getFeaturedGods ()
+    public static ArrayList<God> getFeaturedGods()
     {
         return featuredGods;
     }
 
-    public static void addGodfestGroup (String godfestGroup)
+    public static void addGodfestGroup(String godfestGroup)
     {
         godfestGroups.add(godfestGroup);
     }
 
-    public static void addGod (God featuredGod)
+    public static void addGod(God featuredGod)
     {
         featuredGods.add(featuredGod);
+    }
+
+    public static void clearGodfestInfo()
+    {
+        featuredGods.clear();
+        godfestGroups.clear();
     }
 
     public static String getGodfestMessage ()

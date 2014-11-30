@@ -36,9 +36,8 @@
             android:label="@string/title_activity_main" >
         </activity>
         <activity
-            android:screenOrientation="landscape"
-            android:name=".Activities.DungeonOverviewActivity"
-            android:label="@string/dungeon_overview" >
+            android:name=".Activities.WebActivity"
+            android:label="@string/app_name" >
         </activity>
 
         <receiver android:name=".Alarms.MetalsAlarmReceiver" />

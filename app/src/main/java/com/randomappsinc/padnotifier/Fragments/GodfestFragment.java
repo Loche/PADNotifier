@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.randomappsinc.padnotifier.Activities.MainActivity;
 import com.randomappsinc.padnotifier.Adapters.GodfestListAdapter;
 import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.Godfest.GodfestOverview;
@@ -36,14 +37,19 @@ public class GodfestFragment extends Fragment
 {
     private static View rootView;
     public static Context context;
-    DataFetcher dataFetcher;
+    private static DataFetcher dataFetcher;
 
     // Views
-    private ProgressBar progress;
-    private TextView godfestMessage;
-    private ListView godfestList;
+    private static ProgressBar progress;
+    private static TextView godfestMessage;
+    private static ListView godfestList;
 
     public static final String GODFEST_CACHE_FILENAME = "godfest_info";
+
+    public static ListView getGodsList()
+    {
+        return godfestList;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,7 @@ public class GodfestFragment extends Fragment
         progress = (ProgressBar) rootView.findViewById(R.id.progressBarGodfest);
         godfestMessage = (TextView) rootView.findViewById(R.id.godfestMessage);
         godfestList = (ListView) rootView.findViewById(R.id.godsList);
+        MainActivity.setUpGodsListener();
         return rootView;
     }
 
@@ -91,7 +98,7 @@ public class GodfestFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private class getGodfestList extends AsyncTask<String, Integer, Long>
+    private static class getGodfestList extends AsyncTask<String, Integer, Long>
     {
         @Override
         protected Long doInBackground(String... strings)
@@ -146,6 +153,13 @@ public class GodfestFragment extends Fragment
             godfestMessage.setVisibility(View.VISIBLE);
             renderGods();
         }
+    }
+
+    public static void refreshView()
+    {
+        context.deleteFile(GODFEST_CACHE_FILENAME);
+        GodfestOverview.clearGodfestInfo();
+        new getGodfestList().execute("This string isn't used.");
     }
 
     public static void renderGods()

@@ -261,6 +261,7 @@ public class DataFetcher
             JSONObject jsonObject = (JSONObject) parser.parse(JSONdata);
             JSONArray categoriesList = (JSONArray) jsonObject.get(GODFEST_CATEGORIES_KEY);
             Iterator categoriesIterator = categoriesList.iterator();
+            // EXTRACT GROUPS
             while (categoriesIterator.hasNext())
             {
                 GodfestOverview.addGodfestGroup(categoriesIterator.next().toString());
@@ -268,6 +269,8 @@ public class DataFetcher
 
             JSONArray godsList = (JSONArray) jsonObject.get(FEATURED_GODS_KEY);
             Iterator godsIterator = godsList.iterator();
+
+            // EXTRACT GODS
             while (godsIterator.hasNext())
             {
                 JSONObject innerObject = (JSONObject) godsIterator.next();

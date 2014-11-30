@@ -20,6 +20,21 @@ import java.util.TimeZone;
  */
 public class Util
 {
+    public static String cleanGodName(String godName)
+    {
+        String[] pieces = godName.split(" ");
+        StringBuilder godNameCleaned = new StringBuilder();
+        for (int i = 1; i < pieces.length; i++)
+        {
+            godNameCleaned.append(pieces[i]);
+            if (i != pieces.length - 1)
+            {
+                godNameCleaned.append("_");
+            }
+        }
+        return godNameCleaned.toString();
+    }
+
     public static String readFileFromInternalStorage(String filePath, Context context)
     {
         try

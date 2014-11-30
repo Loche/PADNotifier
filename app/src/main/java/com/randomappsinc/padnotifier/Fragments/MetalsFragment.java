@@ -80,7 +80,7 @@ public class MetalsFragment extends Fragment
         progress = (ProgressBar) rootView.findViewById(R.id.progressBarMetals);
         metalMessage = (TextView) rootView.findViewById(R.id.metalsMessage);
         metalsList = (ListView) rootView.findViewById(R.id.metalsList);
-        MainActivity.setUpListener();
+        MainActivity.setUpMetalsListener();
         return rootView;
     }
 

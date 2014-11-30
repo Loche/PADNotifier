@@ -3,6 +3,7 @@ package com.randomappsinc.padnotifier.Activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,10 +16,10 @@ import com.randomappsinc.padnotifier.R;
 /**
  * Created by Alex on 11/27/2014.
  */
-public class DungeonOverviewActivity extends Activity
+public class WebActivity extends Activity
 {
     Context context;
-    public static final String DUNGEON_URL_KEY = "dungeonOverviewUrl";
+    public static final String URL_KEY = "URL";
     boolean loadingFinished = true;
     boolean redirect = false;
 
@@ -28,9 +29,9 @@ public class DungeonOverviewActivity extends Activity
         super.onCreate(savedInstanceState);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         context = this;
-        setContentView(R.layout.dungeon_overview);
+        setContentView(R.layout.webview);
         Intent intent = getIntent();
-        String dungeonOverviewUrl = intent.getStringExtra(DUNGEON_URL_KEY);
+        String dungeonOverviewUrl = intent.getStringExtra(URL_KEY);
         final WebView webview = new WebView(this);
         webview.setWebViewClient(new WebViewClient() {
 
@@ -43,7 +44,13 @@ public class DungeonOverviewActivity extends Activity
 
                 loadingFinished = false;
                 webview.loadUrl(urlNewString);
-                return true;
+                return false;
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                loadingFinished = false;
+                setContentView(R.layout.webview);
             }
 
             @Override
@@ -63,6 +70,7 @@ public class DungeonOverviewActivity extends Activity
 
             }
         });
+        webview.getSettings().setUseWideViewPort(true);
         webview.loadUrl(dungeonOverviewUrl);
     }
 
