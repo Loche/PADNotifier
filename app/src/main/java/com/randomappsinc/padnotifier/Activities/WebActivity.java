@@ -31,7 +31,7 @@ public class WebActivity extends Activity
         context = this;
         setContentView(R.layout.webview);
         Intent intent = getIntent();
-        String dungeonOverviewUrl = intent.getStringExtra(URL_KEY);
+        String padInfoUrl = intent.getStringExtra(URL_KEY);
         final WebView webview = new WebView(this);
         webview.setWebViewClient(new WebViewClient() {
 
@@ -71,7 +71,7 @@ public class WebActivity extends Activity
             }
         });
         webview.getSettings().setUseWideViewPort(true);
-        webview.loadUrl(dungeonOverviewUrl);
+        webview.loadUrl(padInfoUrl);
     }
 
     @Override
@@ -88,8 +88,6 @@ public class WebActivity extends Activity
         int id = item.getItemId();
         if (id == android.R.id.home)
         {
-            Intent intent = new Intent(context, MainActivity.class);
-            startActivity(intent);
             finish();
         }
         return super.onOptionsItemSelected(item);

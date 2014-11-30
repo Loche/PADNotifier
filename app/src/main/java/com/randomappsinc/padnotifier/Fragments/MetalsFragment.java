@@ -105,7 +105,8 @@ public class MetalsFragment extends Fragment
                 dataFetcher.extractMetalsFromStorage();
             }
             renderMetals();
-        } else
+        }
+        else
         {
             new getMetalsList().execute("This string isn't used.");
         }

@@ -23,7 +23,6 @@
         </activity>
         <activity
             android:name=".Activities.MainActivity"
-            android:noHistory="true"
             android:label="@string/title_activity_main" >
         </activity>
         <activity

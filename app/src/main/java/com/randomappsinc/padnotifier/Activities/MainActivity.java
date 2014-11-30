@@ -176,6 +176,8 @@ public class MainActivity extends FragmentActivity implements
             case R.id.action_settings:
                 Intent intent = new Intent(context, SettingsActivity.class);
                 startActivity(intent);
+                finish();
+                break;
             case R.id.action_refresh:
                 MetalsFragment.refreshView();
                 GodfestFragment.refreshView();
