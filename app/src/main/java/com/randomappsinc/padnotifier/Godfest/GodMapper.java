@@ -90,6 +90,27 @@ public class GodMapper
         nameToDrawableId.put("Da Qiao & Xiao Qiao", R.drawable.dqxq);
         nameToDrawableId.put("Cao Cao", R.drawable.cao_cao);
         nameToDrawableId.put("Liu Bei", R.drawable.liu_bei);
+
+        // ARCHANGEL
+        nameToDrawableId.put("Archangel Raphael", R.drawable.raphael);
+        nameToDrawableId.put("Archangel Lucifer", R.drawable.lucifer);
+        nameToDrawableId.put("Archangel Gabriel", R.drawable.gabriel);
+        nameToDrawableId.put("Archangel Uriel", R.drawable.uriel);
+        nameToDrawableId.put("Archangel Michael", R.drawable.michael);
+
+        // JAPANESE
+        nameToDrawableId.put("Yomi", R.drawable.yomi);
+        nameToDrawableId.put("Kagutsuchi", R.drawable.kagutsuchi);
+        nameToDrawableId.put("Amaterasu", R.drawable.amaterasu);
+        nameToDrawableId.put("Viper Orochi", R.drawable.orochi);
+        nameToDrawableId.put("Susano", R.drawable.susano);
+
+        // INDIAN
+        nameToDrawableId.put("Shiva", R.drawable.shiva);
+        nameToDrawableId.put("Lakshmi", R.drawable.lakshmi);
+        nameToDrawableId.put("Vritra", R.drawable.vritra);
+        nameToDrawableId.put("Parvati", R.drawable.parvati);
+        nameToDrawableId.put("Indra", R.drawable.indra);
     }
 
     public Integer getGodDrawable(String godName)
