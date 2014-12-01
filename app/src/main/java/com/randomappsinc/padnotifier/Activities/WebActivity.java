@@ -70,7 +70,6 @@ public class WebActivity extends Activity
 
             }
         });
-        webview.getSettings().setUseWideViewPort(true);
         webview.loadUrl(padInfoUrl);
     }
 

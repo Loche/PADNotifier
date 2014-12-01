@@ -10,6 +10,7 @@ import com.randomappsinc.padnotifier.Metals.DungeonMapper;
 import com.randomappsinc.padnotifier.Metals.MetalSchedule;
 import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.Models.God;
+import com.randomappsinc.padnotifier.Models.GodfestState;
 import com.randomappsinc.padnotifier.Models.Timeslot;
 
 import org.json.simple.JSONArray;
@@ -21,6 +22,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -40,18 +42,24 @@ public class DataFetcher
     private static final String METAL_TIME_CLASS_NAME = "metaltime";
     private static final int NUM_SEPARATORS = 4;
 
-    // Strings for godfest
+    /* GODFEST */
     private static final String GODFEST_SPLITTER = "a id=\"godfes\"";
     private static final String GODFEST_LIST_CLASS_NAME = "godfeslist";
     private static final String GODFEST_ONGOING = "gftimeleft";
     private static final String IMAGE_URL_ATTR_NAME = "data-original";
     private static final String GODFEST_ICON_TITLE = "title";
     private static final String GODFEST_SPACER = "en/img/spacer.gif";
-    private static final int GODFEST_NUM_CATEGORIES = 3;
-    private static final String GODFEST_CATEGORIES_KEY = "CATEGORIES";
-    private static final String FEATURED_GODS_KEY = "GODS";
     private static final String IMAGE_URL_KEY = "IMG_URL";
     private static final String GOD_NAME_KEY = "NAME";
+    private static final int GODFEST_NUM_CATEGORIES = 3;
+    public static final String GODFEST_ENDS_IN = "Ends in:";
+    public static final String GODFEST_STARTS_IN = "Starts in:";
+
+    // File extraction
+    private static final String GODFEST_CATEGORIES_KEY = "CATEGORIES";
+    private static final String FEATURED_GODS_KEY = "GODS";
+    private static final String GODFEST_STATE_KEY = "STATE";
+    private static final String GODFEST_TIME_LEFT_KEY = "TIME_LEFT";
 
     // Tag for Log/debugging
     private static final String TAG = "DataFetcher";
@@ -156,18 +164,18 @@ public class DataFetcher
 
     public void extractPDXGodfestContent(String content)
     {
-        // 2. SET UP GODFEST
+        JSONObject externalFile = new JSONObject();
+        JSONArray categoryList = new JSONArray();
+        JSONArray godsList = new JSONArray();
+
         // Check to see if Godfest is even on PDX's radar
         String[] godfestPieces = content.split(GODFEST_SPLITTER);
         if (godfestPieces.length >= 2)
         {
             Document fullDoc = Jsoup.parse(content);
 
-            JSONObject externalFile = new JSONObject();
-            JSONArray categoryList = new JSONArray();
-
             // 2.1 PARSE OUT CATEGORIES
-            boolean isOngoing = false;
+            boolean isOver = false;
             Element godfest = fullDoc.getElementById("event");
             Elements infoRows = godfest.select("tr");
 
@@ -193,38 +201,70 @@ public class DataFetcher
                     }
                 }
 
-                // Check to see that godfest is even currently happening
+                // 2.1.1 EXTRACT STATE AND TIME LEFT OF THE GODFEST
                 Elements alive = infoRows.get(i).getElementsByClass(GODFEST_ONGOING);
                 if (!alive.isEmpty())
                 {
-                    isOngoing = true;
-                }
-            }
-
-            if (isOngoing)
-            {
-                JSONArray godsList = new JSONArray();
-
-                // 2.2 PARSE OUT GODS INFO
-                Document godIconsDocument = Jsoup.parse(content.split(GODFEST_LIST_CLASS_NAME)[1]);
-                Element godIcons = godIconsDocument.getElementById("event");
-                Elements icons = godIcons.getElementsByTag("img");
-                for (i = 0; i < icons.size(); i++)
-                {
-                    String iconURL = icons.get(i).attr(IMAGE_URL_ATTR_NAME);
-                    if (!iconURL.equals(GODFEST_SPACER))
+                    Elements spans = alive.select("span");
+                    for (Element span: spans)
                     {
-                        GodfestOverview.addGod(new God(PDX_HOME + iconURL, icons.get(i).attr(GODFEST_ICON_TITLE)));
-                        JSONObject god = new JSONObject();
-                        god.put(IMAGE_URL_KEY, PDX_HOME + iconURL);
-                        god.put(GOD_NAME_KEY, icons.get(i).attr(GODFEST_ICON_TITLE));
-                        godsList.add(god);
+                        if (span.text().equals(GODFEST_STARTS_IN))
+                        {
+                            GodfestOverview.setGodfestState(GodfestOverview.GODFEST_BEFORE);
+                            externalFile.put(GODFEST_STATE_KEY, GodfestOverview.GODFEST_BEFORE);
+                            isOver = false;
+                        }
+                        if (span.text().equals(GODFEST_ENDS_IN))
+                        {
+                            GodfestOverview.setGodfestState(GodfestOverview.GODFEST_STARTED);
+                            externalFile.put(GODFEST_STATE_KEY, GodfestOverview.GODFEST_STARTED);
+                            isOver = false;
+                        }
+                        String spanClass = span.attr("class");
+                        if (spanClass != null)
+                        {
+                            if (spanClass.contains("until"))
+                            {
+                                GodfestOverview.setGodfestTimeLeft(Integer.parseInt(spanClass.replace("until", "")));
+                                externalFile.put(GODFEST_TIME_LEFT_KEY, spanClass.replace("until", ""));
+                            }
+                        }
                     }
                 }
-                externalFile.put(GODFEST_CATEGORIES_KEY, categoryList);
-                externalFile.put(FEATURED_GODS_KEY, godsList);
             }
+
+            if (isOver)
+            {
+                GodfestOverview.setGodfestState(GodfestOverview.GODFEST_OVER);
+                externalFile.put(GODFEST_STATE_KEY, GodfestOverview.GODFEST_OVER);
+                externalFile.put(GODFEST_TIME_LEFT_KEY, 0);
+            }
+
+            // 2.2 PARSE OUT GODS INFO
+            Document godIconsDocument = Jsoup.parse(content.split(GODFEST_LIST_CLASS_NAME)[1]);
+            Element godIcons = godIconsDocument.getElementById("event");
+            Elements icons = godIcons.getElementsByTag("img");
+            for (i = 0; i < icons.size(); i++)
+            {
+                String iconURL = icons.get(i).attr(IMAGE_URL_ATTR_NAME);
+                if (!iconURL.equals(GODFEST_SPACER))
+                {
+                    GodfestOverview.addGod(new God(PDX_HOME + iconURL, icons.get(i).attr(GODFEST_ICON_TITLE)));
+                    JSONObject god = new JSONObject();
+                    god.put(IMAGE_URL_KEY, PDX_HOME + iconURL);
+                    god.put(GOD_NAME_KEY, icons.get(i).attr(GODFEST_ICON_TITLE));
+                    godsList.add(god);
+                }
+            }
+            externalFile.put(GODFEST_CATEGORIES_KEY, categoryList);
+            externalFile.put(FEATURED_GODS_KEY, godsList);
             Util.writeToInternalStorage(GodfestFragment.GODFEST_CACHE_FILENAME, context, externalFile.toJSONString());
+        }
+        else
+        {
+            GodfestOverview.setGodfestState(GodfestOverview.GODFEST_NONE);
+            externalFile.put(GODFEST_STATE_KEY, GodfestOverview.GODFEST_NONE);
+            externalFile.put(GODFEST_TIME_LEFT_KEY, 0);
         }
     }
 
@@ -259,9 +299,18 @@ public class DataFetcher
 
         try {
             JSONObject jsonObject = (JSONObject) parser.parse(JSONdata);
+            // EXTRACT STATE
+            String state = jsonObject.get(GODFEST_STATE_KEY).toString();
+            Long timeLeft = Long.valueOf(jsonObject.get(GODFEST_TIME_LEFT_KEY).toString());
+            File godfest_info = new File(context.getFilesDir(), GodfestFragment.GODFEST_CACHE_FILENAME);
+            Long cacheUnixTime = (godfest_info.lastModified() / 1000L);
+            GodfestState godfestState = Util.giveGodfestState(state, timeLeft, cacheUnixTime);
+            GodfestOverview.setGodfestTimeLeft(godfestState.getTimeLeft());
+            GodfestOverview.setGodfestState(godfestState.getState());
+
+            // EXTRACT GROUPS
             JSONArray categoriesList = (JSONArray) jsonObject.get(GODFEST_CATEGORIES_KEY);
             Iterator categoriesIterator = categoriesList.iterator();
-            // EXTRACT GROUPS
             while (categoriesIterator.hasNext())
             {
                 GodfestOverview.addGodfestGroup(categoriesIterator.next().toString());

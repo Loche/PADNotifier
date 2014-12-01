@@ -176,6 +176,7 @@ public class MainActivity extends FragmentActivity implements
             case R.id.action_settings:
                 Intent intent = new Intent(context, SettingsActivity.class);
                 startActivity(intent);
+                GodfestFragment.killCountDownTimer();
                 finish();
                 break;
             case R.id.action_refresh:

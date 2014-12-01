@@ -1,7 +1,16 @@
 package com.randomappsinc.padnotifier.Misc;
 
 import android.content.Context;
+import android.os.CountDownTimer;
+import android.text.Html;
 import android.util.Log;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.randomappsinc.padnotifier.Data.DataFetcher;
+import com.randomappsinc.padnotifier.Fragments.GodfestFragment;
+import com.randomappsinc.padnotifier.Godfest.GodfestOverview;
+import com.randomappsinc.padnotifier.Models.GodfestState;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,6 +29,98 @@ import java.util.TimeZone;
  */
 public class Util
 {
+    // Default length of godfest in seconds (2 days)
+    public static long GODFEST_DEFAULT_LENGTH = 172800;
+
+    public static CountDownTimer giveTimer (long timeInMillis, final TextView countdown, final TextView message)
+    {
+        // Create timer
+        return new CountDownTimer(timeInMillis, 1000)
+        {
+            public void onTick(long millisUntilFinished)
+            {
+                long secondsUntilDone = millisUntilFinished / 1000;
+                long daysLeft = secondsUntilDone / 60 / 60 / 24;
+                long hoursLeft = secondsUntilDone / 60 / 60 % 24;
+                long minutesLeft = secondsUntilDone / 60 % 60;
+                long secondsLeft = secondsUntilDone % 60;
+                String days = "days";
+                String hours = "hours";
+                String seconds = "seconds";
+                String minutes = "minutes";
+                if (daysLeft == 1) { days = "day"; }
+                if (hoursLeft == 1) { hours = "hour"; }
+                if (secondsLeft == 1) { seconds = "second"; }
+                if (minutesLeft == 1) { minutes = "minute"; }
+                String numbers =  " <b>" + daysLeft + "</b> " + days + " <b>" + hoursLeft + "</b> " + hours
+                        + " <b>" + minutesLeft + "</b> " + minutes + " <b>" + secondsLeft + "</b> " + seconds;
+                if (GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_BEFORE))
+                {
+                    countdown.setText(Html.fromHtml(DataFetcher.GODFEST_STARTS_IN + numbers));
+                }
+                if (GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_STARTED))
+                {
+                    countdown.setText(Html.fromHtml(DataFetcher.GODFEST_ENDS_IN + numbers));
+                }
+            }
+
+            public void onFinish()
+            {
+                if (GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_BEFORE))
+                {
+                    // Change the godfest message and create another timer
+                    GodfestOverview.setGodfestState(GodfestOverview.GODFEST_STARTED);
+                    message.setText(GodfestOverview.getGodfestMessage());
+                    GodfestFragment.killCountDownTimer();
+                    GodfestFragment.setCountdownTimer(giveTimer(Util.GODFEST_DEFAULT_LENGTH * 1000, countdown, message));
+                    GodfestFragment.startTimer();
+                }
+                if (GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_STARTED))
+                {
+                    // Change the message, kill the timer
+                    GodfestOverview.setGodfestState(GodfestOverview.GODFEST_OVER);
+                    message.setText(GodfestOverview.getGodfestMessage());
+                    ((LinearLayout) countdown.getParent()).removeView(countdown);
+                }
+            }
+        };
+    }
+
+    public static GodfestState giveGodfestState(String state, long timeLeft, long cacheUnixTime)
+    {
+        GodfestState godfestState = new GodfestState();
+        long currentUnixTime = (System.currentTimeMillis() / 1000L);
+        if (state.equals(GodfestOverview.GODFEST_BEFORE))
+        {
+            // Not enough time has elapsed for godfest start
+            if (cacheUnixTime + timeLeft > currentUnixTime)
+            {
+                godfestState.setState(GodfestOverview.GODFEST_BEFORE);
+                godfestState.setTimeLeft(timeLeft - (currentUnixTime - cacheUnixTime));
+            }
+            else
+            {
+                godfestState.setState(GodfestOverview.GODFEST_STARTED);
+                godfestState.setTimeLeft(GODFEST_DEFAULT_LENGTH - ((currentUnixTime - cacheUnixTime) - timeLeft));
+            }
+        }
+        if (state.equals(GodfestOverview.GODFEST_STARTED))
+        {
+            // Not enough time has elapsed for godfest to end
+            if (cacheUnixTime + timeLeft > currentUnixTime)
+            {
+                godfestState.setState(GodfestOverview.GODFEST_STARTED);
+                godfestState.setTimeLeft(timeLeft - (currentUnixTime - cacheUnixTime));
+            }
+            else
+            {
+                godfestState.setState(GodfestOverview.GODFEST_OVER);
+                godfestState.setTimeLeft(0);
+            }
+        }
+        return godfestState;
+    }
+
     public static String cleanGodName(String godName)
     {
         String[] pieces = godName.split(" ");

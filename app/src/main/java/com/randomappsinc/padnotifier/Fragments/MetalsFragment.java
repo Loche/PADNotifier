@@ -94,7 +94,7 @@ public class MetalsFragment extends Fragment
         File metals_info = new File(context.getFilesDir(), METALS_CACHE_FILENAME);
         Calendar refreshTime = Calendar.getInstance();
         refreshTime.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
-        refreshTime.set(Calendar.HOUR_OF_DAY, 2); /* 2 AM PDT of the current day. TODO: Change this for Japan time later.*/
+        refreshTime.set(Calendar.HOUR_OF_DAY, 0); /* TODO: Change this for Japan time later.*/
         refreshTime.set(Calendar.MINUTE, 0);
 
         if (Arrays.asList(context.fileList()).contains(METALS_CACHE_FILENAME) &&

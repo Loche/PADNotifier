@@ -18,8 +18,15 @@
         android:textSize="18sp">
     </TextView>
 
+    <TextView
+        android:id="@+id/godfest_countdown"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"/>
+
     <ListView android:id="@+id/godsList"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </ListView>

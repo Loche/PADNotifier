@@ -11,8 +11,14 @@ public class GodfestOverview
 {
     private static ArrayList<God> featuredGods = new ArrayList<God>();
     private static ArrayList<String> godfestGroups = new ArrayList<String>();
+    private static String godfestState;
+    private static long godfestSecondsLeft;
 
-    private static final String NO_GODFEST_MESSAGE = "Currently, there is no godfest. Check back next time!";
+    public static String GODFEST_BEFORE = "BEFORE";
+    public static String GODFEST_STARTED = "STARTED";
+    public static String GODFEST_OVER = "OVER";
+    public static String GODFEST_NONE = "NONE";
+    private static final String NO_GODFEST_MESSAGE = "Currently, there isn't even a godfest on the radar. Check back next time!";
 
     public static ArrayList<God> getFeaturedGods()
     {
@@ -29,6 +35,26 @@ public class GodfestOverview
         featuredGods.add(featuredGod);
     }
 
+    public static void setGodfestState(String state)
+    {
+        godfestState = state;
+    }
+
+    public static long getGodfestSecondsLeft()
+    {
+        return godfestSecondsLeft;
+    }
+
+    public static String getGodfestState()
+    {
+        return godfestState;
+    }
+
+    public static void setGodfestTimeLeft(long secondsLeft)
+    {
+        godfestSecondsLeft = secondsLeft;
+    }
+
     public static void clearGodfestInfo()
     {
         featuredGods.clear();
@@ -37,11 +63,23 @@ public class GodfestOverview
 
     public static String getGodfestMessage ()
     {
-        if (featuredGods.isEmpty())
+        if (godfestState.equals(GODFEST_NONE))
         {
             return NO_GODFEST_MESSAGE;
         }
-        String message = "The Godfest is LIVE, and it features the ";
+        String message;
+        if (godfestState.equals(GODFEST_BEFORE))
+        {
+            message = "The Godfest has yet to begin, and it will feature the ";
+        }
+        else if (godfestState.equals(GODFEST_STARTED))
+        {
+            message = "The Godfest is LIVE, and it features the ";
+        }
+        else
+        {
+            message = "The Godfest is over, and it featured the ";
+        }
         if (godfestGroups.isEmpty()) {
             message += "<b>Player's Choice</b> voted gods!";
         }

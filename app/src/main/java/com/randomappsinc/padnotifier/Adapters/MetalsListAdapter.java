@@ -83,7 +83,7 @@ public class MetalsListAdapter extends BaseAdapter
         }
         else
         {
-            Picasso.with(context).load(timeslots.get(position).getImageUrl());
+            Picasso.with(context).load(timeslots.get(position).getImageUrl()).into(holder.item1);
         }
 
         String metalTitle = timeslots.get(position).getTitle();

@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.randomappsinc.padnotifier.Godfest.GodMapper;
 import com.randomappsinc.padnotifier.Models.God;
 import com.randomappsinc.padnotifier.R;
 import com.squareup.picasso.Picasso;
@@ -21,12 +22,14 @@ public class GodfestListAdapter extends BaseAdapter
 {
     private Context context;
     private ArrayList<God> featuredGods;
+    private GodMapper godMapper;
 
     // Creates the "Question 1, Question 2, etc..." list
     public GodfestListAdapter(Context context, ArrayList<God> featuredGods)
     {
         this.context = context;
         this.featuredGods = featuredGods;
+        godMapper = GodMapper.getGodMapper();
     }
 
     public int getCount()
@@ -67,8 +70,19 @@ public class GodfestListAdapter extends BaseAdapter
             holder = (ViewHolder)v.getTag();
         }
 
-        Picasso.with(context).load(featuredGods.get(position).getImageUrl()).into(holder.item1);
-        holder.item2.setText(featuredGods.get(position).getGodName());
+        String godName = featuredGods.get(position).getGodName();
+        int firstSpace = godName.indexOf(" ");
+        String cleanedGodname = godName.substring(firstSpace + 1);
+        Integer godDrawableId = godMapper.getGodDrawable(cleanedGodname);
+        if (godDrawableId != null)
+        {
+            holder.item1.setImageResource(godDrawableId);
+        }
+        else
+        {
+            Picasso.with(context).load(featuredGods.get(position).getImageUrl()).into(holder.item1);
+        }
+        holder.item2.setText(godName);
 
         return v;
     }

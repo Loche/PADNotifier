@@ -3,13 +3,14 @@ package com.randomappsinc.padnotifier.Fragments;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.randomappsinc.padnotifier.Activities.MainActivity;
 import com.randomappsinc.padnotifier.Adapters.GodfestListAdapter;
 import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.Godfest.GodfestOverview;
+import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
 
 import org.apache.http.HttpEntity;
@@ -39,10 +41,23 @@ public class GodfestFragment extends Fragment
     public static Context context;
     private static DataFetcher dataFetcher;
 
+    // Countdown timer
+    private static CountDownTimer countDownTimer;
+    public static void startTimer() { countDownTimer.start(); }
+    public static void killCountDownTimer()
+    {
+        if (countDownTimer != null)
+        {
+            countDownTimer.cancel();
+        }
+    }
+    public static void setCountdownTimer(CountDownTimer passedTimer) { countDownTimer = passedTimer; }
+
     // Views
     private static ProgressBar progress;
     private static TextView godfestMessage;
     private static ListView godfestList;
+    private static TextView godfestCountdown;
 
     public static final String GODFEST_CACHE_FILENAME = "godfest_info";
 
@@ -66,6 +81,7 @@ public class GodfestFragment extends Fragment
         context = getActivity().getApplicationContext();
         progress = (ProgressBar) rootView.findViewById(R.id.progressBarGodfest);
         godfestMessage = (TextView) rootView.findViewById(R.id.godfestMessage);
+        godfestCountdown = (TextView) rootView.findViewById(R.id.godfest_countdown);
         godfestList = (ListView) rootView.findViewById(R.id.godsList);
         MainActivity.setUpGodsListener();
         return rootView;
@@ -76,19 +92,17 @@ public class GodfestFragment extends Fragment
         progress.setVisibility(View.GONE);
 
         // If we have a cache that isn't outdated, render as normal. Else, re-pull the data.
-        File metals_info = new File(context.getFilesDir(), GODFEST_CACHE_FILENAME);
+        File godfest_info = new File(context.getFilesDir(), GODFEST_CACHE_FILENAME);
         Calendar refreshTime = Calendar.getInstance();
         refreshTime.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
-        refreshTime.set(Calendar.HOUR_OF_DAY, 2); /* 2 AM PDT of the current day. TODO: Change this for Japan time later.*/
+        refreshTime.set(Calendar.HOUR_OF_DAY, 0);
         refreshTime.set(Calendar.MINUTE, 0);
 
         if (Arrays.asList(context.fileList()).contains(GODFEST_CACHE_FILENAME) &&
-                metals_info.lastModified() > refreshTime.getTimeInMillis())
+                godfest_info.lastModified() > refreshTime.getTimeInMillis())
         {
-            if (GodfestOverview.getFeaturedGods().size() == 0)
-            {
-                dataFetcher.extractGodfestInfoFromStorage();
-            }
+            GodfestOverview.clearGodfestInfo();
+            dataFetcher.extractGodfestInfoFromStorage();
             renderGods();
         }
         else
@@ -124,10 +138,6 @@ public class GodfestFragment extends Fragment
             return null;
         }
 
-        /**
-         * This step is normally used to setup the task, for instance
-         * by showing a progress bar in the user interface.
-         */
         @Override
         protected void onPreExecute()
         {
@@ -135,15 +145,9 @@ public class GodfestFragment extends Fragment
             progress.setVisibility(View.VISIBLE);
             godfestList.setVisibility(View.GONE);
             godfestMessage.setVisibility(View.GONE);
+            godfestCountdown.setVisibility(View.GONE);
         }
 
-        /**
-         *
-         * Invoked on the UI thread after the background computation finishes.
-         * The result of the background computation is passed to this step as a parameter.
-         *
-         * @param aLong
-         */
         @Override
         protected void onPostExecute(Long aLong)
         {
@@ -151,6 +155,7 @@ public class GodfestFragment extends Fragment
             progress.setVisibility(View.GONE);
             godfestList.setVisibility(View.VISIBLE);
             godfestMessage.setVisibility(View.VISIBLE);
+            godfestCountdown.setVisibility(View.VISIBLE);
             renderGods();
         }
     }
@@ -164,11 +169,26 @@ public class GodfestFragment extends Fragment
 
     public static void renderGods()
     {
-        Log.d("GodfestFragment", "Rendering Godfest...");
         TextView godfestMessage = (TextView) rootView.findViewById(R.id.godfestMessage);
         godfestMessage.setText(Html.fromHtml(GodfestOverview.getGodfestMessage()));
-        ListView questionList = (ListView) rootView.findViewById(R.id.godsList);
+
+        if (GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_BEFORE) ||
+            GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_STARTED))
+        {
+            countDownTimer = Util.giveTimer(GodfestOverview.getGodfestSecondsLeft()*1000, godfestCountdown, godfestMessage);
+            countDownTimer.start();
+        }
+        else
+        {
+            if (godfestCountdown != null)
+            {
+                // Nuke the countdown
+                ((LinearLayout) godfestCountdown.getParent()).removeView(godfestCountdown);
+            }
+        }
+
+        ListView godsList = (ListView) rootView.findViewById(R.id.godsList);
         GodfestListAdapter GodfestListAdapter = new GodfestListAdapter(context, GodfestOverview.getFeaturedGods());
-        questionList.setAdapter(GodfestListAdapter);
+        godsList.setAdapter(GodfestListAdapter);
     }
 }
