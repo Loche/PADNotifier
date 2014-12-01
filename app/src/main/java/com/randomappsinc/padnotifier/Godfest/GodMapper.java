@@ -48,6 +48,27 @@ public class GodMapper
         nameToDrawableId.put("Archangel Metatron", R.drawable.lmeta);
         nameToDrawableId.put("Goddess of Power, Kali", R.drawable.dkali);
         nameToDrawableId.put("Dark Angel Metatron", R.drawable.dmeta);
+
+        // GRECO-ROMAN
+        nameToDrawableId.put("Minerva", R.drawable.minerva);
+        nameToDrawableId.put("Venus", R.drawable.venus);
+        nameToDrawableId.put("Hades", R.drawable.hades);
+        nameToDrawableId.put("Ceres", R.drawable.ceres);
+        nameToDrawableId.put("Neptune", R.drawable.neptune);
+
+        // GRECO
+        nameToDrawableId.put("Apollo", R.drawable.apollo);
+        nameToDrawableId.put("Artemis", R.drawable.artemis);
+        nameToDrawableId.put("Ares", R.drawable.ares);
+        nameToDrawableId.put("Hermes", R.drawable.hermes);
+        nameToDrawableId.put("Persephone", R.drawable.persephone);
+
+        // CHINESE
+        nameToDrawableId.put("Incarnation of Byakko, Haku", R.drawable.haku);
+        nameToDrawableId.put("Incarnation of Genbu, Meimei", R.drawable.genbu);
+        nameToDrawableId.put("Incarnation of Kirin, Sakuya", R.drawable.kirin);
+        nameToDrawableId.put("Incarnation of Seiryuu, Karin", R.drawable.karin);
+        nameToDrawableId.put("Incarnation of Suzaku, Leilan", R.drawable.leilan);
     }
 
     public Integer getGodDrawable(String godName)
