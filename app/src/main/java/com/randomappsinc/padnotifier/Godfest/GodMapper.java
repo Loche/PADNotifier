@@ -69,6 +69,27 @@ public class GodMapper
         nameToDrawableId.put("Incarnation of Kirin, Sakuya", R.drawable.kirin);
         nameToDrawableId.put("Incarnation of Seiryuu, Karin", R.drawable.karin);
         nameToDrawableId.put("Incarnation of Suzaku, Leilan", R.drawable.leilan);
+
+        // JAPANESE 2.0
+        nameToDrawableId.put("Umisachi&Yamasachi", R.drawable.u_and_y);
+        nameToDrawableId.put("Izanagi", R.drawable.izanagi);
+        nameToDrawableId.put("Kushinadahime", R.drawable.kush);
+        nameToDrawableId.put("Okuninushi", R.drawable.oku);
+        nameToDrawableId.put("Ame no Uzume", R.drawable.ame_no_uzume);
+
+        // ARCHDEMON
+        nameToDrawableId.put("Fallen Angel Lucifer", R.drawable.fa_luci);
+        nameToDrawableId.put("Amon", R.drawable.amon);
+        nameToDrawableId.put("Astaroth", R.drawable.astaroth);
+        nameToDrawableId.put("Baal", R.drawable.baal);
+        nameToDrawableId.put("Belial", R.drawable.belial);
+
+        // 3 KINGDOMS
+        nameToDrawableId.put("Sun Quan", R.drawable.sun_quan);
+        nameToDrawableId.put("Lu Bu", R.drawable.lu_bu);
+        nameToDrawableId.put("Da Qiao & Xiao Qiao", R.drawable.dqxq);
+        nameToDrawableId.put("Cao Cao", R.drawable.cao_cao);
+        nameToDrawableId.put("Liu Bei", R.drawable.liu_bei);
     }
 
     public Integer getGodDrawable(String godName)
