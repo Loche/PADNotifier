@@ -125,6 +125,20 @@ public class GodMapper
         nameToDrawableId.put("Perseus", R.drawable.perseus);
         nameToDrawableId.put("Sun Wukong ", R.drawable.sun_wukong);
         nameToDrawableId.put("Yamato Takeru", R.drawable.yamato_takeru);
+
+        // NORSE
+        nameToDrawableId.put("Freyja", R.drawable.freyja);
+        nameToDrawableId.put("Freyr", R.drawable.freyr);
+        nameToDrawableId.put("Thor", R.drawable.thor);
+        nameToDrawableId.put("Loki", R.drawable.loki);
+        nameToDrawableId.put("Idunn&Idunna", R.drawable.idunn_and_idunna);
+
+        // INDIAN 2.0
+        nameToDrawableId.put("Sarasvati", R.drawable.sarasvati);
+        nameToDrawableId.put("Vishnu", R.drawable.vishnu);
+        nameToDrawableId.put("Krishna", R.drawable.krishna);
+        nameToDrawableId.put("Ganesha", R.drawable.ganesha);
+        nameToDrawableId.put("Durga", R.drawable.durga);
     }
 
     public Integer getGodDrawable(String godName)
