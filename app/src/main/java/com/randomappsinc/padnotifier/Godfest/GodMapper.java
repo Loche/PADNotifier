@@ -111,6 +111,20 @@ public class GodMapper
         nameToDrawableId.put("Vritra", R.drawable.vritra);
         nameToDrawableId.put("Parvati", R.drawable.parvati);
         nameToDrawableId.put("Indra", R.drawable.indra);
+
+        // EGYPTIAN
+        nameToDrawableId.put("Anubis", R.drawable.anubis);
+        nameToDrawableId.put("Bastet", R.drawable.bastet);
+        nameToDrawableId.put("Horus", R.drawable.horus);
+        nameToDrawableId.put("Isis", R.drawable.isis);
+        nameToDrawableId.put("Ra", R.drawable.ra);
+
+        // HEROES
+        nameToDrawableId.put("Pandora", R.drawable.pandora);
+        nameToDrawableId.put("Andromeda", R.drawable.andromeda);
+        nameToDrawableId.put("Perseus", R.drawable.perseus);
+        nameToDrawableId.put("Sun Wukong ", R.drawable.sun_wukong);
+        nameToDrawableId.put("Yamato Takeru", R.drawable.yamato_takeru);
     }
 
     public Integer getGodDrawable(String godName)
