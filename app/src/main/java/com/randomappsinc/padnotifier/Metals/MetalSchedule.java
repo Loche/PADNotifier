@@ -4,8 +4,11 @@ import android.util.Log;
 
 import com.randomappsinc.padnotifier.Models.Timeslot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.TimeZone;
 import java.util.TreeMap;
 
 /**
@@ -20,6 +23,7 @@ public class MetalSchedule
     // Each country has its own IDs, which have their own lists of metal dungeons.
     private static TreeMap<Integer, HashMap<Character, ArrayList<Timeslot>>> schedule;
 
+    // Get the number of countries in the schedule.
     public int getNumKeys()
     {
         return schedule.keySet().size();
@@ -109,5 +113,27 @@ public class MetalSchedule
                 }
             }
         }
+    }
+
+    // Given a country and group ID, get all the currently open dungeons in the schedule.
+    public static ArrayList<Timeslot> getCurrentDungeons(int country, char group) {
+        ArrayList<Timeslot> currentDungeons = new ArrayList<Timeslot>();
+
+        ArrayList<Timeslot> relevantSchedule = getTimeslots(country, group);
+        for (Timeslot ts : relevantSchedule) {
+            Calendar dungeonStartTime = ts.getStarts_at();
+
+            // A dungeon is open if the time right now is between the start of the dungeon and an
+            // hour after that, when it closes.
+            long timeSinceDungeonStarted = System.currentTimeMillis() - dungeonStartTime.getTimeInMillis();
+
+            // If the current time is past the dungeon's starting time and before one hour after the
+            // dungeon starting time, add this dungeon to the array of current dungeons.
+            if (timeSinceDungeonStarted > 0 && timeSinceDungeonStarted < 1000 * 60 * 60) {
+                currentDungeons.add(ts);
+            }
+        }
+
+        return currentDungeons;
     }
 }
