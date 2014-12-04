@@ -70,7 +70,7 @@ public class Util
                 {
                     // Change the godfest message and create another timer
                     GodfestOverview.setGodfestState(GodfestOverview.GODFEST_STARTED);
-                    message.setText(GodfestOverview.getGodfestMessage());
+                    message.setText(Html.fromHtml(GodfestOverview.getGodfestMessage()));
                     GodfestFragment.killCountDownTimer();
                     GodfestFragment.setCountdownTimer(giveTimer(Util.GODFEST_DEFAULT_LENGTH * 1000, countdown, message));
                     GodfestFragment.startTimer();
@@ -79,7 +79,7 @@ public class Util
                 {
                     // Change the message, kill the timer
                     GodfestOverview.setGodfestState(GodfestOverview.GODFEST_OVER);
-                    message.setText(GodfestOverview.getGodfestMessage());
+                    message.setText(Html.fromHtml(GodfestOverview.getGodfestMessage()));
                     ((LinearLayout) countdown.getParent()).removeView(countdown);
                 }
             }

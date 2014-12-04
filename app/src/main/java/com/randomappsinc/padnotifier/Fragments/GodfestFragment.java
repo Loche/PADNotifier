@@ -180,7 +180,7 @@ public class GodfestFragment extends Fragment
         }
         else
         {
-            if (godfestCountdown != null)
+            if (godfestCountdown != null && godfestCountdown.getParent() != null)
             {
                 // Nuke the countdown
                 ((LinearLayout) godfestCountdown.getParent()).removeView(godfestCountdown);

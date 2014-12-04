@@ -78,6 +78,10 @@ public class DungeonMapper
                 new DungeonInfo("Hera-Is Descended!", R.drawable.hera_is_descended));
         imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/1532.png",
                 new DungeonInfo("Zeus Mercury Descended!", R.drawable.zeus_mercury_descended));
+        imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/1061.png",
+                new DungeonInfo("Dragon Zombie", R.drawable.dragon_zombie));
+        imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/744.png",
+                new DungeonInfo("Draggie!", R.drawable.draggie));
 
         nameToDrawableId.put("Dungeon of Ruby Dragons", R.drawable.hunt_ruby_dragons);
         nameToDrawableId.put("Dungeon of Sapphire Dragons", R.drawable.hunt_sapphire_dragons);
@@ -101,6 +105,8 @@ public class DungeonMapper
         nameToDrawableId.put("Zeus Vulcan Descended!", R.drawable.zeus_vulcan_descended);
         nameToDrawableId.put("Hera-Is Descended!", R.drawable.hera_is_descended);
         nameToDrawableId.put("Zeus Mercury Descended!", R.drawable.zeus_mercury_descended);
+        nameToDrawableId.put("Dragon Zombie", R.drawable.dragon_zombie);
+        nameToDrawableId.put("Draggie!", R.drawable.draggie);
     }
 
     private static void setUpDungeonNamesList()
