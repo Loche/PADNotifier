@@ -375,6 +375,9 @@ public class Util
 
     // Print out the time of a Calendar in human-readable format. Includes date, time, and timezone.
     public static String calendarToExactTime(Calendar calendar) {
+        if (calendar == null)
+            return "--";
+
         return "" + (calendar.get(calendar.MONTH) + 1 /* WHY IS MONTH ZERO-INDEXED */) + "-" +
                 calendar.get(calendar.DAY_OF_MONTH) + " " +
                 calendar.get(Calendar.HOUR_OF_DAY) +
