@@ -3,7 +3,9 @@ package com.randomappsinc.padnotifier.Alarms;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
+
+import com.randomappsinc.padnotifier.Data.DataFetcher;
+import com.randomappsinc.padnotifier.Misc.Util;
 
 /**
  * This BroadcastReceiver automatically (re)starts the alarm when the device is
@@ -22,11 +24,18 @@ public class MetalsBootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            // If we need to re-pull data, then do that
-            // pullDataAndReloadCacheOrSomething();
+        DataFetcher dataFetcher = new DataFetcher(context);
 
-            // metalsAlarm.setAlarm(context);
+        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+            if (!Util.cacheIsUpdated(context)) {
+                dataFetcher.syncFetchData();
+            }
+            else {
+                dataFetcher.extractMetalsFromStorage();
+                dataFetcher.extractGodfestInfoFromStorage();
+            }
+
+            metalsAlarm.setAlarm(context);
             dataAlarm.setAlarm(context);
         }
     }

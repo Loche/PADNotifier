@@ -7,8 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
 
-import com.randomappsinc.padnotifier.Activities.MainActivity;
 import com.randomappsinc.padnotifier.Misc.PreferencesManager;
 
 import java.util.Calendar;
@@ -31,6 +31,7 @@ public class DataAlarmReceiver extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "onReceive() for data is called.");
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
 
@@ -49,6 +50,8 @@ public class DataAlarmReceiver extends WakefulBroadcastReceiver {
      * @param context
      */
     public void setAlarm(Context context) {
+        Log.d(TAG, "setAlarm(context) for data is called.");
+
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, DataAlarmReceiver.class);
         alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);

@@ -38,8 +38,6 @@ public class MainActivity extends FragmentActivity implements
     // private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private ViewPager mViewPager;
     private TabsPagerAdapter mAdapter;
-    private boolean curled;
-    private static final String STATE_CURLED = "isCurled";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -50,20 +48,6 @@ public class MainActivity extends FragmentActivity implements
 
         Log.d(TAG, "MainActivity is created.");
         dungeonMapper = DungeonMapper.getDungeonMapper();
-
-        if (savedInstanceState != null)
-        {
-            curled = savedInstanceState.getBoolean(STATE_CURLED);
-        }
-
-        // TODO: Make this a nightly job.
-        if (curled == false)
-        {
-            Log.d(TAG, "NOW RUNNING A CURL.");
-            // DataFetcher.curlPDXHome();
-            // DataFetcher.pullEventInfo();
-            curled = true;
-        }
         context = this;
 
         setContentView(R.layout.activity_main);
@@ -204,14 +188,5 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onTabReselected(Tab tab, FragmentTransaction fragmentTransaction) {
         mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save the user's current game state
-        savedInstanceState.putBoolean(STATE_CURLED, curled);
-
-        // Always call the superclass so it can save the view hierarchy state
-        super.onSaveInstanceState(savedInstanceState);
     }
 }

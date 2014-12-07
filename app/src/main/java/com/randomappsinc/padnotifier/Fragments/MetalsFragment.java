@@ -15,9 +15,11 @@ import android.widget.TextView;
 
 import com.randomappsinc.padnotifier.Activities.MainActivity;
 import com.randomappsinc.padnotifier.Adapters.MetalsListAdapter;
+import com.randomappsinc.padnotifier.Alarms.MetalsAlarmReceiver;
 import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.Metals.MetalSchedule;
 import com.randomappsinc.padnotifier.Misc.PreferencesManager;
+import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.Models.Timeslot;
 import com.randomappsinc.padnotifier.R;
 
@@ -28,12 +30,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 public class MetalsFragment extends Fragment
 {
@@ -91,20 +89,14 @@ public class MetalsFragment extends Fragment
         progress.setVisibility(View.GONE);
 
         // If we have a cache that isn't outdated, render as normal. Else, re-pull the data.
-        File metals_info = new File(context.getFilesDir(), METALS_CACHE_FILENAME);
-        Calendar refreshTime = Calendar.getInstance();
-        refreshTime.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
-        refreshTime.set(Calendar.HOUR_OF_DAY, 0); /* TODO: Change this for Japan time later.*/
-        refreshTime.set(Calendar.MINUTE, 0);
-
-        if (Arrays.asList(context.fileList()).contains(METALS_CACHE_FILENAME) &&
-                metals_info.lastModified() > refreshTime.getTimeInMillis())
+        if (Util.cacheIsUpdated(getActivity()))
         {
             if (metalSchedule.getNumKeys() == 0)
             {
                 dataFetcher.extractMetalsFromStorage();
             }
             renderMetals();
+            new MetalsAlarmReceiver().setAlarm(getActivity());
         }
         else
         {

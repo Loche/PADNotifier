@@ -3,6 +3,7 @@ package com.randomappsinc.padnotifier.Data;
 import android.content.Context;
 import android.util.Log;
 
+import com.randomappsinc.padnotifier.Alarms.MetalsAlarmReceiver;
 import com.randomappsinc.padnotifier.Fragments.GodfestFragment;
 import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
 import com.randomappsinc.padnotifier.Godfest.GodfestOverview;
@@ -13,6 +14,12 @@ import com.randomappsinc.padnotifier.Models.God;
 import com.randomappsinc.padnotifier.Models.GodfestState;
 import com.randomappsinc.padnotifier.Models.Timeslot;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -23,6 +30,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -160,6 +168,8 @@ public class DataFetcher
                 break;
             }
         }
+
+        new MetalsAlarmReceiver().setAlarm(context);
     }
 
     public void extractPDXGodfestContent(String content)
@@ -330,5 +340,29 @@ public class DataFetcher
             }
         }
         catch (ParseException E){}
+    }
+
+    public boolean syncFetchData() {
+        HttpGet httpget = new HttpGet("http://www.puzzledragonx.com/");
+        HttpClient client = new DefaultHttpClient();
+
+        try {
+            HttpResponse response = client.execute(httpget);
+
+            int status = response.getStatusLine().getStatusCode();
+            if (status == 200) {
+                HttpEntity entity = response.getEntity();
+                String data = EntityUtils.toString(entity);
+
+                extractPDXMetalsContent(data);
+                extractPDXGodfestContent(data);
+
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

@@ -9,9 +9,11 @@ import android.widget.TextView;
 
 import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.Fragments.GodfestFragment;
+import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
 import com.randomappsinc.padnotifier.Godfest.GodfestOverview;
 import com.randomappsinc.padnotifier.Models.GodfestState;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -387,6 +390,17 @@ public class Util
                 calendar.get(Calendar.SECOND) + "." +
                 calendar.get(Calendar.MILLISECOND) + " " +
                 calendar.getTimeZone().getDisplayName();
+    }
+
+    public static boolean cacheIsUpdated(Context context) {
+        File metals_info = new File(context.getFilesDir(), MetalsFragment.METALS_CACHE_FILENAME);
+        Calendar refreshTime = Calendar.getInstance();
+        refreshTime.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+        refreshTime.set(Calendar.HOUR_OF_DAY, 0); /* TODO: Change this for Japan time later.*/
+        refreshTime.set(Calendar.MINUTE, 0);
+
+        return (Arrays.asList(context.fileList()).contains(MetalsFragment.METALS_CACHE_FILENAME) &&
+                metals_info.lastModified() > refreshTime.getTimeInMillis());
     }
 }
 
