@@ -17,6 +17,7 @@ public class PreferencesManager
     private static final String GROUP_KEY = "com.randomappsinc.padnotifier.group";
     private static final String STARTER_COLOR_KEY = "com.randomappsinc.padnotifier.starterColor";
     private static final String MUTE_SETTING_KEY = "com.randomappsinc.padnotifier.muteSetting";
+    private static final String DATA_ALARM_JITTER_KEY = "com.randomappsinc.padnotifier.dataAlarmJitter";
 
     public PreferencesManager(Context context)
     {
@@ -82,5 +83,15 @@ public class PreferencesManager
     public void setStarterColor(String starterColor)
     {
         prefs.edit().putString(STARTER_COLOR_KEY, starterColor).apply();
+    }
+
+    public int getDataAlarmJitter()
+    {
+        return prefs.getInt(DATA_ALARM_JITTER_KEY, -1);
+    }
+
+    public void setDataAlarmJitter(int jitter)
+    {
+        prefs.edit().putInt(DATA_ALARM_JITTER_KEY, jitter).apply();
     }
 }

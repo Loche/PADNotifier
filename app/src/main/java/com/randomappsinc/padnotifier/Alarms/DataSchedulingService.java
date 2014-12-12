@@ -36,14 +36,13 @@ public class DataSchedulingService extends IntentService {
 
     public static final String TAG = "DataSchedulingService";
     public static final String PDX_URL = "http://www.puzzledragonx.com";
-    public static final String PADH_URL = "https://www.padherder.com/api/events/";
+    // public static final String PADH_URL = "https://www.padherder.com/api/events/";
 
     @Override
     protected void onHandleIntent(Intent intent) {
         // TODO: Change this back to pulling PDX once the PDX parsing code is finished.
 
         String urlString = PDX_URL;
-        // String urlString = PADH_URL;
         String result = "";
 
         // Try to connect to the PDX homepage and download content.
@@ -58,9 +57,9 @@ public class DataSchedulingService extends IntentService {
             return;
         }
 
-        // TODO: Uncomment this once this file is pushed to git. If you see this comment in more
-        //       than one of Derek's commits, something's wrong.
-        // DataFetcher.extractPDXHomeContent(result);
+        DataFetcher df = new DataFetcher(this);
+        df.extractPDXMetalsContent(result);
+        df.extractPDXGodfestContent(result);
 
         // DataFetcher.extractPadherderAPIJSON(result);
         Log.i(TAG, "Alarm-based data fetching pulled successfully.");

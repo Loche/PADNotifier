@@ -388,7 +388,7 @@ public class Util
                 calendar.get(Calendar.MINUTE) +
                 (calendar.get(Calendar.SECOND) > 9 ? ":" : ":0") +
                 calendar.get(Calendar.SECOND) + "." +
-                calendar.get(Calendar.MILLISECOND) + " " +
+                String.format("%03d", calendar.get(Calendar.MILLISECOND)) + " " +
                 calendar.getTimeZone().getDisplayName();
     }
 

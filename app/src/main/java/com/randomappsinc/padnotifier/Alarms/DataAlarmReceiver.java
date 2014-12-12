@@ -10,9 +10,11 @@ import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
 import com.randomappsinc.padnotifier.Misc.PreferencesManager;
+import com.randomappsinc.padnotifier.Misc.Util;
 
 import java.util.Calendar;
 import java.util.Random;
+import java.util.TimeZone;
 
 // TODO: ALL OF THIS.
 // The alarms part works just fine, as far as turning on the app and setting an alarm and having
@@ -57,19 +59,27 @@ public class DataAlarmReceiver extends WakefulBroadcastReceiver {
         alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
         // Set the alarm's trigger time to some time between 12:30 and 1:30 am.
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 30);
+        calendar.set(Calendar.MILLISECOND, 0);
 
-        Random rand = new Random();
-        int jitter = rand.nextInt(1000 * 60 * 60 + 1); // an hour in milliseconds
+        // Make jitter tied to this installation.
+        PreferencesManager prefsMgr = new PreferencesManager(context);
+        int jitter = prefsMgr.getDataAlarmJitter();
+        if (jitter == -1) {
+            Random rand = new Random();
+            jitter = rand.nextInt(1000 * 60 * 60 + 1); // an hour in milliseconds
+        }
         calendar.setTimeInMillis(calendar.getTimeInMillis() + jitter);
 
-        boolean DEBUG = false;
-        if (DEBUG) {
-            calendar.setTimeInMillis(System.currentTimeMillis() + 30000);
-        }
+        // Make sure the calendar is going off tomorrow morning instead of today/right now, assuming
+        // right now isn't between midnight and the alarm's time.
+        if (calendar.getTimeInMillis() <= System.currentTimeMillis())
+            calendar.add(Calendar.DATE, 1);
+
+        Log.d(TAG, "Data alarm set for " + Util.calendarToExactTime(calendar));
 
         // Set the alarm to fire between 12:30 and 1:30 AM, according to the device's
         // clock, and to repeat once a day.
