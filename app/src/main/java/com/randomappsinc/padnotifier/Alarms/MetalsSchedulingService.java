@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.randomappsinc.padnotifier.Metals.DungeonMapper;
+import com.randomappsinc.padnotifier.Models.Timeslot;
 import com.randomappsinc.padnotifier.R;
 
 /**
@@ -45,7 +47,12 @@ public class MetalsSchedulingService extends IntentService {
         // BEGIN_INCLUDE(service_onhandle)
 
         // Create the notification and push it.
-        alertMetalDragons();
+        // TODO: Look up what dungeons are open right now and use their values.
+        // May require changing implementation of how metals alarms are set to:
+        // Alarm for each dungeon -> one alarm for time (e.g., one alarm set for both normal rubies and super rubies)
+        // Get current dungeons using schedule
+        // for each current dungeon: push a notification
+        alertMetalDragons(null);
 
         // Release the wake lock provided by the BroadcastReceiver.
         MetalsAlarmReceiver.completeWakefulIntent(intent);
@@ -54,15 +61,25 @@ public class MetalsSchedulingService extends IntentService {
     }
 
     // Post a notification when a metals dungeon comes up.
-    private void alertMetalDragons() {
+    private void alertMetalDragons(Timeslot timeslot) {
         Log.d(TAG, "Alert! Metal Dragons!");
 
         // Notification to say that the app has opened. Take this out before pushing to app store.
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.icon_177)
-                        .setContentTitle("PAD Notifier")
-                        .setContentText("A metals dungeon is open!");
+        NotificationCompat.Builder mBuilder;
+        if (timeslot == null) {
+            mBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.icon_177)
+                    .setContentTitle("PAD Notifier")
+                    .setContentText("A metals dungeon is open!");
+        }
+        else {
+            DungeonMapper dm = DungeonMapper.getDungeonMapper();
+            String dungeonName = timeslot.getTitle();
+            mBuilder = new NotificationCompat.Builder(this)
+                    .setSmallIcon(dm.getDrawableIdFromName(dungeonName))
+                    .setContentTitle("PAD Notifier")
+                    .setContentText(dungeonName + " is open!");
+        }
         int buzztime = 100;
         int pause = 5;
         long[] pattern = {0, buzztime, buzztime+pause, 2*buzztime+pause, 2*buzztime+2*pause, 3*buzztime+2*pause};

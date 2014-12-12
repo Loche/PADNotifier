@@ -42,9 +42,13 @@ public class MetalsAlarmReceiver extends WakefulBroadcastReceiver {
      * @param context
      */
     public void setAlarm(Context context) {
-        PreferencesManager m_prefs_manager = new PreferencesManager(context);
-
         Log.d(TAG, "setAlarm(Context) for metals is called");
+
+        PreferencesManager m_prefs_manager = new PreferencesManager(context);
+        if (m_prefs_manager.getMuteSetting()) {
+            Log.i(TAG, "Alarms muted. No metals alarms set.");
+            return;
+        }
 
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
@@ -61,15 +65,22 @@ public class MetalsAlarmReceiver extends WakefulBroadcastReceiver {
 
         // Make an alarm for each timeslot
         int request_id = 0;
+        Timeslot currentTimeslot;
         for (int i = 0; i < timeslots.size(); ++i) {
-            // Add the pending intent for each timeslot
-            alarmIntents.add(PendingIntent.getBroadcast(context, request_id,
-                    new Intent(context, MetalsAlarmReceiver.class), 0));
-            // set the alarm
-            alarmMgr.set(AlarmManager.RTC_WAKEUP, timeslots.get(i).getStarts_at().getTimeInMillis(), alarmIntents.get(i));
+            currentTimeslot = timeslots.get(i);
 
-            Log.d(TAG, "Alarm: " + timeslots.get(i).getTitle() + " " +
-                    Util.calendarToExactTime(timeslots.get(i).getStarts_at()));
+            // If the alarm is allowed to be set and dungeon hasn't ended already:
+            if (m_prefs_manager.isDungeonAllowed(currentTimeslot.getTitle())
+                    && currentTimeslot.getStarts_at().getTimeInMillis() + (1000 * 60 * 60) >= System.currentTimeMillis()) {
+                // Add the pending intent for each timeslot
+                alarmIntents.add(PendingIntent.getBroadcast(context, request_id,
+                        new Intent(context, MetalsAlarmReceiver.class), 0));
+                // set the alarm
+                alarmMgr.set(AlarmManager.RTC_WAKEUP, currentTimeslot.getStarts_at().getTimeInMillis(), alarmIntents.get(i));
+
+                Log.i(TAG, "Metals alarm set: " + currentTimeslot.getTitle() + " at " +
+                        Util.calendarToExactTime(currentTimeslot.getStarts_at()));
+            }
         }
 
         // Enable {@code SampleBootReceiver} to automatically restart the alarm when the

@@ -61,6 +61,9 @@ public class DataSchedulingService extends IntentService {
         df.extractPDXMetalsContent(result);
         df.extractPDXGodfestContent(result);
 
+        MetalsAlarmReceiver metalsAlarmReceiver = new MetalsAlarmReceiver();
+        metalsAlarmReceiver.setAlarm(this);
+
         // DataFetcher.extractPadherderAPIJSON(result);
         Log.i(TAG, "Alarm-based data fetching pulled successfully.");
 

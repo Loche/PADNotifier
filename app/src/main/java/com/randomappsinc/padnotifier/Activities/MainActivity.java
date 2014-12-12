@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.randomappsinc.padnotifier.Adapters.TabsPagerAdapter;
 import com.randomappsinc.padnotifier.Alarms.DataAlarmReceiver;
+import com.randomappsinc.padnotifier.Alarms.MetalsAlarmReceiver;
 import com.randomappsinc.padnotifier.Fragments.GodfestFragment;
 import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
 import com.randomappsinc.padnotifier.Metals.DungeonMapper;
@@ -34,6 +35,7 @@ public class MainActivity extends FragmentActivity implements
     private static final String TAG = "MainActivity";
     private static final String PAD_WIKIA_BASE = "http://pad.wikia.com/wiki/";
     DataAlarmReceiver alarm = new DataAlarmReceiver();
+    MetalsAlarmReceiver metalsAlarm = new MetalsAlarmReceiver();
 
     // private DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     private ViewPager mViewPager;
@@ -166,6 +168,7 @@ public class MainActivity extends FragmentActivity implements
             case R.id.action_refresh:
                 MetalsFragment.refreshView();
                 GodfestFragment.refreshView();
+                metalsAlarm.setAlarm(this);
                 break;
             default:
                 break;

@@ -16,6 +16,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.randomappsinc.padnotifier.Adapters.StarterColorSpinnerAdapter;
+import com.randomappsinc.padnotifier.Alarms.MetalsAlarmReceiver;
 import com.randomappsinc.padnotifier.Misc.PreferencesManager;
 import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
@@ -26,7 +27,7 @@ public class SettingsActivity extends Activity
     private PreferencesManager m_prefs_manager;
 
     private static final String[] colors = {"Fire", "Water", "Grass"};
-    private static final String SETTINGS_SAVED = "Your settings changes have been saved.";
+    private static final String SETTINGS_SAVED = "Your changes have been saved.";
     private static final String MISSING_THIRD_DIGIT = "Please enter your PAD ID's third digit!";
 
     // Views
@@ -100,6 +101,16 @@ public class SettingsActivity extends Activity
             String starterColor = Util.starterColorToChar(starterColorSpinner.getSelectedItem().toString());
             m_prefs_manager.setStarterColor(starterColor);
             m_prefs_manager.setMuteSetting(muteSetting.isChecked());
+
+            // Cancel all of the alarms and set them all again to cover any changes in
+            // dungeons' individual alarm settings. (Dungeons' alarms are checked when being set,
+            // not when they are received.)
+            MetalsAlarmReceiver metalsAlarm = new MetalsAlarmReceiver();
+            metalsAlarm.cancelAlarm(this);
+            if (!muteSetting.isChecked()) {
+                metalsAlarm.setAlarm(this);
+            }
+
             return true;
         }
     }
