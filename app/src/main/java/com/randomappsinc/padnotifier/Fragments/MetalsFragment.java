@@ -32,6 +32,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MetalsFragment extends Fragment
 {
@@ -140,6 +141,9 @@ public class MetalsFragment extends Fragment
                     break;
                 }
             }
+
+            // Display dungeons in order of the day.
+            Collections.sort(timeslots);
 
             MetalsListAdapter metalsAdapter = new MetalsListAdapter(context, timeslots);
             metalsList.setAdapter(metalsAdapter);

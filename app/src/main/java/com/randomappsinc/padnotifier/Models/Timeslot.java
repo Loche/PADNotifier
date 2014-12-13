@@ -90,6 +90,12 @@ public class Timeslot implements Comparable<Timeslot> {
 
     @Override
     public int compareTo(Timeslot anotherTimeslot) {
-        return starts_at.compareTo(anotherTimeslot.starts_at);
+        int compareVal = starts_at.compareTo(anotherTimeslot.starts_at);
+
+        if (compareVal == 0) {
+            compareVal = title.compareTo(anotherTimeslot.getTitle());
+        }
+
+        return compareVal;
     }
 }
