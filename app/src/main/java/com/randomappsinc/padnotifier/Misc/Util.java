@@ -382,7 +382,8 @@ public class Util
             return "--";
 
         return "" + (calendar.get(calendar.MONTH) + 1 /* WHY IS MONTH ZERO-INDEXED */) + "-" +
-                calendar.get(calendar.DAY_OF_MONTH) + " " +
+                calendar.get(calendar.DAY_OF_MONTH) +
+                (calendar.get(Calendar.HOUR_OF_DAY) > 9 ? " " : " 0") +
                 calendar.get(Calendar.HOUR_OF_DAY) +
                 (calendar.get(Calendar.MINUTE) > 9 ? ":" : ":0") +
                 calendar.get(Calendar.MINUTE) +
