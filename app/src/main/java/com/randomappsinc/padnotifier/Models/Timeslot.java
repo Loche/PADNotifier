@@ -93,7 +93,12 @@ public class Timeslot implements Comparable<Timeslot> {
         int compareVal = starts_at.compareTo(anotherTimeslot.starts_at);
 
         if (compareVal == 0) {
-            compareVal = title.compareTo(anotherTimeslot.getTitle());
+            if (title == null) {
+                compareVal = 1;
+            }
+            else {
+                compareVal = title.compareTo(anotherTimeslot.getTitle());
+            }
         }
 
         return compareVal;
