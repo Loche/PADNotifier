@@ -71,7 +71,6 @@ public class DataAlarmReceiver extends WakefulBroadcastReceiver {
         if (jitter == -1) {
             Random rand = new Random();
             jitter = rand.nextInt(1000 * 60 * 60 + 1); // an hour in milliseconds
-            prefsMgr.setDataAlarmJitter(jitter);
         }
         calendar.setTimeInMillis(calendar.getTimeInMillis() + jitter);
 
