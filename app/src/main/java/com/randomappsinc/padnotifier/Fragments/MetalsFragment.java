@@ -90,7 +90,7 @@ public class MetalsFragment extends Fragment
         progress.setVisibility(View.GONE);
 
         // If we have a cache that isn't outdated, render as normal. Else, re-pull the data.
-        if (Util.cacheIsUpdated(getActivity()))
+        if (Util.cacheIsUpdated(getActivity(), METALS_CACHE_FILENAME))
         {
             if (metalSchedule.getNumKeys() == 0)
             {
@@ -170,8 +170,6 @@ public class MetalsFragment extends Fragment
 
                     dataFetcher.extractPDXMetalsContent(data);
                 }
-
-
             } catch (IOException e) {
                 e.printStackTrace();
                 return new Long(-1);

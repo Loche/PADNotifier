@@ -393,12 +393,16 @@ public class Util
                 calendar.getTimeZone().getDisplayName();
     }
 
-    public static boolean cacheIsUpdated(Context context) {
-        File metals_info = new File(context.getFilesDir(), MetalsFragment.METALS_CACHE_FILENAME);
+    public static boolean cacheIsUpdated(Context context, String fileName) {
+        File metals_info = new File(context.getFilesDir(), fileName);
         Calendar refreshTime = Calendar.getInstance();
+
         refreshTime.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+        refreshTime.set(Calendar.DAY_OF_MONTH, refreshTime.get(Calendar.DATE));
         refreshTime.set(Calendar.HOUR_OF_DAY, 0); /* TODO: Change this for Japan time later.*/
         refreshTime.set(Calendar.MINUTE, 0);
+        refreshTime.set(Calendar.SECOND, 0);
+        refreshTime.set(Calendar.MILLISECOND, 0);
 
         return (Arrays.asList(context.fileList()).contains(MetalsFragment.METALS_CACHE_FILENAME) &&
                 metals_info.lastModified() > refreshTime.getTimeInMillis());

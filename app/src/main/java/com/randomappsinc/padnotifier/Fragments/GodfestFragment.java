@@ -29,11 +29,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 public class GodfestFragment extends Fragment
 {
@@ -90,16 +86,7 @@ public class GodfestFragment extends Fragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         progress.setVisibility(View.GONE);
-
-        // If we have a cache that isn't outdated, render as normal. Else, re-pull the data.
-        File godfest_info = new File(context.getFilesDir(), GODFEST_CACHE_FILENAME);
-        Calendar refreshTime = Calendar.getInstance();
-        refreshTime.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
-        refreshTime.set(Calendar.HOUR_OF_DAY, 0);
-        refreshTime.set(Calendar.MINUTE, 0);
-
-        if (Arrays.asList(context.fileList()).contains(GODFEST_CACHE_FILENAME) &&
-                godfest_info.lastModified() > refreshTime.getTimeInMillis())
+        if (Util.cacheIsUpdated(getActivity(), GODFEST_CACHE_FILENAME))
         {
             GodfestOverview.clearGodfestInfo();
             dataFetcher.extractGodfestInfoFromStorage();

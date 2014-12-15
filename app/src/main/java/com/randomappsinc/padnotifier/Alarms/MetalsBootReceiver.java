@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.randomappsinc.padnotifier.Data.DataFetcher;
+import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
 import com.randomappsinc.padnotifier.Misc.Util;
 
 /**
@@ -27,7 +28,7 @@ public class MetalsBootReceiver extends BroadcastReceiver {
         DataFetcher dataFetcher = new DataFetcher(context);
 
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            if (!Util.cacheIsUpdated(context)) {
+            if (!Util.cacheIsUpdated(context, MetalsFragment.METALS_CACHE_FILENAME)) {
                 dataFetcher.syncFetchData();
             }
             else {
