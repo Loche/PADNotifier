@@ -110,7 +110,8 @@ public class GodfestFragment extends Fragment
             {
                 HttpResponse response = client.execute(httpget);
                 int status = response.getStatusLine().getStatusCode();
-                if (status == 200) {
+                if (status == 200)
+                {
                     HttpEntity entity = response.getEntity();
                     String data = EntityUtils.toString(entity);
 
@@ -159,21 +160,23 @@ public class GodfestFragment extends Fragment
         TextView godfestMessage = (TextView) rootView.findViewById(R.id.godfestMessage);
         godfestMessage.setText(Html.fromHtml(GodfestOverview.getGodfestMessage()));
 
-        if (GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_BEFORE) ||
-            GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_STARTED))
+        if (GodfestOverview.getGodfestState() != null)
         {
-            countDownTimer = Util.giveTimer(GodfestOverview.getGodfestSecondsLeft()*1000, godfestCountdown, godfestMessage);
-            countDownTimer.start();
-        }
-        else
-        {
-            if (godfestCountdown != null && godfestCountdown.getParent() != null)
+            if (GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_BEFORE) ||
+                    GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_STARTED))
             {
-                // Nuke the countdown
-                ((LinearLayout) godfestCountdown.getParent()).removeView(godfestCountdown);
+                countDownTimer = Util.giveTimer(GodfestOverview.getGodfestSecondsLeft() * 1000, godfestCountdown, godfestMessage);
+                countDownTimer.start();
+            }
+            else
+            {
+                if (godfestCountdown != null && godfestCountdown.getParent() != null)
+                {
+                    // Nuke the countdown
+                    ((LinearLayout) godfestCountdown.getParent()).removeView(godfestCountdown);
+                }
             }
         }
-
         ListView godsList = (ListView) rootView.findViewById(R.id.godsList);
         GodfestListAdapter GodfestListAdapter = new GodfestListAdapter(context, GodfestOverview.getFeaturedGods());
         godsList.setAdapter(GodfestListAdapter);

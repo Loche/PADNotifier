@@ -37,10 +37,11 @@ import java.util.Collections;
 public class MetalsFragment extends Fragment
 {
     private static View rootView;
-    public static Context context;
     private static ProgressBar progress;
-    private static TextView metalMessage;
+    private static TextView metalsMessage;
     public static ListView metalsList;
+
+    public static Context context;
     private static MetalSchedule metalSchedule;
     private static DataFetcher dataFetcher;
 
@@ -50,7 +51,7 @@ public class MetalsFragment extends Fragment
 
     // Display message for no metals information.
     private static final String NO_METALS = "It looks like we are unable to " +
-            "fetch the metals information for today. Please try again later.";
+            "fetch the metals information for today. If you have no internet access at the moment, try again when you get it.";
     private static final String SOME_METALS = "It looks like we are unable to " +
             "fetch all of the metals information for today. Please try again later.";
 
@@ -77,7 +78,7 @@ public class MetalsFragment extends Fragment
     {
         rootView = inflater.inflate(R.layout.fragment_metals, container, false);
         progress = (ProgressBar) rootView.findViewById(R.id.progressBarMetals);
-        metalMessage = (TextView) rootView.findViewById(R.id.metalsMessage);
+        metalsMessage = (TextView) rootView.findViewById(R.id.metalsMessage);
         metalsList = (ListView) rootView.findViewById(R.id.metalsList);
         MainActivity.setUpMetalsListener();
         return rootView;
@@ -119,14 +120,19 @@ public class MetalsFragment extends Fragment
         MetalSchedule.getInstance();
         if (MetalSchedule.timesIsEmpty(2 /* US Country Code*/, m_prefs_manager.getGroup()))
         {
-            TextView metalsMessage = (TextView) rootView.findViewById(R.id.metalsMessage);
+            metalsMessage = (TextView) rootView.findViewById(R.id.metalsMessage);
             metalsMessage.setText(NO_METALS);
             metalsMessage.setTextSize(METALS_MESSAGE_SIZE);
+
+            // Clear the list, make it empty
+            MetalsListAdapter metalsAdapter = new MetalsListAdapter(context, new ArrayList<Timeslot>());
+            metalsList.setAdapter(metalsAdapter);
         }
         else
         {
             Log.d(TAG, "Rendering metals...");
-            ListView metalsList = (ListView) rootView.findViewById(R.id.metalsList);
+            metalsMessage.setVisibility(View.GONE);
+            metalsList = (ListView) rootView.findViewById(R.id.metalsList);
             MetalSchedule masterSchedule = MetalSchedule.getInstance();
 
             ArrayList<Timeslot> timeslots = masterSchedule.getTimeslots(2 /* US Country Code */,
@@ -156,7 +162,6 @@ public class MetalsFragment extends Fragment
     private static class getMetalsList extends AsyncTask<String, Integer, Long> {
         @Override
         protected Long doInBackground(String... strings) {
-            // Parameter not used. Return value not used, either.
 
             HttpGet httpget = new HttpGet("http://www.puzzledragonx.com/");
             HttpClient client = new DefaultHttpClient();
@@ -177,33 +182,24 @@ public class MetalsFragment extends Fragment
             return null;
         }
 
-        /**
-         * This step is normally used to setup the task, for instance
-         * by showing a progress bar in the user interface.
-         */
+        // Done before task
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
             progress.setVisibility(View.VISIBLE);
             metalsList.setVisibility(View.GONE);
-            metalMessage.setVisibility(View.GONE);
+            metalsMessage.setVisibility(View.GONE);
         }
 
-        /**
-         *
-         * Invoked on the UI thread after the background computation finishes.
-         * The result of the background computation is passed to this step as a parameter.
-         *
-         * @param aLong
-         */
+        // Done after task
         @Override
         protected void onPostExecute(Long aLong) {
             super.onPostExecute(aLong);
 
             progress.setVisibility(View.GONE);
             metalsList.setVisibility(View.VISIBLE);
-            metalMessage.setVisibility(View.VISIBLE);
+            metalsMessage.setVisibility(View.VISIBLE);
 
             renderMetals();
         }

@@ -19,6 +19,8 @@ public class GodfestOverview
     public static String GODFEST_OVER = "OVER";
     public static String GODFEST_NONE = "NONE";
     private static final String NO_GODFEST_MESSAGE = "Currently, there isn't even a godfest on the radar. Check back next time!";
+    private static final String GODFEST_FETCH_FAIL = "It looks like we are unable to fetch the godfest information. "
+            + "If you have no internet access at the moment, try again when you get it.";
 
     public static ArrayList<God> getFeaturedGods()
     {
@@ -59,10 +61,15 @@ public class GodfestOverview
     {
         featuredGods.clear();
         godfestGroups.clear();
+        godfestState = null;
     }
 
     public static String getGodfestMessage ()
     {
+        if (godfestState == null)
+        {
+            return GODFEST_FETCH_FAIL;
+        }
         if (godfestState.equals(GODFEST_NONE))
         {
             return NO_GODFEST_MESSAGE;

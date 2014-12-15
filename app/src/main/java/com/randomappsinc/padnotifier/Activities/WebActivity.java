@@ -1,7 +1,6 @@
 package com.randomappsinc.padnotifier.Activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -32,7 +31,6 @@ import java.io.IOException;
  */
 public class WebActivity extends Activity
 {
-    private Context context;
     public static final String URL_KEY = "URL";
     boolean loadingFinished = true;
     boolean redirect = false;
@@ -47,7 +45,6 @@ public class WebActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        context = this;
         data = null;
         setContentView(R.layout.webview);
         progressBar = (ProgressBar) findViewById(R.id.web_progress_bar);

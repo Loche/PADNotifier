@@ -268,7 +268,6 @@ public class DataFetcher
             }
             externalFile.put(GODFEST_CATEGORIES_KEY, categoryList);
             externalFile.put(FEATURED_GODS_KEY, godsList);
-            Util.writeToInternalStorage(GodfestFragment.GODFEST_CACHE_FILENAME, context, externalFile.toJSONString());
         }
         else
         {
@@ -276,6 +275,7 @@ public class DataFetcher
             externalFile.put(GODFEST_STATE_KEY, GodfestOverview.GODFEST_NONE);
             externalFile.put(GODFEST_TIME_LEFT_KEY, 0);
         }
+        Util.writeToInternalStorage(GodfestFragment.GODFEST_CACHE_FILENAME, context, externalFile.toJSONString());
     }
 
     public void extractMetalsFromStorage()
@@ -311,6 +311,12 @@ public class DataFetcher
             JSONObject jsonObject = (JSONObject) parser.parse(JSONdata);
             // EXTRACT STATE
             String state = jsonObject.get(GODFEST_STATE_KEY).toString();
+            // Bail early if there's nothing on the radar
+            if (state.equals(GodfestOverview.GODFEST_NONE))
+            {
+                GodfestOverview.setGodfestState(state);
+                return;
+            }
             Long timeLeft = Long.valueOf(jsonObject.get(GODFEST_TIME_LEFT_KEY).toString());
             File godfest_info = new File(context.getFilesDir(), GodfestFragment.GODFEST_CACHE_FILENAME);
             Long cacheUnixTime = (godfest_info.lastModified() / 1000L);

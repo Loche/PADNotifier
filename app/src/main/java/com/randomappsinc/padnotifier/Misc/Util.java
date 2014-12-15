@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.Fragments.GodfestFragment;
-import com.randomappsinc.padnotifier.Fragments.MetalsFragment;
 import com.randomappsinc.padnotifier.Godfest.GodfestOverview;
 import com.randomappsinc.padnotifier.Models.GodfestState;
 
@@ -394,7 +393,7 @@ public class Util
     }
 
     public static boolean cacheIsUpdated(Context context, String fileName) {
-        File metals_info = new File(context.getFilesDir(), fileName);
+        File cacheFile = new File(context.getFilesDir(), fileName);
         Calendar refreshTime = Calendar.getInstance();
 
         refreshTime.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
@@ -404,8 +403,8 @@ public class Util
         refreshTime.set(Calendar.SECOND, 0);
         refreshTime.set(Calendar.MILLISECOND, 0);
 
-        return (Arrays.asList(context.fileList()).contains(MetalsFragment.METALS_CACHE_FILENAME) &&
-                metals_info.lastModified() > refreshTime.getTimeInMillis());
+        return (Arrays.asList(context.fileList()).contains(fileName) &&
+                cacheFile.lastModified() > refreshTime.getTimeInMillis());
     }
 }
 
