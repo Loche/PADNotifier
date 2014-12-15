@@ -101,7 +101,7 @@ public class MetalsFragment extends Fragment
         }
         else
         {
-            new getMetalsList().execute("This string isn't used.");
+            refreshView();
         }
 
         super.onViewCreated(view, savedInstanceState);

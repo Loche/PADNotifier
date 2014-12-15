@@ -107,7 +107,7 @@ public class GodfestFragment extends Fragment
         }
         else
         {
-            new getGodfestList().execute("This string isn't used.");
+            refreshView();
         }
         super.onViewCreated(view, savedInstanceState);
     }

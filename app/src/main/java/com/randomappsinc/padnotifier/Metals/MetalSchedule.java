@@ -90,7 +90,10 @@ public class MetalSchedule
     }
 
     public void clearTimeslots(){
-        schedule.clear();
+        if (schedule != null)
+        {
+            schedule.clear();
+        }
     }
 
     // Checks if a country has dungeon times.

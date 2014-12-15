@@ -139,6 +139,13 @@ public class GodMapper
         nameToDrawableId.put("Krishna", R.drawable.krishna);
         nameToDrawableId.put("Ganesha", R.drawable.ganesha);
         nameToDrawableId.put("Durga", R.drawable.durga);
+
+        // EGYPTIAN 2.0
+        nameToDrawableId.put("Set", R.drawable.set);
+        nameToDrawableId.put("Osiris", R.drawable.osiris);
+        nameToDrawableId.put("Hathor", R.drawable.hathor);
+        nameToDrawableId.put("Nephthys", R.drawable.nephthys);
+        nameToDrawableId.put("Nut", R.drawable.nut);
     }
 
     public Integer getGodDrawable(String godName)
