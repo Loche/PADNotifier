@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -31,7 +32,7 @@ import java.io.IOException;
  */
 public class WebActivity extends Activity
 {
-    Context context;
+    private Context context;
     public static final String URL_KEY = "URL";
     boolean loadingFinished = true;
     boolean redirect = false;
@@ -94,6 +95,10 @@ public class WebActivity extends Activity
                 if (loadingFinished && !redirect)
                 {
                     configureSettings();
+                    if (webView.getParent() != null)
+                    {
+                        ((ViewGroup) webView.getParent()).removeView(webView);
+                    }
                     setContentView(webView);
                 }
                 else
@@ -113,7 +118,6 @@ public class WebActivity extends Activity
         WebSettings settings = webView.getSettings();
         settings.setBuiltInZoomControls(true);
         settings.setUseWideViewPort(true);
-        settings.setJavaScriptEnabled(true);
     }
 
     private static class getWebPage extends AsyncTask<String, Integer, Long>
