@@ -11,9 +11,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.randomappsinc.padnotifier.Adapters.SelectivePushACAdapter;
 import com.randomappsinc.padnotifier.Adapters.SelectivePushAdapter;
@@ -29,6 +31,7 @@ public class SelectivePushActivity extends Activity
     private AutoCompleteTextView selectiveAcEditText;
     private DungeonMapper dungeonMapper;
     private Button narrowMetals;
+    private static final String PAD_WIKIA_BASE = "http://pad.wikia.com/wiki/";
 
     public boolean killKeyboard()
     {
@@ -61,27 +64,38 @@ public class SelectivePushActivity extends Activity
         selectiveAcEditText = (AutoCompleteTextView) findViewById(R.id.selective_search_box);
         narrowMetals = (Button) findViewById(R.id.narrow_metals);
 
+        // Set up adapters and listeners
         dungeonList.setAdapter(new SelectivePushAdapter(context, ""));
         SelectivePushACAdapter adapter = new SelectivePushACAdapter(context, android.R.layout.simple_dropdown_item_1line,
                 dungeonMapper.getDungeonNamesList());
         selectiveAcEditText.setAdapter(adapter);
         narrowMetals.setOnClickListener(narrowMetalsListener);
+
+        dungeonList.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) throws IllegalArgumentException, IllegalStateException
+            {
+                String dungeonName = ((TextView) view.findViewById(R.id.dungeon_name)).getText().toString();
+                Intent intent = new Intent(context, WebActivity.class);
+                intent.putExtra(WebActivity.URL_KEY, PAD_WIKIA_BASE + dungeonName.replaceAll(" ", "_"));
+                context.startActivity(intent);
+            }
+        });
     }
 
     View.OnClickListener narrowMetalsListener = new View.OnClickListener() {
         public void onClick(View v) {
             killKeyboard();
 
-            // Grab metals listview
-            final ListView metalsList = (ListView) findViewById(R.id.dungeon_list);
             // clear previous results in the metals listview
-            metalsList.setAdapter(null);
+            dungeonList.setAdapter(null);
 
             // Get contents of textbox. Check it
             String criteria = selectiveAcEditText.getText().toString();
 
             SelectivePushAdapter adapter = new SelectivePushAdapter(context, criteria);
-            metalsList.setAdapter(adapter);
+            dungeonList.setAdapter(adapter);
             selectiveAcEditText.setText("");
         }
     };
