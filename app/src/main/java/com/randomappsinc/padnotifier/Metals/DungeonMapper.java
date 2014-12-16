@@ -82,6 +82,8 @@ public class DungeonMapper
                 new DungeonInfo("Dragon Zombie", R.drawable.dragon_zombie));
         imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/744.png",
                 new DungeonInfo("Draggie!", R.drawable.draggie));
+        imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/1223.png",
+                new DungeonInfo("Gaia Descended!", R.drawable.gaia));
 
         nameToDrawableId.put("Dungeon of Ruby Dragons", R.drawable.hunt_ruby_dragons);
         nameToDrawableId.put("Dungeon of Sapphire Dragons", R.drawable.hunt_sapphire_dragons);
@@ -107,6 +109,7 @@ public class DungeonMapper
         nameToDrawableId.put("Zeus Mercury Descended!", R.drawable.zeus_mercury_descended);
         nameToDrawableId.put("Dragon Zombie", R.drawable.dragon_zombie);
         nameToDrawableId.put("Draggie!", R.drawable.draggie);
+        nameToDrawableId.put("Gaia Descended!", R.drawable.gaia);
     }
 
     private static void setUpDungeonNamesList()

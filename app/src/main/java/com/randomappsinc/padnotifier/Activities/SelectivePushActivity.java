@@ -16,10 +16,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.randomappsinc.padnotifier.Adapters.SelectivePushACAdapter;
 import com.randomappsinc.padnotifier.Adapters.SelectivePushAdapter;
 import com.randomappsinc.padnotifier.Metals.DungeonMapper;
+import com.randomappsinc.padnotifier.Misc.Constants;
+import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
 
 public class SelectivePushActivity extends Activity
@@ -76,10 +79,17 @@ public class SelectivePushActivity extends Activity
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) throws IllegalArgumentException, IllegalStateException
             {
-                String dungeonName = ((TextView) view.findViewById(R.id.dungeon_name)).getText().toString();
-                Intent intent = new Intent(context, WebActivity.class);
-                intent.putExtra(WebActivity.URL_KEY, PAD_WIKIA_BASE + dungeonName.replaceAll(" ", "_"));
-                context.startActivity(intent);
+                if (Util.haveInternetConnection(context))
+                {
+                    String dungeonName = ((TextView) view.findViewById(R.id.dungeon_name)).getText().toString();
+                    Intent intent = new Intent(context, WebActivity.class);
+                    intent.putExtra(WebActivity.URL_KEY, PAD_WIKIA_BASE + dungeonName.replaceAll(" ", "_"));
+                    context.startActivity(intent);
+                }
+                else
+                {
+                    Toast.makeText(context, Constants.NO_INTERNET, Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

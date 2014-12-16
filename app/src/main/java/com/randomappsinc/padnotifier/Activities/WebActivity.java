@@ -15,6 +15,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import com.randomappsinc.padnotifier.Misc.Constants;
 import com.randomappsinc.padnotifier.R;
 
 import org.apache.http.HttpEntity;
@@ -38,7 +39,6 @@ public class WebActivity extends Activity
     public static String padInfoUrl;
     public static ProgressBar progressBar;
     private static String data;
-    private static final String PAD_WIKIA_BASE = "http://pad.wikia.com/wiki/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -70,7 +70,7 @@ public class WebActivity extends Activity
                 new getWebPage().execute("This string isn't used.");
                 // Can't call webview methods outside main thread, so we need to wait for the async task to finish. Yeah...
                 while (data == null) {}
-                webView.loadDataWithBaseURL(PAD_WIKIA_BASE, data, null, "UTF-8", null);
+                webView.loadDataWithBaseURL(Constants.PAD_WIKIA_BASE, data, null, "UTF-8", null);
                 return false;
             }
 
@@ -107,7 +107,7 @@ public class WebActivity extends Activity
         new getWebPage().execute("This string isn't used.");
         // Can't call webview methods outside main thread, so we need to wait for the async task to finish. Yeah...
         while (data == null) {}
-        webView.loadDataWithBaseURL(PAD_WIKIA_BASE, data, null, "UTF-8", null);
+        webView.loadDataWithBaseURL(Constants.PAD_WIKIA_BASE, data, null, "UTF-8", null);
     }
 
     private static void configureSettings()

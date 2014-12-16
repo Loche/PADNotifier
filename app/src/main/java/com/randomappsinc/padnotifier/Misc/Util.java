@@ -1,6 +1,8 @@
 package com.randomappsinc.padnotifier.Misc;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.CountDownTimer;
 import android.text.Html;
 import android.util.Log;
@@ -33,6 +35,21 @@ public class Util
 {
     // Default length of godfest in seconds (2 days)
     public static long GODFEST_DEFAULT_LENGTH = 172800;
+
+    public static boolean haveInternetConnection(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (null != activeNetwork)
+        {
+            if(activeNetwork.getType() == ConnectivityManager.TYPE_WIFI ||
+               activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static CountDownTimer giveTimer (long timeInMillis, final TextView countdown, final TextView message)
     {
