@@ -86,6 +86,8 @@ public class DungeonMapper
                 new DungeonInfo("Gaia Descended!", R.drawable.gaia));
         imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/1307.png",
                 new DungeonInfo("Wadatsumi Descended!", R.drawable.wadatsumi));
+        imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/1701.png",
+                new DungeonInfo("TAMADRA Retreat", R.drawable.chibidra));
 
 
         nameToDrawableId.put("Dungeon of Ruby Dragons", R.drawable.hunt_ruby_dragons);
@@ -114,6 +116,7 @@ public class DungeonMapper
         nameToDrawableId.put("Draggie!", R.drawable.draggie);
         nameToDrawableId.put("Gaia Descended!", R.drawable.gaia);
         nameToDrawableId.put("Wadatsumi Descended!", R.drawable.wadatsumi);
+        nameToDrawableId.put("TAMADRA Retreat", R.drawable.chibidra);
     }
 
     private static void setUpDungeonNamesList()
