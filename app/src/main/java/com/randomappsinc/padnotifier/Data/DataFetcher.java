@@ -1,7 +1,6 @@
 package com.randomappsinc.padnotifier.Data;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.randomappsinc.padnotifier.Alarms.MetalsAlarmReceiver;
 import com.randomappsinc.padnotifier.Fragments.GodfestFragment;
@@ -196,18 +195,19 @@ public class DataFetcher
                 if (!list.isEmpty())
                 {
                     Elements godCategories = list.get(0).getElementsByTag("a");
-
-                    Log.d(TAG, "Godfest category: Starting the list.");
-                    for (int j = 0; j < GODFEST_NUM_CATEGORIES && j < godCategories.size(); j++) {
-                        // GodfestOverview.addGodfestGroup(godCategories.get(j).text().replaceAll(" God", ""));Element currElement = godCategories.get(j);
+                    for (int j = 0; j < GODFEST_NUM_CATEGORIES && j < godCategories.size(); j++)
+                    {
                         Element currElement = godCategories.get(j);
-                        String currElementText = currElement.text();
-                        String godfestGroup = currElementText.replaceAll(" God", "");
-                        GodfestOverview.addGodfestGroup(godfestGroup);
 
-                        Log.d(TAG, "Godfest category: " + currElementText);
-
-                        categoryList.add(godCategories.get(j).text().replaceAll(" God", ""));
+                        // Make sure the link goes to a monster book series.
+                        // This is to prevent REM simulator from becoming a category
+                        if (currElement.attr("href").contains("monsterbook"))
+                        {
+                            String currElementText = currElement.text();
+                            String godfestGroup = currElementText.replaceAll(" God", "");
+                            GodfestOverview.addGodfestGroup(godfestGroup);
+                            categoryList.add(godfestGroup);
+                        }
                     }
                 }
 

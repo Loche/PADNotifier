@@ -73,13 +73,16 @@ public class Util
                 if (minutesLeft == 1) { minutes = "minute"; }
                 String numbers =  " <b>" + daysLeft + "</b> " + days + " <b>" + hoursLeft + "</b> " + hours
                         + " <b>" + minutesLeft + "</b> " + minutes + " <b>" + secondsLeft + "</b> " + seconds;
-                if (GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_BEFORE))
+                if (GodfestOverview.getGodfestState() != null)
                 {
-                    countdown.setText(Html.fromHtml(DataFetcher.GODFEST_STARTS_IN + numbers));
-                }
-                if (GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_STARTED))
-                {
-                    countdown.setText(Html.fromHtml(DataFetcher.GODFEST_ENDS_IN + numbers));
+                    if (GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_BEFORE))
+                    {
+                        countdown.setText(Html.fromHtml(DataFetcher.GODFEST_STARTS_IN + numbers));
+                    }
+                    if (GodfestOverview.getGodfestState().equals(GodfestOverview.GODFEST_STARTED))
+                    {
+                        countdown.setText(Html.fromHtml(DataFetcher.GODFEST_ENDS_IN + numbers));
+                    }
                 }
             }
 

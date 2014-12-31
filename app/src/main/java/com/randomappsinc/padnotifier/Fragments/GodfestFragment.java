@@ -150,6 +150,7 @@ public class GodfestFragment extends Fragment
 
     public static void refreshView()
     {
+        killCountDownTimer();
         context.deleteFile(GODFEST_CACHE_FILENAME);
         GodfestOverview.clearGodfestInfo();
         new getGodfestList().execute("This string isn't used.");

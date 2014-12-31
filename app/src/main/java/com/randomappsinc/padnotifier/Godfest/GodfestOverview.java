@@ -90,12 +90,20 @@ public class GodfestOverview
         if (godfestGroups.isEmpty()) {
             message += "<b>Player's Choice</b> voted gods!";
         }
-        else {
-            for (int i = 0; i < godfestGroups.size(); i++) {
-                if (i == godfestGroups.size() - 1) {
+        else
+        {
+            for (int i = 0; i < godfestGroups.size(); i++)
+            {
+                if (i == godfestGroups.size() - 1)
+                {
                     message += "and <b>" + godfestGroups.get(i) + "</b>";
-                } else {
-                    message += "<b>" + godfestGroups.get(i) + "</b>, ";
+                }
+                else
+                {
+                    // If there are only 2 categories, the list can't have a comma
+                    String comma = ",";
+                    if (godfestGroups.size() == 2) {comma = "";}
+                    message += "<b>" + godfestGroups.get(i) + "</b>" + comma + " ";
                 }
             }
             message += " series!";
