@@ -82,9 +82,12 @@ public class SelectivePushActivity extends Activity
                 if (Util.haveInternetConnection(context))
                 {
                     String dungeonName = ((TextView) view.findViewById(R.id.dungeon_name)).getText().toString();
-                    Intent intent = new Intent(context, WebActivity.class);
-                    intent.putExtra(WebActivity.URL_KEY, PAD_WIKIA_BASE + dungeonName.replaceAll(" ", "_"));
-                    context.startActivity(intent);
+                    if (dungeonMapper.getDungeonNamesList().contains(dungeonName))
+                    {
+                        Intent intent = new Intent(context, WebActivity.class);
+                        intent.putExtra(WebActivity.URL_KEY, PAD_WIKIA_BASE + dungeonName.replaceAll(" ", "_"));
+                        context.startActivity(intent);
+                    }
                 }
                 else
                 {

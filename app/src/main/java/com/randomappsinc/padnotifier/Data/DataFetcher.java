@@ -118,9 +118,7 @@ public class DataFetcher
                 {
                     Element row = rows.get(j);
                     Elements cols = row.select("td");
-                    int numImages = (cols.size() - NUM_SEPARATORS);
                     ArrayList<String> images = new ArrayList<String>();
-                    int numImagesFound = 0;
 
                     for (int k = 0; k < cols.size(); k++)
                     {
@@ -128,8 +126,8 @@ public class DataFetcher
                         if (img.size() > 0)
                         {
                             String imageURL = img.get(0).attr(IMAGE_URL_ATTR_NAME);
-                            images.add(PDX_HOME + imageURL);
-                            numImagesFound++;
+                            if (!imageURL.contains(PDX_HOME)) {imageURL = PDX_HOME + imageURL;}
+                            images.add(imageURL);
                         }
                     }
                     allImages.add(images);

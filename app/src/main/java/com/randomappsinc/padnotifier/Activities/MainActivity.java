@@ -121,9 +121,12 @@ public class MainActivity extends FragmentActivity implements
                 if (Util.haveInternetConnection(context))
                 {
                     String dungeonName = ((TextView) view.findViewById(R.id.metal_title)).getText().toString();
-                    Intent intent = new Intent(context, WebActivity.class);
-                    intent.putExtra(WebActivity.URL_KEY, Constants.PAD_WIKIA_BASE + dungeonName.replaceAll(" ", "_"));
-                    context.startActivity(intent);
+                    if (dungeonMapper.getDungeonNamesList().contains(dungeonName))
+                    {
+                        Intent intent = new Intent(context, WebActivity.class);
+                        intent.putExtra(WebActivity.URL_KEY, Constants.PAD_WIKIA_BASE + dungeonName.replaceAll(" ", "_"));
+                        context.startActivity(intent);
+                    }
                 }
                 else
                 {
@@ -143,9 +146,9 @@ public class MainActivity extends FragmentActivity implements
             {
                 if (Util.haveInternetConnection(context))
                 {
-                    String godName = ((TextView) view.findViewById(R.id.god_title)).getText().toString();
+                    String godName = Util.cleanGodName(((TextView) view.findViewById(R.id.god_title)).getText().toString());
                     Intent intent = new Intent(context, WebActivity.class);
-                    intent.putExtra(WebActivity.URL_KEY, Constants.PAD_WIKIA_BASE + Util.cleanGodName(godName));
+                    intent.putExtra(WebActivity.URL_KEY, Constants.PAD_WIKIA_BASE + godName);
                     context.startActivity(intent);
                 }
                 else
