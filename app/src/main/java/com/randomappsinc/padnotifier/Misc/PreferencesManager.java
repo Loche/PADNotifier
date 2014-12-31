@@ -13,6 +13,7 @@ public class PreferencesManager
 
     private static final String PREFS_KEY = "com.randomappsinc.padnotifier";
 
+    private static final String PAD_ID_KEY = "com.randomappsinc.padnotifier.PadId";
     private static final String THIRD_DIGIT_KEY = "com.randomappsinc.padnotifier.ThirdDigit";
     private static final String GROUP_KEY = "com.randomappsinc.padnotifier.group";
     private static final String STARTER_COLOR_KEY = "com.randomappsinc.padnotifier.starterColor";
@@ -33,6 +34,16 @@ public class PreferencesManager
     public void setAllowedDungeon(String dungeonName, boolean setting)
     {
         prefs.edit().putBoolean(dungeonName, setting).apply();
+    }
+
+    public String getPadId()
+    {
+        return prefs.getString(PAD_ID_KEY, "");
+    }
+
+    public void setPadId(String padId)
+    {
+        prefs.edit().putString(PAD_ID_KEY, padId).apply();
     }
 
     public boolean getMuteSetting()

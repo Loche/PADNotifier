@@ -55,14 +55,17 @@ public class LoginActivity extends Activity {
             EditText id_edittext = (EditText) findViewById(R.id.user_id_group_determiner);
             String input = id_edittext.getText().toString();
 
-            if (input.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Please enter your PAD ID's third digit!", Toast.LENGTH_LONG).show();
+            if (input.length() != 9)
+            {
+                Toast.makeText(getApplicationContext(), "Please enter all 9 digits of your PAD ID.", Toast.LENGTH_LONG).show();
             }
             else
             {
-                m_prefs_manager.setThirdDigit(input);
+                m_prefs_manager.setPadId(input);
+                String thirdDigit = Character.toString(input.charAt(2));
+                m_prefs_manager.setThirdDigit(thirdDigit);
 
-                String group = Util.digitToGroup(Integer.parseInt(input));
+                String group = Util.digitToGroup(Integer.parseInt(thirdDigit));
                 m_prefs_manager.setGroup(group);
 
                 String starterColor = Util.starterColorToChar(starterColorSpinner.getSelectedItem().toString());
