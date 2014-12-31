@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.randomappsinc.padnotifier.Adapters.StarterColorSpinnerAdapter;
 import com.randomappsinc.padnotifier.Alarms.MetalsAlarmReceiver;
+import com.randomappsinc.padnotifier.Misc.Constants;
 import com.randomappsinc.padnotifier.Misc.PreferencesManager;
 import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
@@ -28,7 +29,6 @@ public class SettingsActivity extends Activity
 
     private static final String[] colors = {"Fire", "Water", "Grass"};
     private static final String SETTINGS_SAVED = "Your changes have been saved.";
-    private static final String MISSING_THIRD_DIGIT = "Please enter your PAD ID's third digit!";
 
     // Views
     private Spinner starterColorSpinner;
@@ -49,12 +49,12 @@ public class SettingsActivity extends Activity
 
         // Find views
         starterColorSpinner = ((Spinner) (findViewById(R.id.starter_color_spinner)));
-        inputtedId = (EditText) (findViewById(R.id.user_id_group_determiner));
+        inputtedId = (EditText) (findViewById(R.id.pad_id));
         muteSetting = (Switch) (findViewById(R.id.muteSwitch));
         selectivePushButton = (Button) (findViewById(R.id.selective_push_button));
 
-        inputtedId.setText(m_prefs_manager.getThirdDigit());
-        inputtedId.setSelection(1);
+        inputtedId.setText(m_prefs_manager.getPadId());
+        inputtedId.setSelection(9);
         muteSetting.setChecked(m_prefs_manager.getMuteSetting());
 
         starterColorSpinner.setAdapter(new StarterColorSpinnerAdapter(SettingsActivity.this,
@@ -88,15 +88,17 @@ public class SettingsActivity extends Activity
     public boolean persistSettings()
     {
         String input = inputtedId.getText().toString();
-        if (input.isEmpty())
+        if (input.length() != 9)
         {
-            Toast.makeText(getApplicationContext(), MISSING_THIRD_DIGIT, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), Constants.INCOMPLETE_PAD_ID, Toast.LENGTH_SHORT).show();
             return false;
         }
         else
         {
-            m_prefs_manager.setThirdDigit(input);
-            String group = Util.digitToGroup(Integer.parseInt(input));
+            m_prefs_manager.setPadId(input);
+            String thirdDigit = Character.toString(input.charAt(2));
+            m_prefs_manager.setThirdDigit(thirdDigit);
+            String group = Util.digitToGroup(Integer.parseInt(thirdDigit));
             m_prefs_manager.setGroup(group);
             String starterColor = Util.starterColorToChar(starterColorSpinner.getSelectedItem().toString());
             m_prefs_manager.setStarterColor(starterColor);

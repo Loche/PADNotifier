@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.randomappsinc.padnotifier.Adapters.StarterColorSpinnerAdapter;
+import com.randomappsinc.padnotifier.Misc.Constants;
 import com.randomappsinc.padnotifier.Misc.PreferencesManager;
 import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
@@ -52,12 +53,12 @@ public class LoginActivity extends Activity {
 
     View.OnClickListener loginSubmitListener = new View.OnClickListener() {
         public void onClick(View v) {
-            EditText id_edittext = (EditText) findViewById(R.id.user_id_group_determiner);
+            EditText id_edittext = (EditText) findViewById(R.id.pad_id);
             String input = id_edittext.getText().toString();
 
             if (input.length() != 9)
             {
-                Toast.makeText(getApplicationContext(), "Please enter all 9 digits of your PAD ID.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Constants.INCOMPLETE_PAD_ID, Toast.LENGTH_LONG).show();
             }
             else
             {

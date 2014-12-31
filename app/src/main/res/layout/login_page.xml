@@ -51,9 +51,9 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/user_id_group_determiner"
+                    android:id="@+id/pad_id"
                     android:textSize="20sp"
-                    android:layout_width="126dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:maxLength="9"/>
@@ -61,7 +61,7 @@
                 <Spinner
                     android:id="@+id/starter_color_spinner"
                     android:layout_marginTop="6dp"
-                    android:layout_below="@+id/user_id_group_determiner"
+                    android:layout_below="@+id/pad_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawSelectorOnTop="true" />

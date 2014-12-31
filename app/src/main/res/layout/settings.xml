@@ -4,8 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp">
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
 
     <LinearLayout
         android:layout_marginTop="25dp"
@@ -22,7 +22,6 @@
 
             <TextView
                 android:id="@+id/mute_text"
-                android:layout_alignRight="@+id/id_request"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/mute"
@@ -30,6 +29,7 @@
 
             <TextView
                 android:layout_marginTop="25dp"
+                android:layout_alignRight="@+id/mute_text"
                 android:layout_below="@id/mute_text"
                 android:id="@+id/id_request"
                 android:text="@string/id_request"
@@ -43,7 +43,7 @@
                 android:id="@+id/color_request"
                 android:text="@string/color_request"
                 android:layout_below="@+id/id_request"
-                android:layout_alignRight="@+id/id_request"
+                android:layout_alignRight="@+id/mute_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
@@ -66,18 +66,18 @@
 
             <EditText
                 android:layout_marginTop="17dp"
-                android:id="@+id/user_id_group_determiner"
+                android:id="@+id/pad_id"
                 android:layout_below="@+id/muteSwitch"
                 android:textSize="20dp"
-                android:layout_width="36dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:maxLength="1"/>
+                android:maxLength="9"/>
 
             <Spinner
                 android:id="@+id/starter_color_spinner"
                 android:layout_marginTop="7dp"
-                android:layout_below="@+id/user_id_group_determiner"
+                android:layout_below="@+id/pad_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawSelectorOnTop="true" />
