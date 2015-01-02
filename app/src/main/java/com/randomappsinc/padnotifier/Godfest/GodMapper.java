@@ -123,7 +123,7 @@ public class GodMapper
         nameToDrawableId.put("Pandora", R.drawable.pandora);
         nameToDrawableId.put("Andromeda", R.drawable.andromeda);
         nameToDrawableId.put("Perseus", R.drawable.perseus);
-        nameToDrawableId.put("Sun Wukong ", R.drawable.sun_wukong);
+        nameToDrawableId.put("Sun Wukong", R.drawable.sun_wukong);
         nameToDrawableId.put("Yamato Takeru", R.drawable.yamato_takeru);
 
         // NORSE
@@ -146,6 +146,11 @@ public class GodMapper
         nameToDrawableId.put("Hathor", R.drawable.hathor);
         nameToDrawableId.put("Nephthys", R.drawable.nephthys);
         nameToDrawableId.put("Nut", R.drawable.nut);
+
+        // NORN GIRLS
+        nameToDrawableId.put("The Norn Urd", R.drawable.urd);
+        nameToDrawableId.put("The Norn Verdandi", R.drawable.verdandi);
+        nameToDrawableId.put("The Norn Skuld", R.drawable.skuld);
     }
 
     public Integer getGodDrawable(String godName)
