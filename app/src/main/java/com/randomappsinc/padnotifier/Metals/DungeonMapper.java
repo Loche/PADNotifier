@@ -89,6 +89,8 @@ public class DungeonMapper
         imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/1701.png",
                 new DungeonInfo("TAMADRA Retreat", R.drawable.chibidra));
 
+        // Terrible hack
+        addBookFromThumbnails();
 
         nameToDrawableId.put("Dungeon of Ruby Dragons", R.drawable.hunt_ruby_dragons);
         nameToDrawableId.put("Dungeon of Sapphire Dragons", R.drawable.hunt_sapphire_dragons);
@@ -117,6 +119,15 @@ public class DungeonMapper
         nameToDrawableId.put("Gaia Descended!", R.drawable.gaia);
         nameToDrawableId.put("Wadatsumi Descended!", R.drawable.wadatsumi);
         nameToDrawableId.put("TAMADRA Retreat", R.drawable.chibidra);
+    }
+
+    // This is a hack. It takes the "thumbnail" part of the url in the map and makes a duplicate
+    // key in that map with the same url, except with "book".
+    private static void addBookFromThumbnails() {
+        for (String imageUrl : imageURLtoDungeonInfo.keySet()) {
+            String bookUrl = imageUrl.replaceAll("thumbnail", "book");
+            imageURLtoDungeonInfo.put(bookUrl, imageURLtoDungeonInfo.get(imageUrl));
+        }
     }
 
     private static void setUpDungeonNamesList()
