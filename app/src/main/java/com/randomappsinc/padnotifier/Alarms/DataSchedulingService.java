@@ -15,6 +15,13 @@ import com.randomappsinc.padnotifier.Data.DataFetcher;
 import com.randomappsinc.padnotifier.Misc.Util;
 import com.randomappsinc.padnotifier.R;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,7 +48,7 @@ public class DataSchedulingService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         // TODO: Change this back to pulling PDX once the PDX parsing code is finished.
-
+/*
         String urlString = PDX_URL;
         String result = "";
 
@@ -56,10 +63,34 @@ public class DataSchedulingService extends IntentService {
             DataAlarmReceiver.completeWakefulIntent(intent);
             return;
         }
+*/
 
-        DataFetcher df = new DataFetcher(this);
-        df.extractPDXMetalsContent(result);
-        df.extractPDXGodfestContent(result);
+        String data = "";
+        DataFetcher dataFetcher = new DataFetcher(this);
+
+        HttpGet httpget = new HttpGet("http://www.puzzledragonx.com/");
+        HttpClient client = new DefaultHttpClient();
+
+        try {
+            HttpResponse response = client.execute(httpget);
+
+            int status = response.getStatusLine().getStatusCode();
+            if (status == 200) {
+                HttpEntity entity = response.getEntity();
+                data = EntityUtils.toString(entity);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.i(TAG, "Alarm-based data fetching failed to connect.");
+
+            // TODO: Set alarm to try curling again here.
+
+            DataAlarmReceiver.completeWakefulIntent(intent);
+            return;
+        }
+
+        dataFetcher.extractPDXMetalsContent(data);
+        dataFetcher.extractPDXGodfestContent(data);
 
         MetalsAlarmReceiver metalsAlarmReceiver = new MetalsAlarmReceiver();
         metalsAlarmReceiver.setAlarm(this);

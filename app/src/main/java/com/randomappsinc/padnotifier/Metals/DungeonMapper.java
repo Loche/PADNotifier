@@ -6,6 +6,8 @@ import com.randomappsinc.padnotifier.R;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Alex on 11/1/2014.
@@ -124,7 +126,8 @@ public class DungeonMapper
     // This is a hack. It takes the "thumbnail" part of the url in the map and makes a duplicate
     // key in that map with the same url, except with "book".
     private static void addBookFromThumbnails() {
-        for (String imageUrl : imageURLtoDungeonInfo.keySet()) {
+        Set<String> imageUrls = new HashSet<String>(imageURLtoDungeonInfo.keySet());
+        for (String imageUrl : imageUrls) {
             String bookUrl = imageUrl.replaceAll("thumbnail", "book");
             imageURLtoDungeonInfo.put(bookUrl, imageURLtoDungeonInfo.get(imageUrl));
         }

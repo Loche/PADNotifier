@@ -126,7 +126,12 @@ public class DataFetcher
                         if (img.size() > 0)
                         {
                             String imageURL = img.get(0).attr(IMAGE_URL_ATTR_NAME);
-                            if (!imageURL.contains(PDX_HOME)) {imageURL = PDX_HOME + imageURL;}
+                            if (!imageURL.contains(PDX_HOME)) {
+                                imageURL = PDX_HOME + imageURL;
+                            }
+                            if (!imageURL.contains("book")) {
+                                imageURL = imageURL.replaceAll("thumbnail", "book");
+                            }
                             images.add(imageURL);
                         }
                     }
