@@ -7,6 +7,7 @@ package com.randomappsinc.padbuddy.Godfest;
 import com.randomappsinc.padbuddy.Models.MonsterAttributes;
 import com.randomappsinc.padbuddy.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -17,10 +18,12 @@ public class GodMapper
     private static GodMapper instance = null;
     private static HashMap<String, Integer> nameToDrawableId = new HashMap<String, Integer>();
     private static HashMap<String, MonsterAttributes> nameToAttributes = new HashMap<String, MonsterAttributes>();
+    private static ArrayList<String> friendFinderMonsterList = new ArrayList<String>();
 
     private GodMapper()
     {
         setUpMapper();
+        setUpFriendFinderMonsterList();
     }
 
     public static GodMapper getGodMapper()
@@ -221,6 +224,33 @@ public class GodMapper
         nameToAttributes.put("Awoken Hinokagutsuchi", new MonsterAttributes(99, 5, 8, R.drawable.kagutsuchi_final));
         nameToAttributes.put("Crimson Lotus Mistress, Echidna", new MonsterAttributes(99, 6, 3, R.drawable.echidna_final));
         nameToAttributes.put("Unyielding Samurai Dragon King, Zaerog", new MonsterAttributes(99, 5, 4, R.drawable.zaerog_samurai));
+        nameToAttributes.put("TAMADRApurin", new MonsterAttributes(99, 5, 4, R.drawable.tamadrapurin));
+        nameToAttributes.put("Norn of the Past, Urd", new MonsterAttributes(99, 6, 5, R.drawable.urd_6));
+        nameToAttributes.put("Norn of the Present, Verdandi", new MonsterAttributes(99, 6, 5, R.drawable.verdandi_6));
+        nameToAttributes.put("Norn of the Future, Skuld", new MonsterAttributes(99, 6, 6, R.drawable.skuld_7));
+        nameToAttributes.put("Gods of Hunt, Umisachi&Yamasachi", new MonsterAttributes(99, 4, 4, R.drawable.u_and_y_6));
+        nameToAttributes.put("Awoken Odin", new MonsterAttributes(99, 6, 5, R.drawable.grodin_6));
+        nameToAttributes.put("Nocturne Chanter, Tsukuyomi", new MonsterAttributes(99, 6, 4, R.drawable.yomi_dark));
+        nameToAttributes.put("Hand of the Dark God, Metatron", new MonsterAttributes(99, 6, 6, R.drawable.dmeta_7));
+        nameToAttributes.put("Warrior Rose, Graceful Valkyrie", new MonsterAttributes(99, 7, 3, R.drawable.valk_7));
+        nameToAttributes.put("Scholarly God, Ganesha", new MonsterAttributes(99, 6, 4, R.drawable.ganesha_6));
+        nameToAttributes.put("Goddess of Rice Fields, Kushinada", new MonsterAttributes(99, 4, 4, R.drawable.kush_6));
+        nameToAttributes.put("Voice of God, Metatron", new MonsterAttributes(99, 6, 5, R.drawable.lmeta_6));
+        nameToAttributes.put("Extant Red Dragon Caller, Sonia", new MonsterAttributes(99, 6, 5, R.drawable.ronia_6));
+        nameToAttributes.put("Kirin of the Aurora, Sakuya", new MonsterAttributes(99, 6, 4, R.drawable.kirin_6));
+    }
+
+    private static void setUpFriendFinderMonsterList()
+    {
+        for (String key : nameToAttributes.keySet())
+        {
+            friendFinderMonsterList.add(key);
+        }
+    }
+
+    public ArrayList<String> getFriendFinderMonsterList()
+    {
+        return (ArrayList<String>) friendFinderMonsterList.clone();
     }
 
     public Integer getGodDrawable(String godName)
