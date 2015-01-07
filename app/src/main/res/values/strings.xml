@@ -3,6 +3,10 @@
 
     <string name="app_name">PAD Buddy</string>
     <string name="dungeon_overview">Dungeon Overview</string>
+
+    <!-- Menu -->
+    <string name="action_find_friends">Find friends</string>
+    <string name="action_refresh">Refresh data</string>
     <string name="action_settings">Settings</string>
 
     <!-- Login -->
@@ -21,5 +25,12 @@
         Click the alarm clocks to turn notifications on/off for a certain dungeon.
         If you are using the search option, search for nothing to bring back all the dungeons.</string>
     <string name="search">Search</string>
+
+    <!-- Monster Search -->
+    <string name="level">Level: </string>
+    <string name="num_awakenings"># of awakenings: </string>
+    <string name="skill_level">Skill level: </string>
+    <string name="num_plug_eggs"># of plus eggs: </string>
+    <string name="hypermax">Hypermax</string>
 
 </resources>

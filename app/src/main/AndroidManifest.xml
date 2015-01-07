@@ -26,7 +26,7 @@
         </activity>
         <activity
             android:name=".Activities.MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".Activities.SettingsActivity"
@@ -35,10 +35,14 @@
         <activity
             android:name=".Activities.SelectivePushActivity"
             android:windowSoftInputMode="stateHidden"
-            android:label="@string/title_activity_main" >
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".Activities.WebActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".Activities.MonsterSearchActivity"
             android:label="@string/app_name" >
         </activity>
 

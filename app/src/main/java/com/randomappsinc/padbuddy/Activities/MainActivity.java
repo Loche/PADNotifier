@@ -170,10 +170,11 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        Intent intent;
         switch (id)
         {
             case R.id.action_settings:
-                Intent intent = new Intent(context, SettingsActivity.class);
+                intent = new Intent(context, SettingsActivity.class);
                 startActivity(intent);
                 GodfestFragment.killCountDownTimer();
                 finish();
@@ -182,6 +183,12 @@ public class MainActivity extends FragmentActivity implements
                 MetalsFragment.refreshView();
                 GodfestFragment.refreshView();
                 metalsAlarm.setAlarm(this);
+                break;
+            case R.id.action_find_friends:
+                intent = new Intent(context, MonsterSearchActivity.class);
+                startActivity(intent);
+                GodfestFragment.killCountDownTimer();
+                finish();
                 break;
             default:
                 break;

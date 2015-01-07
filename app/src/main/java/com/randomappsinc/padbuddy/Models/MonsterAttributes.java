@@ -7,14 +7,14 @@ public class MonsterAttributes
 {
     private int maxLevel;
     private int maxSkill;
-    private int numAwakenings;
+    private int maxAwakenings;
     private int drawableID;
 
     public MonsterAttributes(int maxLevel, int maxSkill, int numAwakenings, int drawableID)
     {
         this.maxLevel = maxLevel;
         this.maxSkill = maxSkill;
-        this.numAwakenings = numAwakenings;
+        this.maxAwakenings = numAwakenings;
         this.drawableID = drawableID;
 
     }
@@ -29,9 +29,9 @@ public class MonsterAttributes
         return maxSkill;
     }
 
-    public int getNumAwakenings()
+    public int getMaxAwakenings()
     {
-        return numAwakenings;
+        return maxAwakenings;
     }
 
     public int getDrawableID()

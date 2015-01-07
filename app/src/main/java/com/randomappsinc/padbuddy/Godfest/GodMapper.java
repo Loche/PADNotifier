@@ -253,6 +253,11 @@ public class GodMapper
         return (ArrayList<String>) friendFinderMonsterList.clone();
     }
 
+    public MonsterAttributes getMonsterAttributes(String monsterName)
+    {
+        return nameToAttributes.get(monsterName);
+    }
+
     public Integer getGodDrawable(String godName)
     {
         return nameToDrawableId.get(godName);
