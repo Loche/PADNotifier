@@ -90,6 +90,10 @@ public class Timeslot implements Comparable<Timeslot> {
 
     @Override
     public int compareTo(Timeslot anotherTimeslot) {
+        if (starts_at == null)
+        {
+            return 0;
+        }
         int compareVal = starts_at.compareTo(anotherTimeslot.starts_at);
 
         if (compareVal == 0) {

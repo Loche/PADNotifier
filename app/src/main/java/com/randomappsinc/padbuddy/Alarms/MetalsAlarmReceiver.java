@@ -70,17 +70,21 @@ public class MetalsAlarmReceiver extends WakefulBroadcastReceiver {
             currentTimeslot = timeslots.get(i);
 
             // If the alarm is allowed to be set and dungeon hasn't ended already:
-            if (m_prefs_manager.isDungeonAllowed(currentTimeslot.getTitle())
-                    && currentTimeslot.getStarts_at().getTimeInMillis() + (1000 * 60 * 60) >= System.currentTimeMillis()) {
-                // Add the pending intent for each timeslot
-                PendingIntent pIntent = PendingIntent.getBroadcast(context, request_id,
-                        new Intent(context, MetalsAlarmReceiver.class), 0);
-                alarmIntents.add(pIntent);
-                // set the alarm
-                alarmMgr.set(AlarmManager.RTC_WAKEUP, currentTimeslot.getStarts_at().getTimeInMillis(), pIntent);
+            if (currentTimeslot.getStarts_at() != null)
+            {
+                if (m_prefs_manager.isDungeonAllowed(currentTimeslot.getTitle())
+                        && currentTimeslot.getStarts_at().getTimeInMillis() + (1000 * 60 * 60) >= System.currentTimeMillis())
+                {
+                    // Add the pending intent for each timeslot
+                    PendingIntent pIntent = PendingIntent.getBroadcast(context, request_id,
+                            new Intent(context, MetalsAlarmReceiver.class), 0);
+                    alarmIntents.add(pIntent);
+                    // set the alarm
+                    alarmMgr.set(AlarmManager.RTC_WAKEUP, currentTimeslot.getStarts_at().getTimeInMillis(), pIntent);
 
-                Log.i(TAG, "Metals alarm set: " + currentTimeslot.getTitle() + " at " +
-                        Util.calendarToExactTime(currentTimeslot.getStarts_at()));
+                    Log.i(TAG, "Metals alarm set: " + currentTimeslot.getTitle() + " at " +
+                            Util.calendarToExactTime(currentTimeslot.getStarts_at()));
+                }
             }
         }
 
