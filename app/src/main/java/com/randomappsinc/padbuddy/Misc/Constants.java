@@ -12,4 +12,5 @@ public class Constants
             "Please try this again when you do.";
     public static final String PAD_WIKIA_BASE = "http://pad.wikia.com/wiki/";
     public static final String INCOMPLETE_PAD_ID = "Please enter in all 9 digits of your PAD ID.";
+    public static final String MONSTER_FORM_INCOMPLETE = "Please fill in every field before submitting!";
 }
