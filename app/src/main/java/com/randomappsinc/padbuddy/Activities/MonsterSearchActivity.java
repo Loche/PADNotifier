@@ -18,9 +18,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.randomappsinc.padbuddy.Adapters.MonsterSearchAdapter;
 import com.randomappsinc.padbuddy.Godfest.GodMapper;
+import com.randomappsinc.padbuddy.Misc.Constants;
+import com.randomappsinc.padbuddy.Misc.Util;
 import com.randomappsinc.padbuddy.Models.MonsterAttributes;
 import com.randomappsinc.padbuddy.R;
 
@@ -32,7 +35,7 @@ public class MonsterSearchActivity extends FragmentActivity
     private Context context;
     private GodMapper godMapper;
 
-    private static final int MAX_PLUS_EGGS = 297;
+    public static final int MAX_PLUS_EGGS = 297;
 
     // Views
     private AutoCompleteTextView monsterEditText;
@@ -115,6 +118,7 @@ public class MonsterSearchActivity extends FragmentActivity
         });
         clearMonster.setOnClickListener(clearMonsterListener);
         hypermax.setOnClickListener(hypermaxListener);
+        submitMonster.setOnClickListener(submitListener);
 
         MonsterSearchAdapter adapter = new MonsterSearchAdapter(context, android.R.layout.simple_dropdown_item_1line, godMapper.getFriendFinderMonsterList());
         monsterEditText.setAdapter(adapter);
@@ -139,6 +143,37 @@ public class MonsterSearchActivity extends FragmentActivity
         public void onClick(View v)
         {
             monsterEditText.setText("");
+        }
+    };
+
+    View.OnClickListener submitListener = new View.OnClickListener() {
+        public void onClick(View v)
+        {
+            String monsterName = monsterEditText.getText().toString();
+            MonsterAttributes monsterAttributes = godMapper.getMonsterAttributes(monsterName);
+            if (monsterAttributes != null)
+            {
+                if (level.getText().toString().isEmpty() || skillLevel.getText().toString().isEmpty() ||
+                        numAwakenings.getText().toString().isEmpty() || numPlusEggs.getText().toString().isEmpty())
+                {
+                    Toast.makeText(context, Constants.MONSTER_FORM_INCOMPLETE, Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    int monLevel = Integer.parseInt(level.getText().toString());
+                    int monNumAwakenings = Integer.parseInt(numAwakenings.getText().toString());
+                    int monSkillLevel = Integer.parseInt(skillLevel.getText().toString());
+                    int monNumPlusEggs = Integer.parseInt(numPlusEggs.getText().toString());
+                    String message = Util.createMonsterFormMessage(monLevel, monNumAwakenings, monSkillLevel, monNumPlusEggs, monsterAttributes);
+                    if (!message.isEmpty())
+                    {
+                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                    } else
+                    {
+                        // Make REST call and do legit business
+                    }
+                }
+            }
         }
     };
 

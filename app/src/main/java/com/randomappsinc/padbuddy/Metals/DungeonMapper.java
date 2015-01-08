@@ -92,6 +92,8 @@ public class DungeonMapper
                 new DungeonInfo("Golden Mound", R.drawable.goemon));
         imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/1525.png",
                 new DungeonInfo("Kanetsugu!", R.drawable.kanetsugu));
+        imageURLtoDungeonInfo.put("http://www.puzzledragonx.com/en/img/thumbnail/812.png",
+                new DungeonInfo("Izanami Descended!", R.drawable.light_izanami));
 
         nameToDrawableId.put("Dungeon of Ruby Dragons", R.drawable.hunt_ruby_dragons);
         nameToDrawableId.put("Dungeon of Sapphire Dragons", R.drawable.hunt_sapphire_dragons);
@@ -122,6 +124,7 @@ public class DungeonMapper
         nameToDrawableId.put("TAMADRA Retreat", R.drawable.chibidra);
         nameToDrawableId.put("Golden Mound", R.drawable.goemon);
         nameToDrawableId.put("Kanetsugu!", R.drawable.kanetsugu);
+        nameToDrawableId.put("Izanami Descended!", R.drawable.light_izanami);
     }
 
     private static void setUpDungeonNamesList()

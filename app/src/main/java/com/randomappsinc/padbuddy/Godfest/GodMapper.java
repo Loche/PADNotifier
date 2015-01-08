@@ -238,6 +238,9 @@ public class GodMapper
         nameToAttributes.put("Voice of God, Metatron", new MonsterAttributes(99, 6, 5, R.drawable.lmeta_6));
         nameToAttributes.put("Extant Red Dragon Caller, Sonia", new MonsterAttributes(99, 6, 5, R.drawable.ronia_6));
         nameToAttributes.put("Kirin of the Aurora, Sakuya", new MonsterAttributes(99, 6, 4, R.drawable.kirin_6));
+        nameToAttributes.put("Noble Wolf King Hero, Cu Chulainn", new MonsterAttributes(99, 7, 3, R.drawable.cu_chu_dark));
+        nameToAttributes.put("Earth-Rending Emperor, Siegfried", new MonsterAttributes(99, 7, 3, R.drawable.sieg_fire));
+        nameToAttributes.put("Abyssal Hell Deity Jackal, Anubis", new MonsterAttributes(99, 11, 4, R.drawable.hamnubis));
     }
 
     private static void setUpFriendFinderMonsterList()

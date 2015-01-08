@@ -9,10 +9,12 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.randomappsinc.padbuddy.Activities.MonsterSearchActivity;
 import com.randomappsinc.padbuddy.Data.DataFetcher;
 import com.randomappsinc.padbuddy.Fragments.GodfestFragment;
 import com.randomappsinc.padbuddy.Godfest.GodfestOverview;
 import com.randomappsinc.padbuddy.Models.GodfestState;
+import com.randomappsinc.padbuddy.Models.MonsterAttributes;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,6 +37,35 @@ public class Util
 {
     // Default length of godfest in seconds (2 days)
     public static long GODFEST_DEFAULT_LENGTH = 172800;
+
+    public static String createMonsterFormMessage(int level, int numAwakenings, int skillLevel, int numPlusEgges, MonsterAttributes monsterAttributes)
+    {
+        if (level <= 0)
+        {
+            return "A monster's level has to be at least 1!";
+        }
+        if (level > monsterAttributes.getMaxLevel())
+        {
+            return "This monster cannot achieve a level higher than " + String.valueOf(monsterAttributes.getMaxLevel()) + "!";
+        }
+        if (numAwakenings > monsterAttributes.getMaxAwakenings())
+        {
+            return "This monster cannot be awakened more than " + String.valueOf(monsterAttributes.getMaxAwakenings()) + " times!";
+        }
+        if (skillLevel <= 0)
+        {
+            return "A monster's skill level has to be at least 1!";
+        }
+        if (skillLevel > monsterAttributes.getMaxSkill())
+        {
+            return "This monster cannot achieve a skill level higher than " + String.valueOf(monsterAttributes.getMaxSkill()) + "!";
+        }
+        if (numPlusEgges > MonsterSearchActivity.MAX_PLUS_EGGS)
+        {
+            return "You cannot give more than " + String.valueOf(MonsterSearchActivity.MAX_PLUS_EGGS) + " plus eggs to a creature!";
+        }
+        return "";
+    }
 
     public static boolean haveInternetConnection(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
