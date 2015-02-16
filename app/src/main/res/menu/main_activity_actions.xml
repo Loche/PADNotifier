@@ -4,7 +4,12 @@
 
     <item android:id="@+id/action_refresh"
           android:icon="@drawable/refresh_button"
-          android:title="@string/action_settings"
+          android:title="@string/action_refresh"
+          android:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_find_friends"
+          android:icon="@drawable/friend_button"
+          android:title="@string/action_find_friends"
           android:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_settings"
