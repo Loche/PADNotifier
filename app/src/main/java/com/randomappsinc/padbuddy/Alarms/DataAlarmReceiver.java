@@ -63,13 +63,11 @@ public class DataAlarmReceiver extends WakefulBroadcastReceiver {
         // Set the alarm's trigger time to some time between 12:30 and 1:30 am.
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 30);
-        calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
         // Make jitter tied to this installation.
         PreferencesManager prefsMgr = new PreferencesManager(context);
         int jitter = prefsMgr.getDataAlarmJitter();
-        Log.d(TAG, "Alarm jitter: " + jitter);
         if (jitter == -1) {
             Random rand = new Random();
             jitter = rand.nextInt(1000 * 60 * 60 + 1); // an hour in milliseconds
