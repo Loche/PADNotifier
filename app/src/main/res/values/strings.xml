@@ -32,5 +32,8 @@
     <string name="skill_level">Skill level: </string>
     <string name="num_plug_eggs"># of plus eggs: </string>
     <string name="hypermax">Hypermax</string>
+    <string name="title_activity_debug">DebugActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

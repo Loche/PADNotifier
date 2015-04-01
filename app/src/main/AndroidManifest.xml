@@ -34,8 +34,8 @@
         </activity>
         <activity
             android:name=".Activities.SelectivePushActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name=".Activities.WebActivity"
@@ -68,6 +68,11 @@
             android:name=".Alarms.DataSchedulingService"
             android:exported="false" >
         </service>
+
+        <activity
+            android:name=".Activities.DebugActivity"
+            android:label="@string/title_activity_debug" >
+        </activity>
     </application>
 
 </manifest>
