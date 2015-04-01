@@ -254,23 +254,29 @@ public class DataFetcher
             }
 
             // 2.2 PARSE OUT GODS INFO
-            Document godIconsDocument = Jsoup.parse(content.split(GODFEST_LIST_CLASS_NAME)[1]);
-            Element godIcons = godIconsDocument.getElementById("event");
-            Elements icons = godIcons.getElementsByTag("img");
-            for (i = 0; i < icons.size(); i++)
-            {
-                String iconURL = icons.get(i).attr(IMAGE_URL_ATTR_NAME);
-                if (!iconURL.equals(GODFEST_SPACER))
-                {
-                    GodfestOverview.addGod(new God(PDX_HOME + iconURL, icons.get(i).attr(GODFEST_ICON_TITLE)));
-                    JSONObject god = new JSONObject();
-                    god.put(IMAGE_URL_KEY, PDX_HOME + iconURL);
-                    god.put(GOD_NAME_KEY, icons.get(i).attr(GODFEST_ICON_TITLE));
-                    godsList.add(god);
-                }
+            String godClasses[] = content.split(GODFEST_LIST_CLASS_NAME);
+            if (godClasses.length == 0) { // XXX: Hack to stop app from crashing
+                GodfestOverview.setGodfestState(GodfestOverview.GODFEST_NONE);
+                externalFile.put(GODFEST_STATE_KEY, GodfestOverview.GODFEST_NONE);
+                externalFile.put(GODFEST_TIME_LEFT_KEY, 0);
             }
-            externalFile.put(GODFEST_CATEGORIES_KEY, categoryList);
-            externalFile.put(FEATURED_GODS_KEY, godsList);
+            else {
+                Document godIconsDocument = Jsoup.parse(content.split(GODFEST_LIST_CLASS_NAME)[1]);
+                Element godIcons = godIconsDocument.getElementById("event");
+                Elements icons = godIcons.getElementsByTag("img");
+                for (i = 0; i < icons.size(); i++) {
+                    String iconURL = icons.get(i).attr(IMAGE_URL_ATTR_NAME);
+                    if (!iconURL.equals(GODFEST_SPACER)) {
+                        GodfestOverview.addGod(new God(PDX_HOME + iconURL, icons.get(i).attr(GODFEST_ICON_TITLE)));
+                        JSONObject god = new JSONObject();
+                        god.put(IMAGE_URL_KEY, PDX_HOME + iconURL);
+                        god.put(GOD_NAME_KEY, icons.get(i).attr(GODFEST_ICON_TITLE));
+                        godsList.add(god);
+                    }
+                }
+                externalFile.put(GODFEST_CATEGORIES_KEY, categoryList);
+                externalFile.put(FEATURED_GODS_KEY, godsList);
+            }
         }
         else
         {
